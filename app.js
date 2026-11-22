@@ -596,7 +596,24 @@
     const fmt = t => new Intl.DateTimeFormat('ko-KR', { month: 'numeric', day: 'numeric' }).format(new Date(t));
     bar.innerHTML = `<div class="vb-row"><div class="vb-tx"><b>가족 투표</b><span>${saved.length < 2 ? '이름을 2개 이상 저장하면 투표를 만들 수 있어요' : n < 2 ? `카드의 <b>투표 후보</b>를 2~5개 골라 주세요${n ? ` · ${n}개 고름` : ''}` : n > 5 ? `후보는 5개까지예요 · 지금 ${n}개` : `<b>${n}개</b>를 골랐어요 · 링크를 보내면 가족이 투표해요`}</span></div>
       <button type="button" class="act" id="voteMake"${n < 2 || n > 5 ? ' disabled' : ''}>투표 링크 보내기</button></div>
-      ${polls.length ? `<details class="mypolls"><summary>내가 만든 투표 ${polls.length}개 · 결과 보기</summary><ul>${polls.slice().reverse().map(p => `<li><a href="${esc(p.url)}">${esc(p.names.join(' · '))}</a><span>${fmt(p.at)}</span></li>`).join('')}</ul></details>` : ''}`;
+      ${polls.length ? `<details class="mypolls"><summary>내가 만든 투표 ${polls.length}개 · 결과 보기</summary><ul>${polls.slice().reverse().map(p => `<li><a href="${esc(p.url)}">${esc(p.names.join(' · '))}</a><span>${fmt(p.at)}</span><small class="mp-sum" data-poll="${esc(p.id)}">${esc(pollSum[p.id] || '')}</small></li>`).join('')}</ul></details>` : ''}`;
+    const mp = bar.querySelector('.mypolls'); if (mp) mp.addEventListener('toggle', () => { if (mp.open) loadPollSums(); });
+  }
+  // 내가 만든 투표 결과 요약 (펼칠 때만 불러옴): '1위 김서윤 · 3명 참여'
+  const pollSum = {};
+  async function loadPollSums() {
+    const C = SB(); if (!C) return;
+    await Promise.all(getPolls().map(async p => {
+      try {
+        const r = await fetch(C.supabaseUrl.replace(/\/$/, '') + '/rest/v1/rpc/vote_tally', { method: 'POST', headers: sbHead(C), body: JSON.stringify({ p_poll: p.id }) });
+        if (!r.ok) return;
+        const rows = await r.json(), cnt = {};
+        rows.forEach(v => String(v.picks).split(',').forEach(k => (cnt[k] = (cnt[k] || 0) + 1)));
+        const max = Math.max(0, ...Object.values(cnt)), top = Object.keys(cnt).filter(k => cnt[k] === max).map(k => p.names[+k]).filter(Boolean);
+        pollSum[p.id] = !rows.length ? '아직 투표한 가족이 없어요' : `${top.length > 1 ? '공동 1위' : '1위'} ${top.join(' · ')} · ${rows.length}명 참여`;
+        const el = document.querySelector(`.mp-sum[data-poll="${p.id}"]`); if (el) el.textContent = pollSum[p.id];
+      } catch (x) {}
+    }));
   }
   document.addEventListener('click', async e => {
     const pk = e.target.closest('[data-pick]');
