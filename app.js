@@ -554,7 +554,7 @@
     setTimeout(renderVoteBar, 0);
     $('#savedMeta').textContent = saved.length ? `${saved.length}개 · 최근 저장한 순서 · 점수는 저장할 때의 사주 기준` : '';
     if (!saved.length) {
-      out.innerHTML = '<div class="empty"><span class="empty-seal" aria-hidden="true">藏</span><p>추천 카드의 <b>♡ 저장</b>을 누르면 여기에 모여요 <small>(이 휴대폰·브라우저에 보관돼요)</small></p></div>';
+      out.innerHTML = '<div class="empty"><span class="empty-seal" aria-hidden="true">藏</span><p>추천 카드의 <b>♡ 저장</b>을 누르면 여기에 모여요. 2개 이상 모이면 <b>가족 투표</b> 링크를 보낼 수 있어요 <small>(이 휴대폰·브라우저에 보관돼요)</small></p></div>';
       return;
     }
     const fmt = t => new Intl.DateTimeFormat('ko-KR', { month: 'numeric', day: 'numeric' }).format(new Date(t));
@@ -589,7 +589,7 @@
   const baseUrl = () => { const h = location.hostname; return location.protocol === 'https:' && h && !/claude|anthropic/.test(h) ? location.origin + location.pathname : PUBLIC_URL; };
   function renderVoteBar() {
     const bar = $('#voteBar'); if (!bar) return;
-    bar.hidden = saved.length < 2 && !getPolls().length;
+    bar.hidden = !saved.length && !getPolls().length;
     const n = picks.size, polls = getPolls();
     const fmt = t => new Intl.DateTimeFormat('ko-KR', { month: 'numeric', day: 'numeric' }).format(new Date(t));
     bar.innerHTML = `<div class="vb-row"><div class="vb-tx"><b>가족 투표</b><span>${saved.length < 2 ? '이름을 2개 이상 저장하면 투표를 만들 수 있어요' : n < 2 ? `카드의 <b>투표 후보</b>를 2~5개 골라 주세요${n ? ` · ${n}개 고름` : ''}` : n > 5 ? `후보는 5개까지예요 · 지금 ${n}개` : `<b>${n}개</b>를 골랐어요 · 링크를 보내면 가족이 투표해요`}</span></div>
@@ -719,7 +719,9 @@
       const key = s.dataset.save, i = saved.findIndex(x => x.key === key);
       if (i >= 0) { saved.splice(i, 1); toast('저장을 취소했어요'); }
       else { const info = cardInfo.get(key); if (!info) return; saved.push({ ...info, savedAt: Date.now() }); T('save_name');
-        toast(persist() ? '저장했어요 · 아래 ‘저장’ 탭에서 다시 볼 수 있어요' : '이 브라우저에서는 저장이 안 돼요 (개인정보 보호 모드 확인)'); }
+        const ok = persist(), tip = ok && saved.length === 2 && !flagOn('gachi-vote-tip');
+        if (tip) setFlag('gachi-vote-tip');
+        toast(!ok ? '이 브라우저에서는 저장이 안 돼요 (개인정보 보호 모드 확인)' : tip ? '저장했어요 · 이제 저장한 이름으로 가족 투표를 만들 수 있어요 ♥' : '저장했어요 · 아래 ‘저장’ 탭에서 다시 볼 수 있어요'); }
       persist(); syncSaveButtons(key); renderSaved(); updateSaveHint(); refreshEndCard();
     } else if (u) {
       const key = u.dataset.unsave; saved = saved.filter(x => x.key !== key); persist(); renderSaved(); syncSaveButtons(key); toast('삭제했어요');
@@ -805,22 +807,40 @@
       <span class="empty-seal" aria-hidden="true">藏</span>
       <div class="ec-tx">
         <b>${showAll ? `후보 ${pool.length}개를 모두 봤어요` : `상위 ${Math.min(TOP, pool.length)}개를 모두 봤어요`}</b>
-        <p>${n ? `저장한 이름이 <b>${n}개</b> 있어요. 저장 탭에서 모아 보고 가족과 비교해 보세요.` : '마음에 든 이름에 <b>♡ 저장</b>을 눌러 두면, 저장 탭에서 모아 보고 가족과 비교할 수 있어요.'}</p>
+        <p>${n >= 2 ? `저장한 이름이 <b>${n}개</b> 있어요. 링크 하나로 <b>가족에게 투표</b>를 받아 보세요.` : n ? `저장한 이름이 <b>${n}개</b> 있어요. 2개 이상 모으면 <b>가족 투표</b>를 만들 수 있어요.` : '마음에 든 이름에 <b>♡ 저장</b>을 눌러 두면, 모아 보고 <b>가족 투표</b>도 만들 수 있어요.'}</p>
         <div class="ec-act">
-          ${n ? `<button type="button" class="act" data-goto="saved">저장한 이름 ${n}개 보기 ›</button>` : ''}
+          ${n >= 2 ? `<button type="button" class="act" data-vote-start="end">가족 투표 만들기 ›</button>` : n ? `<button type="button" class="act" data-goto="saved">저장한 이름 보기 ›</button>` : ''}
           ${!showAll && rest > 0 ? `<button type="button" class="rp-link" data-showall>점수가 조금 낮은 후보 ${rest}개 더 보기</button>` : ''}
         </div>
       </div></div>`;
   }
   // 결과 위 한 줄 안내 칩: 저장한 이름이 없을 때만, 닫으면 다시 안 보임
+  function flagOn(k) { try { return localStorage.getItem(k) === '1'; } catch (e) { return false; } }
+  function setFlag(k) { try { localStorage.setItem(k, '1'); } catch (e) {} }
   function updateSaveHint() {
     const h = $('#saveHint'); if (!h) return;
-    h.hidden = !pool.length || saved.length > 0 || hintOff();
+    const voteMode = saved.length >= 2 && !flagOn('gachi-vote-hint-off') && !getPolls().length;
+    const saveMode = !saved.length && !hintOff();
+    h.hidden = !pool.length || (!voteMode && !saveMode);
+    h.dataset.mode = voteMode ? 'vote' : 'save';
+    h.querySelector('.sh-ic').textContent = voteMode ? '♥' : '♡';
+    h.querySelector('.sh-tx').innerHTML = voteMode
+      ? `저장한 이름 <b>${saved.length}개</b>, 가족은 어떤 이름이 좋을까요? <button type="button" class="sh-go" data-vote-start="hint">가족 투표 만들기 ›</button>`
+      : '마음에 드는 이름은 <b>저장</b>해 두세요 · 2개 이상 모으면 <b>가족 투표</b>를 만들 수 있어요';
   }
+  // 가족 투표 시작: 저장 탭으로 가서 최근 저장한 이름(최대 5개)을 후보로 미리 골라 둠 → 버튼 한 번이면 링크 보내기
+  document.addEventListener('click', e => {
+    const b = e.target.closest('[data-vote-start]'); if (!b) return;
+    picks.clear(); saved.slice().sort((a, c) => c.savedAt - a.savedAt).slice(0, 5).forEach(r => picks.add(r.key));
+    setTab('saved'); renderSaved();
+    setTimeout(() => { const v = $('#voteBar'); if (v) v.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 50);
+    toast(`최근 저장한 ${picks.size}개를 후보로 골라 뒀어요 · 빼고 싶은 이름은 ‘투표 후보’를 눌러 해제하세요`);
+    T('vote_cta', { from: b.dataset.voteStart });
+  });
   document.addEventListener('click', e => {
     if (e.target.closest('[data-goto="saved"]')) { setTab('saved'); window.scrollTo(0, 0); T('tab', { tab: 'saved' }); }
     if (e.target.closest('[data-showall]')) { showAll = true; goRecPage(TOP / PAGE); T('show_all'); }
-    if (e.target.closest('#saveHintClose')) { try { localStorage.setItem('gachi-hint-off', '1'); } catch (x) {} $('#saveHint').hidden = true; }
+    if (e.target.closest('#saveHintClose')) { setFlag($('#saveHint').dataset.mode === 'vote' ? 'gachi-vote-hint-off' : 'gachi-hint-off'); $('#saveHint').hidden = true; }
   });
   function goRecPage(n) {
     recPage = n; renderRecPage(); T('more', { page: recPage + 1 });

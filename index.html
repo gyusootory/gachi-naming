@@ -986,7 +986,7 @@ table.vs td.win { background: var(--gold-soft) }
 /* ═════════ 프리미엄 작명 리포트 (최종 레이어) ═════════
    흰 바탕 · 1px 선 · 포인트 딥 네이비 1색 · 01/02/03 번호 + 작은 캡션 + 큰 명조 한자 */
 body { background: var(--bg) }
-.num, .c-score b, .c-rank, .bn, .pager button, .parts .num, .tally b, .sdate, .gy-h .pill, .fc-e b, .weights b, .dateinp, .hm, .cnt { font-family: var(--f-mono); font-variant-numeric: tabular-nums; letter-spacing: 0 }
+.num, .c-score b, .c-rank, .bn, .pager button, .parts .num, .tally b, .gy-h .pill, .fc-e b, .weights b, .dateinp, .hm, .cnt { font-family: var(--f-mono); font-variant-numeric: tabular-nums; letter-spacing: 0 }
 .cap { display: inline-block; font: 500 11px/1 var(--f-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--faint) }
 .sechead .cap { margin-bottom: 8px }
 .sec-no { margin: 0; display: flex; align-items: baseline; gap: 10px; font: 700 15px var(--f-body); color: var(--ink); letter-spacing: -.02em; padding-bottom: 10px; border-bottom: 1px solid var(--line) }
@@ -1124,6 +1124,10 @@ table.vs td.win { background: color-mix(in srgb, var(--point) 7%, transparent) }
 .vr-more .card { border: 0; border-radius: 0; box-shadow: none; padding-top: 4px }
 .vr-more .card .c-top, .vr-more .card .c-name { display: none }
 .vr-more .card .c-head { border-top: 0; padding-top: 0 }
+
+/* 가족 투표 안내 칩 버튼 */
+.sh-go { display: inline-block; margin-left: 4px; border: 0; background: none; padding: 0; font: 700 13.5px var(--f-body); color: var(--point); cursor: pointer; text-decoration: underline; text-underline-offset: 3px }
+.savehint[data-mode="vote"] { border-color: color-mix(in srgb, var(--point) 35%, var(--line)) }
 </style>
 
 
@@ -1236,7 +1240,7 @@ table.vs td.win { background: color-mix(in srgb, var(--point) 7%, transparent) }
           <button class="btn" type="button" id="moreBtn" hidden>다음 5개 <span aria-hidden="true">›</span></button>
         </div>
       </div>
-      <p class="savehint" id="saveHint" hidden><span class="sh-ic" aria-hidden="true">♡</span><span>마음에 드는 이름은 <b>저장</b>해 두세요 · 저장 탭에서 모아 비교할 수 있어요</span><button type="button" id="saveHintClose" aria-label="안내 닫기">✕</button></p>
+      <p class="savehint" id="saveHint" hidden><span class="sh-ic" aria-hidden="true">♡</span><span class="sh-tx">마음에 드는 이름은 <b>저장</b>해 두세요 · 2개 이상 모으면 <b>가족 투표</b>를 만들 수 있어요</span><button type="button" id="saveHintClose" aria-label="안내 닫기">✕</button></p>
       <div class="cards" id="recOut">
       </div>
       <nav class="pager" id="recPager" aria-label="추천 이름 페이지" hidden></nav>
