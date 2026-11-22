@@ -20,48 +20,54 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<!-- 글꼴: 화면을 막지 않고 뒤에서 받기(먼저 기본 글꼴로 보이고, 받으면 바뀜) · 명조 700은 600으로 대신해 용량 절약 -->
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;600&family=IBM+Plex+Sans+KR:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;600&family=IBM+Plex+Sans+KR:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap"></noscript>
+<!-- 글꼴: 화면을 막지 않고 뒤에서 받기(먼저 기본 글꼴로 보이고, 받으면 바뀜)
+     본문·버튼 = Pretendard(필요한 글자만 나눠 받음) · 감성 제목·카피 = Hahmlet · 한자 = Noto Serif KR · 숫자·점수·날짜·획수 = DM Mono -->
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="preload" as="style" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"></noscript>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;600&family=Hahmlet:wght@500;600;700&family=DM+Mono:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;600&family=Hahmlet:wght@500;600;700&family=DM+Mono:wght@400;500&display=swap"></noscript>
 <style>
-/* 디자인: '먹과 금박' — 먹빛 남색 머리띠 + 백자빛 바탕 + 샴페인 골드 포인트. 장식은 덜고 여백·명조 글씨로 품격을 냄 */
+/* 디자인: 프리미엄 작명 리포트(에디토리얼) — 흰 바탕 + 딥 차콜 글자 + 1px 얇은 선 + 포인트는 딥 네이비 한 가지
+   글꼴: 본문 Pretendard · 감성 제목 Hahmlet · 한자 Noto Serif KR · 숫자·점수·날짜·획수 DM Mono */
 :root {
-  --bg: #f3f2ee;          /* 백자빛 바탕 */
+  --bg: #ffffff;
   --surface: #ffffff;
-  --sunk: #eceae4;        /* 눌린 칸 */
-  --tile: #f7f6f2;        /* 한자 타일·입력칸 */
-  --ink: #141a26;         /* 먹빛 남색 (아이콘 바탕색) */
-  --muted: #5f6573;        /* 보조 글씨 (옅은 바탕에서도 대비 4.5 이상) */
-  --line: #e2dfd7;
-  --accent: #141a26;      /* 주 버튼 = 먹색 */
-  --accent-ink: #f4ecdc;  /* 먹색 위 글씨 = 상아색 */
-  --gold: #7d5f27;        /* 글씨용 금색 (흰 바탕 대비 확보) */
-  --gold-hi: #c9a86a;     /* 장식용 밝은 금색 */
-  --gold-soft: #f8f3e7;   /* 금빛이 도는 옅은 바탕 */
-  --band: #121826; --band-ink: #efe8d8; --band-muted: #a39b8a;
-  --seal: #a8382c;        /* 낙관 붉은색: 필수 표시에만 */
-  --req-bg: #fbf2ef; --req-ring: rgb(168 56 44 / .18);
-  --shadow: 0 1px 2px rgb(20 26 38 / .04), 0 8px 28px rgb(20 26 38 / .06);
-  --wood: #3c7a5a; --fire: #b4473a; --earth: #9a7428; --metal: #737a87; --water: #2f5687;
-  --good: #3c7a5a; --half: #9a7428; --bad: #a8382c;
+  --sunk: #f1f3f5;        /* 막대 바탕 */
+  --tile: #f8f9fa;        /* 입력칸 면 */
+  --ink: #1c1f24;         /* 딥 차콜 */
+  --ink2: #4b5563;
+  --muted: #6b7280;
+  --faint: #9ca3af;
+  --line: #e5e7eb;
+  --line2: #d1d5db;
+  --point: #1e3a8a;       /* 포인트: 딥 네이비 */
+  --accent: #1e3a8a; --accent-ink: #ffffff;
+  --gold: #1e3a8a; --gold-hi: #3b5bdb; --gold-soft: #eef2fb;   /* 예전 금색 자리 → 포인트 색으로 통일 */
+  --band: #1c1f24; --band-ink: #ffffff; --band-muted: #9ca3af;
+  --seal: #c2412d; --req-bg: #fdf4f2; --req-ring: rgb(194 65 45 / .14);
+  --shadow: none;
+  --wood: #3f7d5c; --fire: #b5523f; --earth: #93702a; --metal: #5f6b7a; --water: #2f5a9e;
+  --good: #3f7d5c; --half: #93702a; --bad: #b5523f;
   --f-display: "Noto Serif KR", "Nanum Myeongjo", "AppleMyungjo", "Batang", serif;
-  --f-body: "IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
-  --f-mono: "IBM Plex Mono", ui-monospace, monospace;
+  --f-story: "Hahmlet", "Noto Serif KR", "AppleMyungjo", serif;
+  --f-body: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
+  --f-mono: "DM Mono", ui-monospace, "SF Mono", Menlo, monospace;
 }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
-  --bg: #0d1118; --surface: #151b26; --sunk: #0a0e14; --tile: #1b2230; --ink: #ece6da; --muted: #9aa0ad; --line: #252d3a;
-  --accent: #d6b978; --accent-ink: #121826; --gold: #d6b978; --gold-hi: #e6cf98; --gold-soft: #1d2230;
-  --band: #0a0e15; --band-ink: #efe8d8; --band-muted: #8f8877; --seal: #d9705f; --on-seal: #1d1210; --req-bg: #2a1d1b; --req-ring: rgb(217 112 95 / .25);
-  --shadow: 0 1px 2px rgb(0 0 0 / .3), 0 8px 28px rgb(0 0 0 / .25);
-  --wood: #74c49b; --fire: #ec8a7c; --earth: #ddb86a; --metal: #b4bac6; --water: #86b2ea;
-  --good: #74c49b; --half: #ddb86a; --bad: #ec8a7c; color-scheme: dark } }
+  --bg: #0f1115; --surface: #0f1115; --sunk: #1d2128; --tile: #171a20; --ink: #eef0f3; --ink2: #b8bfca; --muted: #98a1ad; --faint: #7c8594;
+  --line: #262b33; --line2: #353b45;
+  --point: #9db4ff; --accent: #9db4ff; --accent-ink: #0f1115; --gold: #9db4ff; --gold-hi: #b9caff; --gold-soft: #161d30;
+  --band: #0f1115; --band-ink: #eef0f3; --band-muted: #7c8594; --seal: #f08a77; --on-seal: #1d1210; --req-bg: #241815; --req-ring: rgb(240 138 119 / .2);
+  --wood: #7cc79e; --fire: #f09a88; --earth: #d9b86e; --metal: #aab3bf; --water: #8fb3f0;
+  --good: #7cc79e; --half: #d9b86e; --bad: #f09a88; color-scheme: dark } }
 :root[data-theme="dark"] {
-  --bg: #0d1118; --surface: #151b26; --sunk: #0a0e14; --tile: #1b2230; --ink: #ece6da; --muted: #9aa0ad; --line: #252d3a;
-  --accent: #d6b978; --accent-ink: #121826; --gold: #d6b978; --gold-hi: #e6cf98; --gold-soft: #1d2230;
-  --band: #0a0e15; --band-ink: #efe8d8; --band-muted: #8f8877; --seal: #d9705f; --on-seal: #1d1210; --req-bg: #2a1d1b; --req-ring: rgb(217 112 95 / .25);
-  --shadow: 0 1px 2px rgb(0 0 0 / .3), 0 8px 28px rgb(0 0 0 / .25);
-  --wood: #74c49b; --fire: #ec8a7c; --earth: #ddb86a; --metal: #b4bac6; --water: #86b2ea;
-  --good: #74c49b; --half: #ddb86a; --bad: #ec8a7c; color-scheme: dark }
+  --bg: #0f1115; --surface: #0f1115; --sunk: #1d2128; --tile: #171a20; --ink: #eef0f3; --ink2: #b8bfca; --muted: #98a1ad; --faint: #7c8594;
+  --line: #262b33; --line2: #353b45;
+  --point: #9db4ff; --accent: #9db4ff; --accent-ink: #0f1115; --gold: #9db4ff; --gold-hi: #b9caff; --gold-soft: #161d30;
+  --band: #0f1115; --band-ink: #eef0f3; --band-muted: #7c8594; --seal: #f08a77; --on-seal: #1d1210; --req-bg: #241815; --req-ring: rgb(240 138 119 / .2);
+  --wood: #7cc79e; --fire: #f09a88; --earth: #d9b86e; --metal: #aab3bf; --water: #8fb3f0;
+  --good: #7cc79e; --half: #d9b86e; --bad: #f09a88; color-scheme: dark }
 
 * { box-sizing: border-box }
 body { background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 15px; line-height: 1.55;
@@ -707,7 +713,456 @@ td .inm { font-size: 12px; display: inline }
   .parts .num { font-size: 11px }
 }
 @media (max-width: 370px) { .intro-t { font-size: 16px } .intro-s { font-size: 11.5px } }
+
+/* ═════════ 토스풍 에디토리얼 리포트 (최종 레이어 · 위 규칙을 덮어씀) ═════════
+   바탕 회색 + 흰 카드 + 얇은 선(그림자 없음) · 모서리 16px · 카드 안 여백 24px · 숫자는 자리 맞춤(tabular-nums)
+   글꼴: 본문 Pretendard(-0.02em) · 한자 Noto Serif KR · 감성 제목·한 줄 풀이 고운바탕 */
+body { font-family: var(--f-body); letter-spacing: -.02em; background: var(--bg); color: var(--ink); -webkit-font-smoothing: antialiased }
+.num, .c-score b, .bn, .pager button, .parts .num, .tally b, .dateinp { font-family: var(--f-body); font-variant-numeric: tabular-nums; letter-spacing: 0 }
+button, input, select, textarea { font-family: var(--f-body); letter-spacing: -.02em }
+
+/* 머리: 어두운 띠 대신 바탕과 같은 밝은 머리 */
+.mast { background: transparent; color: var(--ink); box-shadow: none; clip-path: none; padding-block: 26px 14px; border: 0 }
+.logo { box-shadow: 0 0 0 1px var(--line); border-radius: 14px }
+.brand h1 { font-family: var(--f-story); font-weight: 700; color: var(--ink); letter-spacing: -.01em }
+.brand p { color: var(--ink2); letter-spacing: -.02em }
+.appshare { background: var(--surface); color: var(--ink2); border: 1px solid var(--line); font-weight: 600; border-radius: 999px }
+.appshare:hover { background: var(--tile); color: var(--ink) }
+/* 탭(PC): 깔끔한 세그먼트 */
+.tabs { background: var(--sunk); box-shadow: none; border-radius: 14px; padding: 4px }
+.tabs button { color: var(--ink2); font-weight: 600; border-radius: 10px; padding: 9px 16px }
+.tabs button:hover { color: var(--ink) }
+.tabs button[aria-selected="true"] { background: var(--surface); color: var(--ink); box-shadow: 0 0 0 1px var(--line) }
+
+/* 본문 간격 1.5배 */
+.grid { padding-top: 20px; gap: 36px }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 26px 24px; box-shadow: none; gap: 20px }
+.fbody { gap: 18px }
+.row { gap: 12px }
+.field { gap: 8px }
+.field label, .lbl { color: var(--ink); font-weight: 600 }
+/* 입력칸: 테두리 대신 연한 면, 누르면 포인트 테두리 */
+input[type=text], input[type=date], input[type=time], select, #fbText, #shareText {
+  background-color: var(--tile); border: 1.5px solid transparent; border-radius: 14px; padding: 11px 14px; min-height: 48px; color: var(--ink); box-shadow: none }
+input::placeholder, textarea::placeholder { color: var(--faint) }
+input[type=text]:focus, input[type=date]:focus, input[type=time]:focus, select:focus, #fbText:focus { border-color: var(--point); box-shadow: 0 0 0 3px color-mix(in srgb, var(--point) 16%, transparent); outline: none; background-color: var(--surface) }
+input:focus-visible, select:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px solid var(--point); outline-offset: 2px }
+.field.need input, .field.need select, .field.need .combo-in { border-color: color-mix(in srgb, var(--seal) 55%, transparent); background-color: var(--req-bg) }
+input[type=checkbox] { accent-color: var(--ink) }
+.check { color: var(--ink2) }
+.req-badge { background: color-mix(in srgb, var(--seal) 12%, transparent); color: var(--seal); font-weight: 700; padding: 3px 7px }
+.opt { border: 0; background: var(--sunk); color: var(--ink2); padding: 2px 8px }
+/* 버튼 */
+.btn { background: var(--accent); color: var(--accent-ink); border-radius: 16px; min-height: 54px; font-weight: 700; font-size: 16px; box-shadow: none; letter-spacing: -.02em }
+.btn:hover { transform: none; filter: brightness(1.08) }
+.btn.ghost { background: var(--surface); color: var(--ink); border: 1px solid var(--line2) }
+.act { background: var(--accent); color: var(--accent-ink); border: 0; border-radius: 12px; font-weight: 700; padding: 11px 14px; min-height: 44px }
+.act.ghost, .act.save { background: var(--tile); color: var(--ink); border: 0; font-weight: 600 }
+.act.save.on { background: color-mix(in srgb, var(--seal) 11%, transparent); color: var(--seal) }
+.act:disabled { opacity: .4; cursor: default }
+.act.del { color: var(--bad) }
+
+/* 탭 소개: 장식 없이 제목 + 한 줄 설명 */
+.intro { background: transparent; border: 0; box-shadow: none; padding: 4px 2px 0; gap: 14px }
+.intro-ic { background: var(--surface); border: 1px solid var(--line); color: var(--ink); font-family: var(--f-display) }
+.intro-t { font-family: var(--f-story); font-weight: 700; color: var(--ink) }
+.intro-t b { color: var(--gold); font-weight: 700 }
+p.intro-s { margin: 0; color: var(--ink2); font-size: 13.5px; line-height: 1.5; display: block }
+/* 선택 사항 · 조건 상자 */
+.optsec { color: var(--faint) }
+.optsec::before, .optsec::after { background: var(--line2) }
+.hangbox { background: var(--tile); border: 0; border-radius: 16px; padding: 16px }
+.cond { border: 0; background: var(--tile); border-radius: 16px; padding: 14px 16px }
+.cond > summary::after { color: var(--faint) }
+.cond-sum { color: var(--gold); font-weight: 600; font-size: 12.5px }
+.cond input[type=text], .cond select { background-color: var(--surface) }
+.cond .field + .row, .cond .row + .row { margin-top: 14px }
+/* 분위기 칩 */
+.chips { display: flex; flex-wrap: wrap; gap: 8px }
+.chip { border: 1px solid var(--line2); background: var(--surface); color: var(--ink2); font: 600 14px var(--f-body); letter-spacing: -.02em; border-radius: 999px; padding: 8px 14px; min-height: 38px; cursor: pointer; transition: background .15s, color .15s, border-color .15s }
+.chip[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink) }
+.fhint { font-weight: 500; font-size: 12px; color: var(--faint) }
+.feel-note { margin-top: 2px; font-size: 12px; color: var(--muted) }
+.feel-cnt { font-size: 12.5px; font-weight: 600; color: var(--ink2) } .feel-cnt:empty { display: none } .feel-cnt.zero { color: var(--bad) }
+#recCond .chip { padding: 7px 12px; min-height: 36px; font-size: 13.5px }
+
+/* 사주 명식 */
+.sajuout { border-top: 1px solid var(--line); padding-top: 18px; gap: 14px }
+.pillar { background: var(--tile); border-radius: 14px }
+.pillar.me { background: var(--gold-soft); box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--point) 55%, transparent) }
+.track { background: var(--sunk) }
+.yong dt { color: var(--ink2) }
+.edge { margin: 0; font-size: 12.5px; line-height: 1.55; color: var(--ink2); background: color-mix(in srgb, var(--earth) 10%, transparent); border-radius: 12px; padding: 10px 12px }
+.edge::before { content: "확인 "; font-weight: 700; color: var(--earth) }
+/* 오행 배지: 쨍한 원색 대신 연한 면 + 차분한 글자 */
+.el { border: 0; border-radius: 8px; padding: 1px 7px; background: color-mix(in srgb, currentColor 11%, transparent); font-weight: 600; line-height: 1.5 }
+.el small { color: inherit; opacity: .85 }
+.fill { opacity: .55 }
+
+/* 결과 머리 */
+.sechead h3 { font-family: var(--f-story); font-weight: 700; letter-spacing: -.01em }
+.sechead p, #recMeta, #findMeta, #mineMeta, #savedMeta { color: var(--ink2) }
+.cards { gap: 20px }
+.savehint { background: var(--surface); border: 1px solid var(--line); border-radius: 16px }
+.savehint b { color: var(--ink) }
+.sh-ic { background: color-mix(in srgb, var(--seal) 11%, transparent); color: var(--seal) }
+
+/* ───── 이름 카드 ───── */
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 24px; box-shadow: none; gap: 18px }
+.c-top { display: flex; align-items: center; gap: 8px; min-width: 0 }
+.c-rank { font: 700 13px var(--f-body); color: var(--ink); background: var(--sunk); border-radius: 8px; padding: 4px 9px; font-variant-numeric: tabular-nums }
+.c-grade { font: 600 13px var(--f-body); color: var(--gold) }
+.c-score { margin-left: auto; display: flex; align-items: baseline; gap: 2px; white-space: nowrap }
+.c-score b { font-size: 30px; font-weight: 800; color: var(--ink); letter-spacing: -.03em; line-height: 1 }
+.c-score small { font-size: 13px; color: var(--faint); font-weight: 600 }
+.c-name { display: grid; gap: 6px }
+.c-hz { display: flex; gap: 4px; font-family: var(--f-display); font-weight: 600; font-size: 46px; line-height: 1.1; color: var(--ink); letter-spacing: .02em }
+.c-hz .sur { color: var(--faint); font-weight: 500 }
+.c-ko { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; font-size: 14px; color: var(--ink2) }
+.c-ko b { font-size: 19px; font-weight: 700; color: var(--ink); letter-spacing: -.01em }
+.c-head { margin: 0; font-family: var(--f-story); font-weight: 700; font-size: 17px; line-height: 1.55; color: var(--ink); text-wrap: pretty; padding-top: 14px; border-top: 1px solid var(--line) }
+.c-why { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px }
+.c-why li { display: grid; grid-template-columns: 60px minmax(0, 1fr); gap: 10px; align-items: baseline; font-size: 14px; line-height: 1.6; color: var(--ink2) }
+.c-why .wk { font-size: 12px; font-weight: 700; color: var(--faint); letter-spacing: -.01em }
+.c-why li.flaw .wk { color: var(--earth) }
+.c-why li.ok .wk { color: var(--good) }
+.inm { font-size: 12.5px; font-weight: 600 }
+.warn { display: none }   /* 감점 이유는 '아쉬운 점'에서 문장으로 안내 */
+/* 상세 감명 */
+.card details.dt { border-top: 1px solid var(--line); padding-top: 4px }
+.dt > summary { background: transparent; border: 0; padding: 10px 0; min-height: 48px; border-radius: 0; gap: 10px }
+.dt > summary:hover { background: transparent; border: 0 }
+.dt-tx b { font-size: 15px; font-weight: 700 }
+.dt-tx small { font-size: 12.5px; color: var(--muted) }
+.dt-chev { border: 0; background: var(--tile); width: 30px; height: 30px }
+.dt-chev::before { border-color: var(--ink2) }
+.dt h4 { font: 700 13.5px var(--f-body); color: var(--ink); letter-spacing: -.02em; margin: 22px 0 10px; display: flex; gap: 6px; align-items: baseline }
+.dt h4 .muted { font-weight: 600; font-size: 12.5px }
+.mlist { gap: 8px; font-size: 14px }
+.mlist li { grid-template-columns: 26px auto minmax(0, 1fr) }
+.mlist b { font-family: var(--f-display); color: var(--ink); font-weight: 600; font-size: 19px }
+.mh { color: var(--ink) ; font-weight: 600 }
+.mk { color: var(--ink2) }
+/* 사주 기운 → 이름 기운 비교 */
+.fc { display: grid; grid-template-columns: minmax(0, 1.25fr) 22px minmax(0, 1fr); gap: 8px; align-items: stretch }
+.fc-col { background: var(--tile); border-radius: 14px; padding: 12px; display: grid; gap: 10px; align-content: start; min-width: 0 }
+.fc-t { font-size: 12px; font-weight: 700; color: var(--ink2) }
+.fc-els, .fc-gs { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px }
+.fc-e, .fc-g { display: flex; align-items: center; gap: 6px; font-size: 12.5px; min-width: 0 }
+.fc-e b { font-size: 13px; color: var(--ink2); min-width: 1ch }
+.fc-e em, .fc-g em { font-style: normal; font-size: 11.5px; font-weight: 700; color: var(--faint); margin-left: auto; white-space: nowrap }
+.fc-e.s-y em, .fc-g.s-y em { color: var(--good) } .fc-e.s-n em, .fc-g.s-n em { color: var(--good); opacity: .85 } .fc-e.s-a em, .fc-g.s-a em { color: var(--bad) }
+.fc-e.s-y, .fc-e.s-n { font-weight: 700 }
+.fc-hz { font: 600 22px var(--f-display); color: var(--ink); line-height: 1.2 }
+.fc-g em { white-space: normal; text-align: right }
+.fc-arr { align-self: center; justify-self: center; width: 10px; height: 10px; border-right: 2px solid var(--faint); border-top: 2px solid var(--faint); transform: rotate(45deg) }
+.fc-none { margin: 0; font-size: 13px }
+/* 81수리 시기별 */
+.gys { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px }
+.gy { background: var(--tile); border-radius: 14px; padding: 12px 14px; display: grid; gap: 4px }
+.gy-h { display: flex; align-items: center; gap: 8px; flex-wrap: wrap }
+.gy-h b { font-size: 14px; color: var(--ink) }
+.gy-h span:not(.pill) { font-size: 12.5px; color: var(--ink2) }
+.gy-h .pill { margin-left: auto }
+.gy p { margin: 0; font-size: 13.5px; line-height: 1.6; color: var(--ink2) }
+.gy-a { font-weight: 700; color: var(--ink) }
+.gy-a::after { content: " ·" ; font-weight: 400; color: var(--faint) }
+.pill { border: 0; background: color-mix(in srgb, currentColor 12%, transparent); font-weight: 700; padding: 2px 8px }
+.parts { gap: 8px }
+.pt { background: var(--sunk); height: 6px; border-radius: 3px } .pt i { background: var(--ink); opacity: .75 }
+.facts { font-size: 13px; line-height: 1.7; color: var(--ink2); gap: 8px }
+.facts b { color: var(--ink) }
+.basis { margin: 18px 0 2px; font-size: 12px; color: var(--muted); text-align: center }
+.cact { gap: 8px }
+.cact .act { flex: 1 }
+.rank, .score { display: none }
+
+/* 저장 · 가족 투표 */
+.sdate { font-size: 12.5px; color: var(--muted) }
+.pick { display: inline-flex; align-items: center; gap: 6px; border: 0; background: var(--tile); color: var(--ink2); font: 600 13px var(--f-body); border-radius: 999px; padding: 6px 12px 6px 8px; cursor: pointer; min-height: 34px }
+.pk { width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid var(--faint); display: grid; place-items: center }
+.pick[aria-pressed="true"] { background: var(--ink); color: var(--bg) }
+.pick[aria-pressed="true"] .pk { border-color: var(--bg); background: var(--bg) }
+.pick[aria-pressed="true"] .pk::after { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--ink) }
+.card.picked { border-color: var(--point); box-shadow: 0 0 0 1px var(--point) }
+.cond > summary { color: var(--ink) }
+.scard .c-top { flex-wrap: wrap }
+.votebar { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 18px 20px; display: grid; gap: 12px }
+.vb-row { display: flex; align-items: center; gap: 14px; flex-wrap: wrap }
+.vb-tx { flex: 1 1 220px; display: grid; gap: 2px; min-width: 0 }
+.vb-tx > b { font-size: 16px }
+.vb-tx span { font-size: 13.5px; color: var(--ink2); line-height: 1.5 }
+.vb-tx span b { color: var(--ink) }
+.votebar #voteMake { flex: none }
+.mypolls { border-top: 1px solid var(--line); padding-top: 10px }
+.mypolls summary { color: var(--ink2); font-size: 13.5px }
+.mypolls ul { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 6px }
+.mypolls li { display: flex; justify-content: space-between; gap: 10px; font-size: 13.5px }
+.mypolls a { color: var(--ink); font-weight: 600; min-width: 0; overflow-wrap: anywhere }
+.mypolls li span { color: var(--muted); white-space: nowrap }
+.vote-hero { display: grid; gap: 8px; padding: 6px 2px }
+.vh-k { justify-self: start; font: 700 12.5px var(--f-body); color: var(--gold); background: var(--gold-soft); border-radius: 999px; padding: 4px 10px }
+.vote-hero h3 { font: 700 24px/1.35 var(--f-story); color: var(--ink) }
+.vote-hero p { margin: 0; color: var(--ink2); font-size: 14.5px; line-height: 1.6 }
+.act.like { background: var(--tile); color: var(--ink); font-size: 15px }
+.act.like[aria-pressed="true"] { background: color-mix(in srgb, var(--seal) 12%, transparent); color: var(--seal) }
+.card.liked { border-color: color-mix(in srgb, var(--seal) 45%, transparent) }
+.vote-send, .vote-res { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 22px; display: grid; gap: 12px }
+.vote-send small { font-size: 12px; line-height: 1.5 }
+.vote-res h4 { margin: 0; font-size: 16px; display: flex; gap: 8px; align-items: baseline }
+.vote-res .muted { font-size: 13px }
+.tally { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px }
+.tally li { display: grid; grid-template-columns: 5.5em minmax(0, 1fr) 2em; gap: 4px 10px; align-items: center; font-size: 14px }
+.tally .tn { font-weight: 700 }
+.tally .tr { height: 10px; background: var(--sunk); border-radius: 5px; overflow: hidden }
+.tally .tr i { display: block; height: 100%; background: var(--faint); border-radius: 5px }
+.tally li.top .tr i { background: var(--seal) }
+.tally b { text-align: right }
+.tally small { grid-column: 2 / -1; font-size: 12px; color: var(--muted) }
+body.voting .intro, body.voting .guidebox { display: none }
+
+/* 그 밖의 상자들: 금빛 테두리 대신 담백한 면 */
+.info-btn { background: var(--sunk); color: var(--ink2); border: 0; font: 700 12px/1 var(--f-body) }
+.info-btn[aria-expanded="true"] { background: var(--ink); color: var(--bg) }
+.info-pop { background: var(--tile); border: 0; border-radius: 16px; color: var(--ink2) }
+.info-pop > b, .info-pop b { color: var(--ink) }
+.info-pop .ex { background: var(--surface) }
+.notice { background: var(--surface); border: 1px solid var(--line); border-radius: 16px }
+.nb-tag { background: var(--sunk); color: var(--ink) }
+.nb-more { border: 0; background: var(--tile) }
+.nb-week { border-top-color: var(--line) }
+.nb-day li, .rp-exist li { background: var(--tile); border: 0 }
+.rp-exist { background: var(--tile); border: 0 }
+.endcard { background: var(--surface); border: 1px solid var(--line); box-shadow: none; border-radius: 20px }
+.endcard .empty-seal, .empty .empty-seal { background: var(--tile); border: 0; color: var(--ink2) }
+.ec-tx > b { font-family: var(--f-story) }
+.empty { border-color: var(--line2) !important; color: var(--ink2) }
+.findbar, .cand, .cmp, .guide section { background: var(--surface); border: 1px solid var(--line); box-shadow: none; border-radius: 20px }
+.cand h4 { font-weight: 700 }
+.candbox { background: var(--tile); border: 0; border-radius: 16px }
+.cmp .lead b, .sub-h, .vs2 h5, .hzs, .cond-sum, .rp-link, .foot a { color: var(--gold) }
+table.vs td.win { background: var(--gold-soft) }
+.cbars li.top .fl { background: var(--seal) }
+.guidebox { border-top-color: var(--line) }
+.guide h3 { font-family: var(--f-story); font-weight: 700 }
+.weights div { background: var(--tile); border-radius: 14px }
+.pager button { border: 0; background: var(--surface); box-shadow: 0 0 0 1px var(--line) inset; border-radius: 12px }
+.pager button[aria-current="page"] { background: var(--ink); color: var(--bg) }
+#reportBox .sb, #fbBox .sb, #shareBox .sb { border-radius: 24px; padding: 24px }
+#reportBox h3, #fbBox h3, #shareBox h3 { font-family: var(--f-story); font-weight: 700 }
+.rp-exist li b, .nb-day li b, .nb-h { font-family: var(--f-display) }
+.combo-list { border-radius: 16px; border: 1px solid var(--line); box-shadow: 0 12px 32px rgb(0 0 0 / .12) }
+.combo-list li.on, .combo-list li[data-i]:hover { background: var(--tile) }
+.combo-list li span { color: var(--ink2) }
+#toast { background: var(--ink); color: var(--bg); box-shadow: 0 8px 24px rgb(0 0 0 / .2) }
+.fsum { background: var(--tile); border: 0; border-radius: 16px }
+.fedit { color: var(--gold) }
+.foot { border-top-color: var(--line); color: var(--muted) }
+
+@media (max-width: 760px) {
+  body::before { background: var(--bg) }
+  .mast { padding-block: calc(18px + env(safe-area-inset-top, 0px)) 8px; background: transparent }
+  .brand h1 { font-size: 23px }
+  .grid { padding-top: 8px; gap: 24px }
+  .panel { padding: 22px 18px; border-radius: 20px; gap: 18px }
+  .card { padding: 22px 18px; border-radius: 20px; gap: 16px }
+  .c-hz { font-size: 42px }
+  .c-score b { font-size: 28px }
+  .c-why li { grid-template-columns: 52px minmax(0, 1fr); font-size: 14px }
+  .c-head { font-size: 16.5px }
+  .fc { grid-template-columns: minmax(0, 1fr); }
+  .fc-arr { transform: rotate(135deg); margin: 2px 0 }
+  /* 하단 탭바 */
+  .tabs { background: var(--surface); border-radius: 0; box-shadow: 0 -1px 0 var(--line); padding-top: 6px }
+  .tabs button { color: var(--faint) }
+  .tabs button[aria-selected="true"] { background: none; box-shadow: none; color: var(--ink) }
+  .tabs .ti { font-family: var(--f-display); font-weight: 600 }
+  .tabs button[aria-selected="true"] .ti { color: var(--ink) }
+  .appshare { background: var(--surface) }
+  #moreBtn { background: var(--ink); color: var(--bg); border: 0; box-shadow: 0 8px 22px rgb(0 0 0 / .18) }
+  .cact .act { padding: 11px 6px; font-size: 14px }
+  .votebar { padding: 16px; border-radius: 18px }
+  .vb-row .act { flex: 1 1 100% }
+  .vote-send, .vote-res { padding: 18px }
+  .vote-hero h3 { font-size: 21px }
+  .intro { padding: 0 2px }
+  .intro-t { font-size: 18px }
+}
+@media (max-width: 370px) { .c-hz { font-size: 36px } .cact .act { font-size: 13px } }
+/* 공지: 한 줄 전광판 */
+.notice > .nb-tick { flex: 1; min-width: 0; overflow: hidden; white-space: nowrap; margin: 0; cursor: default;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 12px, #000 calc(100% - 16px), transparent); mask-image: linear-gradient(90deg, transparent, #000 12px, #000 calc(100% - 16px), transparent) }
+.nb-run { display: inline-flex; white-space: nowrap }
+.nb-msg { flex: none; padding-left: 4px }
+.nb-tick:not(.roll) .nb-run { display: block; overflow: hidden; text-overflow: ellipsis }
+.nb-tick.roll .nb-msg { padding-right: 48px }
+.nb-tick.roll .nb-run { animation: nb-roll var(--nb-dur, 14s) linear infinite }
+.nb-tick.roll:hover .nb-run, .nb-tick.paused .nb-run { animation-play-state: paused }
+@keyframes nb-roll { from { transform: translateX(0) } to { transform: translateX(-50%) } }
+.notice { flex-wrap: wrap; align-items: center }
+
+/* ═════════ 프리미엄 작명 리포트 (최종 레이어) ═════════
+   흰 바탕 · 1px 선 · 포인트 딥 네이비 1색 · 01/02/03 번호 + 작은 캡션 + 큰 명조 한자 */
+body { background: var(--bg) }
+.num, .c-score b, .c-rank, .bn, .pager button, .parts .num, .tally b, .gy-h .pill, .fc-e b, .weights b, .dateinp, .hm, .cnt { font-family: var(--f-mono); font-variant-numeric: tabular-nums; letter-spacing: 0 }
+.cap { display: inline-block; font: 500 11px/1 var(--f-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--faint) }
+.sechead .cap { margin-bottom: 8px }
+.sec-no { margin: 0; display: flex; align-items: baseline; gap: 10px; font: 700 15px var(--f-body); color: var(--ink); letter-spacing: -.02em; padding-bottom: 10px; border-bottom: 1px solid var(--line) }
+.sec-no i { font: 500 12px var(--f-mono); font-style: normal; color: var(--point); letter-spacing: .06em }
+/* 머리 · 탭 */
+.brand h1 { font-family: var(--f-story); font-weight: 700; letter-spacing: -.02em }
+.logo { border-radius: 12px; box-shadow: 0 0 0 1px var(--line) }
+.appshare { background: var(--surface); border: 1px solid var(--line); color: var(--ink2); border-radius: 999px }
+.mast { border-bottom: 1px solid var(--line); padding-bottom: 16px }
+@media (min-width: 761px) {
+  .tabs { background: none; padding: 0; gap: 4px; border-radius: 0 }
+  .tabs button { border-radius: 0; padding: 10px 12px; color: var(--muted); border-bottom: 2px solid transparent; background: none }
+  .tabs button[aria-selected="true"] { background: none; box-shadow: none; color: var(--ink); border-bottom-color: var(--point) }
+}
+/* 상자: 흰 면 + 1px 선 (그림자·색 면 없음) */
+.panel, .card, .votebar, .vote-send, .vote-res, .endcard, .findbar, .cand, .cmp, .guide section, .savehint, .notice { background: var(--surface); border: 1px solid var(--line); box-shadow: none; border-radius: 16px }
+.panel { padding: 28px 24px }
+.cond, .hangbox, .candbox { background: var(--surface); border: 1px solid var(--line); border-radius: 14px }
+.info-pop, .fc-col, .gy, .rp-exist, .weights div, .fsum { background: var(--tile); border: 1px solid var(--line) }
+input[type=text], input[type=date], input[type=time], select, #fbText, #shareText { background-color: var(--surface); border: 1px solid var(--line2); border-radius: 12px }
+.cond input[type=text], .cond select { background-color: var(--surface) }
+input[type=text]:focus, input[type=date]:focus, input[type=time]:focus, select:focus, #fbText:focus { border-color: var(--point); box-shadow: 0 0 0 3px color-mix(in srgb, var(--point) 14%, transparent) }
+.btn { background: var(--point); color: var(--accent-ink); border-radius: 12px }
+.act { background: var(--point); color: var(--accent-ink); border-radius: 10px }
+.act.ghost, .act.save, .act.like { background: var(--surface); color: var(--ink); border: 1px solid var(--line2) }
+.act.save.on, .act.like[aria-pressed="true"] { background: color-mix(in srgb, var(--point) 9%, transparent); color: var(--point); border-color: color-mix(in srgb, var(--point) 40%, transparent) }
+.card.liked, .card.picked { border-color: var(--point); box-shadow: 0 0 0 1px var(--point) }
+.chip { background: var(--surface); border: 1px solid var(--line2) }
+.chip[aria-pressed="true"], .pick[aria-pressed="true"], .pager button[aria-current="page"] { background: var(--point); color: var(--accent-ink); border-color: var(--point) }
+.pick[aria-pressed="true"] .pk { border-color: var(--accent-ink); background: var(--accent-ink) }
+.pick[aria-pressed="true"] .pk::after { background: var(--point) }
+.pick { background: var(--surface); border: 1px solid var(--line2) }
+.opt { background: none; border: 1px solid var(--line2); color: var(--muted) }
+/* 제목 */
+.intro-t, .sechead h3, .vote-hero h3, .guide h3, .ec-tx > b, #reportBox h3, #fbBox h3, #shareBox h3, .cmp h4 { font-family: var(--f-story); font-weight: 600; letter-spacing: -.02em }
+.intro-ic { border: 1px solid var(--line); background: var(--surface) }
+.sechead h3 { font-size: 26px }
+/* 이름 카드: 번호 + 캡션 + 큰 명조 한자 */
+.card { padding: 26px 24px; gap: 18px }
+.c-top { align-items: baseline; gap: 10px }
+.c-rank { background: none; padding: 0; font-size: 22px; font-weight: 500; color: var(--point); line-height: 1 }
+.c-grade { font: 600 12.5px var(--f-body); color: var(--ink2); border: 1px solid var(--line2); border-radius: 999px; padding: 2px 9px }
+.c-score b { font-size: 30px; font-weight: 500; letter-spacing: -.02em; color: var(--ink) }
+.c-score small { font-family: var(--f-mono); font-size: 12px; color: var(--faint) }
+.c-hz { font-weight: 500; font-size: 52px; letter-spacing: .08em; gap: 6px }
+.c-hz .sur { color: var(--faint) }
+.c-head { font-family: var(--f-story); font-weight: 600; font-size: 18px; line-height: 1.55; letter-spacing: -.02em; border-top-color: var(--line) }
+.c-why { gap: 14px }
+.c-why li { grid-template-columns: minmax(0, 1fr); gap: 4px }
+.c-why .wk { display: flex; align-items: baseline; gap: 8px; font: 700 12.5px var(--f-body); color: var(--ink); letter-spacing: -.01em }
+.c-why .wk i { font: 500 11.5px var(--f-mono); font-style: normal; color: var(--point); letter-spacing: .04em }
+.c-why li.flaw .wk, .c-why li.ok .wk { color: var(--ink) }
+.c-why li > span:last-child { color: var(--ink2); font-size: 14px; line-height: 1.65 }
+/* 상세 감명: 소제목에 01 02 03 */
+.card details.dt { counter-reset: dsec; border-top-color: var(--line) }
+.dt h4 { counter-increment: dsec; font-size: 14px; padding-top: 16px; border-top: 1px solid var(--line); margin: 20px 0 12px }
+.dt h4::before { content: counter(dsec, decimal-leading-zero); font: 500 11.5px var(--f-mono); color: var(--point); letter-spacing: .04em; margin-right: 2px }
+.dt > summary + h4 { border-top: 0; padding-top: 4px }
+.dt-chev { background: none; border: 1px solid var(--line2) }
+.gy-h .pill { font-size: 11.5px }
+.pt i { background: var(--point); opacity: 1 }
+.mlist b, .fc-hz, .c-hz { font-family: var(--f-display) }
+.basis { font-family: var(--f-body) }
+/* 강조색은 포인트 하나로 */
+.intro-t b, .cond-sum, .fedit, .rp-link, .foot a, .vh-k, .sub-h, .vs2 h5, .hzs, .cmp .lead b, .mypolls a { color: var(--point) }
+.vh-k { background: color-mix(in srgb, var(--point) 9%, transparent) }
+.tally li.top .tr i, .cbars li.top .fl, .cbars li.cand .fl { background: var(--point) }
+.sh-ic { background: color-mix(in srgb, var(--point) 9%, transparent); color: var(--point) }
+.pillar { background: var(--surface); border: 1px solid var(--line) }
+.pillar.me { background: color-mix(in srgb, var(--point) 6%, transparent); box-shadow: none; border-color: var(--point) }
+.edge { background: var(--tile); border: 1px solid var(--line) }
+.edge::before { color: var(--point) }
+table.vs td.win { background: color-mix(in srgb, var(--point) 7%, transparent) }
+@media (max-width: 760px) {
+  .mast { border-bottom: 0 }
+  .tabs button[aria-selected="true"], .tabs button[aria-selected="true"] .ti { color: var(--point) }
+  .panel { padding: 24px 18px }
+  .card { padding: 24px 18px }
+  .c-hz { font-size: 46px }
+  .sechead h3 { font-size: 22px }
+  #moreBtn { background: var(--point); color: var(--accent-ink) }
+}
+@media (max-width: 370px) { .c-hz { font-size: 40px } }
+
+/* 분위기 칩: 6가지 · 2열 */
+.chips.feel { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px }
+.chips.feel .chip { display: grid; justify-items: start; gap: 2px; text-align: left; border-radius: 12px; padding: 10px 12px; min-height: 56px }
+.chips.feel .chip b { font: 700 14px var(--f-body); letter-spacing: -.02em }
+.chips.feel .chip small { font-size: 12px; color: var(--muted); font-weight: 500 }
+.chips.feel .chip[aria-pressed="true"] small { color: inherit; opacity: .8 }
+.chips.feel .chip.empty { opacity: .45 }
+.chips.feel .chip.deny { animation: deny .3s ease }
+@keyframes deny { 25% { transform: translateX(-3px) } 75% { transform: translateX(3px) } }
+@media (min-width: 761px) { .chips.feel { grid-template-columns: repeat(3, minmax(0, 1fr)) } }
+/* 필수 표시: 주황 대신 포인트(딥 네이비) 톤 · 오류 문구만 차분한 진홍색 */
+:root { --seal: #b42335 } :root[data-theme="dark"] { --seal: #ff8e98 }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --seal: #ff8e98 } }
+.req-badge { background: color-mix(in srgb, var(--point) 10%, transparent); color: var(--point); font-weight: 700 }
+.field.need input, .field.need select, .field.need .combo-in { border-color: color-mix(in srgb, var(--point) 45%, var(--line2)); background-color: color-mix(in srgb, var(--point) 4%, var(--surface)) }
+.field.miss input, .field.miss select { box-shadow: 0 0 0 3px color-mix(in srgb, var(--seal) 18%, transparent); border-color: var(--seal) }
+.field[data-req]:not(.need) > label::after { color: var(--point) }
+.cnt { background: var(--point); color: var(--accent-ink) }
+
+/* 결과 화면 버튼: 초기화 + 다음 5개 (폰에서는 화면 아래에 떠 있음) */
+.fabs { display: flex; gap: 8px; align-items: center }
+.fabs .btn { min-height: 44px; padding: 0 16px; font-size: 15px; border-radius: 999px; display: inline-flex; align-items: center; gap: 6px; width: auto }
+#resetBtn { background: var(--surface); color: var(--ink); border: 1px solid var(--line2) }
+@media (max-width: 760px) {
+  .fabs { position: fixed; z-index: 19; right: max(16px, env(safe-area-inset-right, 0px)); bottom: calc(80px + env(safe-area-inset-bottom, 0px)) }
+  .fabs .btn { min-height: 50px; padding: 0 18px; box-shadow: 0 8px 22px rgb(0 0 0 / .18) }
+  #moreBtn { position: static; right: auto; bottom: auto; background: var(--point); color: var(--accent-ink); border: 0 }
+  #resetBtn { box-shadow: 0 8px 22px rgb(0 0 0 / .14) }
+}
+
+/* 가족 투표: 이름 목록(접힘) + 펼치면 상세 풀이 */
+.vote-list { display: grid; gap: 12px }
+.vrows { display: grid; gap: 10px }
+.vrow { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; overflow: hidden }
+.vrow.liked { border-color: var(--point); box-shadow: 0 0 0 1px var(--point) }
+.vr-top { display: flex; align-items: center; gap: 12px; padding: 14px 14px 14px 16px }
+.vr-no { font: 500 13px var(--f-mono); color: var(--point); flex: none }
+.vr-name { flex: 1; min-width: 0; display: grid; gap: 2px }
+.vr-hz { font: 600 26px/1.15 var(--f-display); color: var(--ink); letter-spacing: .06em }
+.vr-hz .sur { color: var(--faint); font-weight: 500 }
+.vr-ko { font-size: 13.5px; color: var(--ink2); overflow-wrap: anywhere } .vr-ko b { color: var(--ink); font-size: 15px }
+.vr-sc { flex: none; text-align: right; font-size: 12px; color: var(--faint) } .vr-sc b { display: block; font: 500 22px/1 var(--f-mono); color: var(--ink) }
+.vr-like { flex: none; min-width: 64px; min-height: 44px; border-radius: 12px; border: 1px solid var(--line2); background: var(--surface); color: var(--ink); font: 700 14px var(--f-body); cursor: pointer; padding: 0 10px }
+.vr-like[aria-pressed="true"] { background: var(--point); color: var(--accent-ink); border-color: var(--point) }
+.vrows.locked .vr-like { opacity: .45 }
+.vr-more { border-top: 1px solid var(--line) }
+.vr-more > summary { list-style: none; display: flex; justify-content: space-between; align-items: center; padding: 11px 16px; font: 600 13px var(--f-body); color: var(--ink2); min-height: 44px; cursor: pointer }
+.vr-more > summary::-webkit-details-marker { display: none }
+.vr-more > summary::after { content: ""; width: 7px; height: 7px; border-right: 2px solid var(--faint); border-bottom: 2px solid var(--faint); transform: rotate(45deg); margin-top: -4px; transition: transform .2s }
+.vr-more[open] > summary::after { transform: rotate(-135deg); margin-top: 4px }
+.vr-more .card { border: 0; border-radius: 0; box-shadow: none; padding-top: 4px }
+.vr-more .card .c-top, .vr-more .card .c-name { display: none }
+.vr-more .card .c-head { border-top: 0; padding-top: 0 }
+
+/* 가족 투표 안내 칩 버튼 */
+.sh-go { display: inline-block; margin-left: 4px; border: 0; background: none; padding: 0; font: 700 13.5px var(--f-body); color: var(--point); cursor: pointer; text-decoration: underline; text-underline-offset: 3px }
+.savehint[data-mode="vote"] { border-color: color-mix(in srgb, var(--point) 35%, var(--line)) }
+
+/* 저장 탭: 이름 목록 + 펼치면 풀이 */
+#savedOut.cards { grid-template-columns: repeat(auto-fill, minmax(min(100%, 360px), 1fr)); gap: 10px; align-items: start }
+.vrow.scard.picked { border-color: var(--point); box-shadow: 0 0 0 1px var(--point) }
+.pick.sm { flex: none; flex-direction: column; gap: 3px; padding: 6px 8px; min-height: 48px; min-width: 48px; border-radius: 12px; font-size: 11.5px }
+.pick.sm .pk { width: 20px; height: 20px }
+.vr-more > summary .sdate { margin-left: auto; margin-right: 10px; font-weight: 500; font-size: 12px; color: var(--faint) }
+.sv-body { display: grid; gap: 14px; padding: 4px 16px 16px }
+.sv-body .c-head { border-top: 0; padding-top: 0; font-size: 16.5px }
+
+/* 이미 투표한 호칭 */
+#whoChips .chip.done { opacity: .5; cursor: not-allowed; text-decoration: line-through; text-decoration-thickness: 1px }
+#whoChips .chip.done small { text-decoration: none; display: inline-block; margin-left: 4px; font-size: 11px; color: var(--point) }
+
+.vh-mine { margin: 4px 0 0; font-size: 13.5px; color: var(--ink2); background: var(--tile); border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px }
 </style>
+
 
 <div class="wrap">
   <header class="mast">
@@ -723,10 +1178,10 @@ td .inm { font-size: 12px; display: inline }
       <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M12 3v12M7 8l5-5 5 5M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/></svg>
       <span>앱 공유</span></button>
     <nav class="tabs" role="tablist">
-      <button role="tab" data-tab="rec" id="t-rec" aria-selected="true" aria-controls="p-rec"><span class="ti" aria-hidden="true">名</span><span class="lf">① 이름 추천</span><span class="ls">이름 추천</span></button>
-      <button role="tab" data-tab="find" id="t-find" aria-selected="false" aria-controls="p-find"><span class="ti" aria-hidden="true">字</span><span class="lf">② 한자 찾기</span><span class="ls">한자 찾기</span></button>
-      <button role="tab" data-tab="mine" id="t-mine" aria-selected="false" aria-controls="p-mine"><span class="ti" aria-hidden="true">比</span><span class="lf">③ 이름 비교</span><span class="ls">이름 비교</span></button>
-      <button role="tab" data-tab="saved" id="t-saved" aria-selected="false" aria-controls="p-saved"><span class="ti" aria-hidden="true">藏</span><span class="lf">④ 저장 <em class="cnt" hidden></em></span><span class="ls">저장 <em class="cnt" hidden></em></span></button>
+      <button role="tab" data-tab="rec" id="t-rec" aria-selected="true" aria-controls="p-rec"><span class="ti" aria-hidden="true">名</span><span class="lf">이름 추천</span><span class="ls">이름 추천</span></button>
+      <button role="tab" data-tab="find" id="t-find" aria-selected="false" aria-controls="p-find"><span class="ti" aria-hidden="true">字</span><span class="lf">한자 찾기</span><span class="ls">한자 찾기</span></button>
+      <button role="tab" data-tab="mine" id="t-mine" aria-selected="false" aria-controls="p-mine"><span class="ti" aria-hidden="true">比</span><span class="lf">이름 비교</span><span class="ls">이름 비교</span></button>
+      <button role="tab" data-tab="saved" id="t-saved" aria-selected="false" aria-controls="p-saved"><span class="ti" aria-hidden="true">藏</span><span class="lf">저장 <em class="cnt" hidden></em></span><span class="ls">저장 <em class="cnt" hidden></em></span></button>
     </nav>
     </div>
   </header>
@@ -737,11 +1192,12 @@ td .inm { font-size: 12px; display: inline }
       <span class="intro-ic" aria-hidden="true">名</span>
       <div class="intro-tx">
         <h2 class="intro-t">아이 생일을 넣으면 <b>이름을 추천</b>해 드려요</h2>
-        <ol class="intro-s"><li>생일 입력</li><li>이름 추천</li><li>5개씩 더 보기</li></ol>
+        <p class="intro-s">생년월일만 넣으면 사주에 맞는 이름을 점수순으로 골라 드려요</p>
       </div>
     </div>
     <form class="panel" id="recForm" autocomplete="off" novalidate>
-      <h2>① 이름 추천 · 아기 정보</h2>
+      <h2>이름 추천 · 아기 정보</h2>
+      <p class="sec-no"><i>01</i>기본 정보</p>
       <p class="reqnote"><em class="req-badge">필수</em> 표시 항목만 입력하면 추천받을 수 있어요</p>
       <button type="button" class="fsum" id="fsum" aria-expanded="false" aria-controls="fbody" hidden>
         <span class="fsum-t" id="fsumText"></span><span class="fedit" id="feditLbl">정보 수정</span></button>
@@ -771,7 +1227,7 @@ td .inm { font-size: 12px; display: inline }
         <p class="ex">예) 오전 <b>7:20</b> 출생 → 실제 해 시각 <b>6:50</b> → <b>묘시(卯時)</b><br><span>보정하지 않으면 진시(辰時)로 계산돼 시주가 달라져요.</span></p>
         <p class="tip">✓ 대부분의 작명소·만세력이 쓰는 방식이라 <b>켜 두시는 걸 권해요.</b> 태어난 시각을 모르면 영향이 없어요.</p>
       </div>
-      <p class="optsec"><span>선택 사항</span></p>
+      <p class="sec-no"><i>02</i>선택 사항</p>
       <label class="check"><input type="checkbox" id="useHang" aria-controls="hangBox" aria-expanded="false"> 항렬자(돌림자) 반영</label>
       <div class="hangbox" id="hangBox" hidden>
         <div class="row">
@@ -783,15 +1239,27 @@ td .inm { font-size: 12px; display: inline }
       <label class="check"><input type="checkbox" id="allowOne"> 외자 이름 포함</label>
       <details class="cond" id="recCond">
         <summary>원하는 이름 조건 <span class="opt">선택</span> <span class="cond-sum" id="condSum"></span></summary>
+        <div class="field">
+          <span class="lbl" id="feelLbl">이름 분위기 <span class="fhint">최대 2개 선택</span></span>
+          <div class="chips feel" id="feelChips" role="group" aria-labelledby="feelLbl">
+            <button type="button" class="chip" data-feel="light" aria-pressed="false" data-desc="받침 없이 끝나고, 소리가 모두 부드러운 이름 (ㅇ·ㅎ·ㅅ·ㄴ·ㄹ·ㅁ 위주)" data-ex="서아 · 연우" title="받침 없이 끝나고, 소리가 모두 부드러운 이름 (ㅇ·ㅎ·ㅅ·ㄴ·ㄹ·ㅁ 위주)"><b>맑고 가벼운</b><small>서아 · 연우</small></button>
+            <button type="button" class="chip" data-feel="lively" aria-pressed="false" data-desc="받침 없이 끝나고, ㄱ·ㄷ·ㅈ·ㅊ 같은 또렷한 소리가 들어간 이름" data-ex="지우 · 건우" title="받침 없이 끝나고, ㄱ·ㄷ·ㅈ·ㅊ 같은 또렷한 소리가 들어간 이름"><b>밝고 경쾌한</b><small>지우 · 건우</small></button>
+            <button type="button" class="chip" data-feel="cozy" aria-pressed="false" data-desc="ㄴ·ㅁ·ㅇ 받침으로 끝나고, 소리가 모두 부드러운 이름" data-ex="서윤 · 하린" title="ㄴ·ㅁ·ㅇ 받침으로 끝나고, 소리가 모두 부드러운 이름"><b>부드럽고 포근한</b><small>서윤 · 하린</small></button>
+            <button type="button" class="chip" data-feel="neat" aria-pressed="false" data-desc="ㄴ·ㅁ·ㅇ 받침으로 끝나고, 또렷한 소리가 들어간 이름" data-ex="도윤 · 지안" title="ㄴ·ㅁ·ㅇ 받침으로 끝나고, 또렷한 소리가 들어간 이름"><b>단정하고 또렷한</b><small>도윤 · 지안</small></button>
+            <button type="button" class="chip" data-feel="flow" aria-pressed="false" data-desc="ㄹ 받침으로 끝나 굴러가듯 이어지는 이름" data-ex="하율 · 한결" title="ㄹ 받침으로 끝나 굴러가듯 이어지는 이름"><b>유려하게 흐르는</b><small>하율 · 한결</small></button>
+            <button type="button" class="chip" data-feel="firm" aria-pressed="false" data-desc="ㄱ·ㅂ·ㅅ 같은 받침으로 단단하게 끝나는 이름" data-ex="준혁 · 은석" title="ㄱ·ㅂ·ㅅ 같은 받침으로 단단하게 끝나는 이름"><b>힘 있고 묵직한</b><small>준혁 · 은석</small></button>
+          </div>
+          <small class="muted feel-note" id="feelNote">이름의 끝소리(받침)와 자음으로 나눈 6가지예요 · 모든 이름은 이 중 딱 하나에 속해요 · 고르지 않으면 전체에서 찾아요</small>
+          <small class="feel-cnt" id="feelCnt" aria-live="polite"></small>
+        </div>
         <div class="row">
           <div class="field"><label for="cFirst">첫 글자</label><input type="text" id="cFirst" maxlength="1" placeholder="예: 서" autocomplete="off"></div>
           <div class="field"><label for="cLast">끝 글자</label><input type="text" id="cLast" maxlength="1" placeholder="예: 윤" autocomplete="off"></div>
         </div>
         <div class="row">
-          <div class="field"><label for="cBat">받침</label><select id="cBat"><option value="">상관없음</option><option value="none">받침 없는 이름만</option><option value="last">끝 글자만 받침 없음</option></select></div>
-          <div class="field"><label for="cStyle">이름 스타일</label><select id="cStyle"><option value="pop">인기 이름 위주</option><option value="new">인기 + 새로운 이름</option></select></div>
+          <div class="field"><label for="cStyle">흔한 정도</label><select id="cStyle"><option value="pop">인기 이름 위주</option><option value="mid">너무 흔하지 않게</option><option value="new">새로운 이름 위주</option><option value="any">고려 안 함</option></select></div>
         </div>
-        <small class="muted">‘새로운 이름’은 이름에 잘 쓰는 글자를 조합해 흔하지 않은 이름까지 함께 찾아요</small>
+        <small class="muted">인기 이름 위주: 많이 쓰는 이름 · 너무 흔하지 않게: 가장 흔한 이름은 빼고 새 이름을 섞음 · 새로운 이름 위주: 흔하지 않은 이름만 · 고려 안 함: 모든 이름을 점수로만 비교</small>
       </details>
       <button class="btn" type="submit">이름 추천 받기</button>
       </div>
@@ -799,10 +1267,13 @@ td .inm { font-size: 12px; display: inline }
     </form>
     <section class="sec pre">
       <div class="sechead">
-        <div><h3>사주 맞춤 추천 이름</h3><p id="recMeta"></p></div>
-        <button class="btn ghost" type="button" id="moreBtn" hidden>다음 5개 보기 <span aria-hidden="true">›</span></button>
+        <div><span class="cap">Name Report</span><h3>사주 맞춤 추천 이름</h3><p id="recMeta"></p></div>
+        <div class="fabs">
+          <button class="btn ghost" type="button" id="resetBtn" hidden><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M3 12a9 9 0 1 0 3-6.7L3 8M3 3v5h5"/></svg>초기화</button>
+          <button class="btn" type="button" id="moreBtn" hidden>다음 5개 <span aria-hidden="true">›</span></button>
+        </div>
       </div>
-      <p class="savehint" id="saveHint" hidden><span class="sh-ic" aria-hidden="true">♡</span><span>마음에 드는 이름은 <b>저장</b>해 두세요 · 저장 탭에서 모아 비교할 수 있어요</span><button type="button" id="saveHintClose" aria-label="안내 닫기">✕</button></p>
+      <p class="savehint" id="saveHint" hidden><span class="sh-ic" aria-hidden="true">♡</span><span class="sh-tx">마음에 드는 이름은 <b>저장</b>해 두세요 · 2개 이상 모으면 <b>가족 투표</b>를 만들 수 있어요</span><button type="button" id="saveHintClose" aria-label="안내 닫기">✕</button></p>
       <div class="cards" id="recOut">
       </div>
       <nav class="pager" id="recPager" aria-label="추천 이름 페이지" hidden></nav>
@@ -815,11 +1286,11 @@ td .inm { font-size: 12px; display: inline }
       <span class="intro-ic" aria-hidden="true">比</span>
       <div class="intro-tx">
         <h2 class="intro-t">내 이름을 풀어 보고 <b>개명할 이름과 비교</b>해요</h2>
-        <ol class="intro-s"><li>내 이름 입력</li><li>점수 확인</li><li>개명할 이름 비교</li></ol>
+        <p class="intro-s">지금 이름의 점수를 확인하고, 생각해 둔 이름과 나란히 비교해요</p>
       </div>
     </div>
     <form class="panel" id="mineForm" autocomplete="off" novalidate>
-      <h2>③ 이름 비교</h2>
+      <h2>이름 비교</h2>
       <p class="reqnote"><em class="req-badge">필수</em> 표시 항목을 입력하면 점수를 볼 수 있어요</p>
       <div class="row">
         <div class="field" data-req><label for="m-sur">성씨 <em class="req-badge">필수</em></label><select id="m-sur" class="sursel" required></select></div>
@@ -855,7 +1326,7 @@ td .inm { font-size: 12px; display: inline }
       <div id="m-sajuOut" class="sajuout" hidden></div>
     </form>
     <section class="sec pre">
-      <div class="sechead"><div><h3>이름 풀이 · 비교</h3><p id="mineMeta"></p></div></div>
+      <div class="sechead"><div><span class="cap">Compare</span><h3>이름 풀이 · 비교</h3><p id="mineMeta"></p></div></div>
       <div id="mineOut">
       </div>
     </section>
@@ -867,11 +1338,12 @@ td .inm { font-size: 12px; display: inline }
       <span class="intro-ic" aria-hidden="true">藏</span>
       <div class="intro-tx">
         <h2 class="intro-t">마음에 든 이름을 <b>모아 두는 곳</b>이에요</h2>
-        <ol class="intro-s"><li>카드의 ♡ 저장</li><li>여기서 비교</li><li>가족과 공유</li></ol>
+        <p class="intro-s">저장한 이름 중 2~5개를 골라 가족에게 투표를 받아 보세요</p>
       </div>
     </div>
     <section class="sec">
-      <div class="sechead"><div><h3>저장한 이름</h3><p id="savedMeta"></p></div></div>
+      <div class="sechead"><div><span class="cap">Saved</span><h3>저장한 이름</h3><p id="savedMeta"></p></div></div>
+      <div class="votebar" id="voteBar" hidden></div>
       <div class="cards" id="savedOut"></div>
     </section>
   </div>
@@ -882,11 +1354,11 @@ td .inm { font-size: 12px; display: inline }
       <span class="intro-ic" aria-hidden="true">字</span>
       <div class="intro-tx">
         <h2 class="intro-t">원하는 이름에 맞는 <b>한자를 찾아</b> 드려요</h2>
-        <ol class="intro-s"><li>한글 이름 입력</li><li>한자 추천</li><li>뜻·점수 비교</li></ol>
+        <p class="intro-s">한글 이름을 넣으면 어울리는 한자 조합을 점수순으로 보여 드려요</p>
       </div>
     </div>
     <form class="panel" id="findForm" autocomplete="off" novalidate>
-      <h2>② 원하는 이름 입력</h2>
+      <h2>원하는 이름 입력</h2>
       <p class="reqnote"><em class="req-badge">필수</em> 표시 항목만 입력하면 한자를 찾아 드려요</p>
       <div class="row">
         <div class="field" data-req><label for="f-sur">성씨 <em class="req-badge">필수</em></label><select id="f-sur" class="sursel" required></select></div>
@@ -930,11 +1402,40 @@ td .inm { font-size: 12px; display: inline }
       <div id="f-sajuOut" class="sajuout" hidden></div>
     </form>
     <section class="sec pre">
-      <div class="sechead"><div><h3>추천 한자 조합</h3><p id="findMeta"></p></div></div>
+      <div class="sechead"><div><span class="cap">Hanja</span><h3>추천 한자 조합</h3><p id="findMeta"></p></div></div>
       <div class="cards" id="findOut">
       </div>
       <button class="btn ghost more" type="button" id="findMore" hidden>조합 6개 더 보기</button>
       <div class="candwrap" id="candOut"></div>
+    </section>
+  </div>
+
+  <!-- 가족 투표 (저장 탭에서 보낸 링크로 들어온 경우만) -->
+  <div class="grid one" role="tabpanel" id="p-vote" hidden>
+    <section class="sec">
+      <div class="vote-hero">
+        <span class="vh-k">가족 투표</span>
+        <h3>아기 이름 후보에 투표해 주세요</h3>
+        <p>누구인지 고른 뒤, 마음에 드는 이름에 <b>♡</b>를 눌러 주세요. 여러 개 골라도 되고, 이름을 누르면 풀이를 볼 수 있어요.</p>
+      </div>
+      <div class="vote-send" id="voteWho">
+        <p class="sec-no" id="whoLbl"><i>01</i>누가 투표하나요?</p>
+        <div class="chips" id="whoChips" role="group" aria-labelledby="whoLbl">
+          <button type="button" class="chip" aria-pressed="false">엄마</button><button type="button" class="chip" aria-pressed="false">아빠</button>
+          <button type="button" class="chip" aria-pressed="false">할머니</button><button type="button" class="chip" aria-pressed="false">할아버지</button>
+          <button type="button" class="chip" aria-pressed="false">외할머니</button><button type="button" class="chip" aria-pressed="false">외할아버지</button>
+        </div>
+        <input type="text" id="whoEtc" maxlength="8" placeholder="직접 입력 (예: 이모, 큰아빠)" aria-label="호칭 직접 입력">
+      </div>
+      <div class="vote-list" id="voteListBox">
+        <p class="sec-no"><i>02</i>마음에 드는 이름에 ♡ <span class="fhint" id="voteHint">먼저 위에서 누구인지 골라 주세요</span></p>
+        <div class="vrows" id="voteOut"></div>
+      </div>
+      <div class="vote-send" id="voteSend">
+        <button class="btn" type="button" id="voteGo">투표하기</button>
+        <small class="muted">호칭과 고른 이름 번호만 저장돼요. 생년월일은 링크에도 들어 있지 않아요.</small>
+      </div>
+      <div class="vote-res" id="voteRes" hidden></div>
     </section>
   </div>
 
@@ -983,7 +1484,7 @@ td .inm { font-size: 12px; display: inline }
         <li><b>Unicode Unihan Database</b> — 한자 부수·획수 자료 · Unicode License v3</li>
         <li><b>Korean-Name-Hanja-Charset</b> (rutopio) — 대법원 인명용 한자 목록(대법원 전자가족관계등록시스템 수집, 2024년 6월 확대분 포함) · MIT License</li>
         <li><b>앱 아이콘</b> — Higgsfield(GPT Image)로 생성</li>
-        <li><b>Noto Serif KR · IBM Plex Sans KR · IBM Plex Mono</b> 글꼴 — SIL Open Font License 1.1</li>
+        <li><b>Pretendard · Hahmlet · Noto Serif KR · DM Mono</b> 글꼴 — SIL Open Font License 1.1</li>
       </ul>
     </section></div>
   </details>
@@ -1273,6 +1774,8 @@ const HANJA_UPDATES = [{"date":"2026-11-14","chars":[["玹","현","옥돌"],["�
     if (!strong && !avoid.includes(wealth) && count[wealth] >= 2 && !need.includes(wealth)) avoid.push(wealth);
     return {
       input: opts, hourKnown: known, sajuYear: yy,
+      // 보정 후 시각(분)과 시(時) 경계까지 남은 분: 출생 기록이 몇 분 달라도 시주가 바뀌는지 안내용 (계산에는 영향 없음)
+      tmin: known ? tmin : null, hourEdge: known ? Math.min((tmin + 60) % 120, 120 - (tmin + 60) % 120) : null,
       pillars: pillars.map(p => ({ ...p, stem: STEMS[p.s], branch: BRANCHES[p.b],
         ko: STEMS_KO[p.s] + BRANCHES_KO[p.b], sEl: STEM_EL[p.s], bEl: BRANCH_EL[p.b] })),
       animal: ANIMALS[yB], dayMaster: { stem: STEMS[dS], ko: STEMS_KO[dS], el: me },
@@ -1509,8 +2012,8 @@ const HANJA_UPDATES = [{"date":"2026-11-14","chars":[["玹","현","옥돌"],["�
 
   // ---------- 인기 이름(한글) 후보 ----------
   const NAMES = {
-    M: '도윤 서준 하준 은우 시우 지호 예준 유준 수호 이준 준우 지후 건우 우진 선우 서진 민준 현우 연우 유찬 정우 승우 시윤 지환 승민 준서 지훈 윤우 태윤 민재 은찬 하율 도현 재윤 시후 한결 준혁 지성 민성 현준 성민 동현 재민 태민 승현 민호 재현 현서 우현 준영 은호 태현 성준 진우 시원 규민 영준 준호 상우 민혁 재원 정민 경민 세진 진호 태준 선호 민규 승준 은성 윤호 지혁 서우 주원 도원 시현 주안 연호 성현 원준 준희 태하 이현 도하 율 윤재 태경 정훈 지완 건희 승훈 현호 우재 해준 하진 경준 범준 석진 의준 상현'.split(' '),
-    F: '서아 하윤 지안 이서 서윤 하은 지우 아윤 수아 윤서 지아 서연 하린 채원 지유 다은 예린 소율 시아 유나 서하 예은 연우 수빈 나은 채윤 민서 지원 서은 예서 윤아 하율 가은 아린 소은 지민 유진 세아 은서 다인 수연 지윤 서현 예원 채은 하연 유주 소윤 다현 서영 민지 수민 혜원 지혜 예진 가윤 나윤 서진 아인 유하 연서 수현 다연 하진 지은 채아 은채 이현 시은 예나 주아 세은 효주 연아 수진 해인 소연 가희 은지 정원 서희 다온 윤하 소희 채린 혜인 예지 아현 지수 하영 서율 리아 미소 보은 선아 은솔'.split(' '),
+    M: '도윤 서준 하준 은우 시우 지호 예준 유준 수호 이준 준우 지후 건우 우진 선우 서진 민준 현우 연우 유찬 정우 승우 시윤 지환 승민 준서 지훈 윤우 태윤 민재 은찬 하율 도현 재윤 시후 한결 준혁 지성 민성 현준 성민 동현 재민 태민 승현 민호 재현 현서 우현 준영 은호 태현 성준 진우 시원 규민 영준 준호 상우 민혁 재원 정민 경민 세진 진호 태준 선호 민규 승준 은성 윤호 지혁 서우 주원 도원 시현 주안 연호 성현 원준 준희 태하 이현 도하 율 윤재 태경 정훈 지완 건희 승훈 현호 우재 해준 하진 경준 범준 석진 의준 상현 민우 민찬 민석 민기 민결 민후 민율 지민 지원 지안 지율 지한 지운 지오 지웅 준수 준기 준성 준형 준후 준원 준하 준겸 현수 현성 현민 현빈 현석 현규 현태 현진 현종 현욱 현오 현율 태양 태우 태영 태훈 태호 태성 태율 태오 태건 태이 태연 태환 승원 승재 승호 승빈 승찬 승유 승기 승완 승헌 성훈 성빈 성호 성우 성재 성진 성원 성윤 성규 성찬 동하 동건 동욱 동훈 동준 동윤 동원 동민 동주 동혁 도훈 도경 도율 도진 도영 도건 도겸 도준 도형 도담 도운 도엽 도한 도연 재훈 재성 재준 재희 재영 재율 재하 재우 재범 재혁 재이 재경 재환 건호 건영 건율 건하 건후 건형 건욱 우빈 우영 우석 우형 우주 우찬 유진 유성 유신 유건 유안 유한 유겸 은재 은수 은후 은결 은혁 은규 은석 은빈 시헌 시안 시준 시훈 시혁 시온 시율 서후 서원 서율 서한 서운 서빈 선율 선재 선규 영민 영우 영훈 영재 영호 영빈 영진 예성 예찬 예강 예승 원우 원호 원재 원석 원빈 윤성 윤찬 윤후 윤석 윤겸 윤건 이안 이찬 이수 이한 하람 하온 하민 하겸 하성 하빈 한빈 한준 한서 해성 해람 해온 형준 형우 호준 호연 효준 효민 효재 희찬 희준 강민 강현 강준 경훈 경수 경태 규현 규빈 규원 기현 기훈 기윤 기범 다온 대현 대호 로운 무진 범수 범진 보겸 상민 상훈 상진 상윤 석현 석훈 석준 세준 세훈 세현 세윤 수현 수민 수혁 수환 수완 시완 연준 연재 오준 온유 요한 용준 이도 인호 일우 장우 정호 정원 정빈 정현 제민 제현 제윤 종현 종민 주호 주환 주혁 주완 주한 진혁 진영 진성 진욱 찬영 찬우 찬희 찬율 창민 채민 현승 형민 혜성 호영 휘민 희성'.split(' '),
+    F: '서아 하윤 지안 이서 서윤 하은 지우 아윤 수아 윤서 지아 서연 하린 채원 지유 다은 예린 소율 시아 유나 서하 예은 연우 수빈 나은 채윤 민서 지원 서은 예서 윤아 하율 가은 아린 소은 지민 유진 세아 은서 다인 수연 지윤 서현 예원 채은 하연 유주 소윤 다현 서영 민지 수민 혜원 지혜 예진 가윤 나윤 서진 아인 유하 연서 수현 다연 하진 지은 채아 은채 이현 시은 예나 주아 세은 효주 연아 수진 해인 소연 가희 은지 정원 서희 다온 윤하 소희 채린 혜인 예지 아현 지수 하영 서율 리아 미소 보은 선아 은솔 가람 가온 가린 가현 나연 나현 나린 나경 나래 나희 다윤 다희 다예 다빈 도연 도희 로아 리원 리안 린아 미나 미래 민아 민경 민채 민하 민희 보민 보람 보경 보현 서경 서린 서이 선영 설아 세린 세빈 세희 세연 소미 소담 소민 소이 소정 소현 소예 수지 수희 수정 수인 수안 수림 승아 승연 승희 시연 시현 시하 아영 아정 연지 연희 연재 영서 예빈 예림 예담 예슬 온유 유빈 유리 유림 유정 유경 유이 윤지 윤슬 윤주 윤채 윤희 은유 은하 은아 은우 은재 이나 이안 이수 인서 인아 재이 재희 정윤 정아 정은 정민 주하 주희 주원 주은 지나 지현 지효 지인 지율 지호 진아 채연 채이 채희 채령 초원 초희 태희 태린 하나 하람 하경 하온 하이 한나 해나 해린 혜린 혜윤 혜진 혜나 혜수 효린 효은 효원 희원 희서 희주 규리 리하 서담 서우 예온 지온 채온 해온 가영 가령 가빈 다정 다경 다혜 도은 도아 려원 보윤 서정 서원 서휘 선희 성아 성은 세인 소린 소원 시원 아진 연수 연진 영은 예주 예하 원희 유선 윤정 은수 은진 은혜 의진 인영 재인 재원 정연 정현 정인 주연 주현 지영 지연 진서 진희 채현 채율 태은 해원 현아 현지 현정 효정 효진 희진 나영 민영 시온'.split(' '),
   };
   NAMES.U = [...new Set([...NAMES.M, ...NAMES.F])];
   // ---------- 새로운 이름 후보: 이름에 잘 쓰는 앞·뒤 글자 조합 (인기 이름에 없는 것만) ----------
@@ -1524,7 +2027,7 @@ const HANJA_UPDATES = [{"date":"2026-11-14","chars":[["玹","현","옥돌"],["�
   const NG = new Set(('시민 서민 이민 예민 주민 유민 우민 도민 선민 해석 지석 범람 유람 주담 건담 민담 진담 한담 재담 강담 성담 수담 경겸 건겸 강겸 예결 선결 준결 재결 영결 해결 수결 '
     + '서재 현재 수재 주재 건재 강재 우환 예후 정후 선후 태후 유후 우호 경호 강진 해진 승진 지진 선진 이성 건성 서성 우성 도우 유훈 유원 유우 주석 주성 주준 수준 수율 '
     + '한우 선원 진원 민원 경우 하아 지서 수은 수하 채우 소아 소진 소경 소주 유아 유린 시린 가서 가담 연하 세율 해경 효율 민담 지경 다진 하원 다원 연원 세우 리우 '
-    + '해서 수경 유희 연주 해주 가나 나서 수세 재해 정사 수유 유수 주유 시도 우유 세수 하수 수도 지도 도수 지하 하지 유서 재수 가지 주지 이유 소유 지주 원수 해우 도해 소서 수주 가주 로우 하우 다우 수서 나우 가우 수우 주우 효우 소우 라우 온우 로우 강우 수원 도성').split(' '));
+    + '해서 수경 유희 연주 해주 가나 나서 수세 재해 정사 수유 유수 주유 시도 우유 세수 하수 수도 지도 도수 지하 하지 유서 재수 가지 주지 이유 소유 지주 원수 해우 도해 소서 수주 가주 로우 하우 다우 수서 나우 가우 수우 주우 효우 소우 라우 온우 로우 강우 수원 도성 영정 영안 영구 영악 영양 소주 사주 주사 장사 기사 사기 성기 지주 고소 무기 대변 소변 수포 정지 정사 연기 병사').split(' '));
   const GEN = { M: [], F: [] };
   ['M', 'F'].forEach(g => {
     const pop = new Set(NAMES[g]), seen = new Set();
@@ -1533,13 +2036,63 @@ const HANJA_UPDATES = [{"date":"2026-11-14","chars":[["玹","현","옥돌"],["�
   });
   GEN.U = [...new Set([...GEN.M, ...GEN.F])].filter(n => !NAMES.U.includes(n));
   const hasBat = c => (c.charCodeAt(0) - 0xAC00) % 28 !== 0;
-  // 이름 추천 조건 (첫 글자·끝 글자·받침) 읽기
+  // ---------- 이름 분위기: 한글 소리(첫소리·모음·받침)로만 판정 (뜻 추측 없이 누구나 확인 가능한 기준) ----------
+  // 서로 겹치지 않는 6가지 분위기: 끝소리(받침 없음 / ㄴ·ㅁ·ㅇ / ㄹ / 그 밖의 받침) × 자음(부드러움 / 또렷함)
+  // 모든 이름은 정확히 하나에 속함 (빠짐·겹침 없음) · 2개를 고르면 '둘 중 하나'에 속하는 이름을 찾음
+  const FEEL_KO = { light: '맑고 가벼운', lively: '밝고 경쾌한', cozy: '부드럽고 포근한', neat: '단정하고 또렷한', flow: '유려하게 흐르는', firm: '힘 있고 묵직한' };
+  const FEEL_MAX = 2;
+  const FIRM_CHO = new Set([0, 1, 3, 4, 7, 8, 10, 12, 13, 14, 15, 16, 17]);          // ㄱㄲㄷㄸㅂㅃㅆㅈㅉㅊㅋㅌㅍ (또렷한 소리)
+  function feelOf(n) {
+    const ds = [...n].map(N.decompose).filter(Boolean); if (!ds.length) return '';
+    const j = ds[ds.length - 1].jong, firm = ds.some(d => FIRM_CHO.has(d.cho));
+    if (j === 0) return firm ? 'lively' : 'light';
+    if (j === 4 || j === 16 || j === 21) return firm ? 'neat' : 'cozy';   // ㄴ ㅁ ㅇ
+    if (j >= 8 && j <= 15) return 'flow';                                // ㄹ (겹받침 포함)
+    return 'firm';                                                       // ㄱ ㄷ ㅂ ㅅ ㅈ … 그 밖의 받침
+  }
+  // 가장 흔한 이름(남녀 각 상위 15개): '너무 흔하지 않게'에서 뺌
+  const TOP_COMMON = new Set([...NAMES.M.slice(0, 15), ...NAMES.F.slice(0, 15)]);
+  // 이름 추천 조건 (첫 글자·끝 글자·받침·분위기·흔한 정도) 읽기
   function recCond() {
     const one = v => (String(v).match(/[가-힣]/) || [''])[0];
-    return { first: one($('#cFirst').value), last: one($('#cLast').value), bat: $('#cBat').value, style: $('#cStyle').value };
+    const feels = [...document.querySelectorAll('#feelChips .chip[aria-pressed="true"]')].map(b => b.dataset.feel);
+    return { first: one($('#cFirst').value), last: one($('#cLast').value), bat: '', style: $('#cStyle').value, feels };
   }
   const condOk = (c, n) => (!c.first || n[0] === c.first) && (!c.last || n[n.length - 1] === c.last)
-    && (c.bat !== 'none' || ![...n].some(hasBat)) && (c.bat !== 'last' || !hasBat(n[n.length - 1]));
+    && (c.bat !== 'none' || ![...n].some(hasBat)) && (c.bat !== 'last' || !hasBat(n[n.length - 1]))
+    && (!c.feels.length || c.feels.includes(feelOf(n)));
+  // 조건 상자 제목 옆: 고른 조건 요약
+  function updCondSum() {
+    const c = recCond();
+    const parts = [c.first && `첫 ‘${c.first}’`, c.last && `끝 ‘${c.last}’`, ...c.feels.map(f => FEEL_KO[f]), c.style === 'mid' && '덜 흔하게', c.style === 'new' && '새 이름 위주'].filter(Boolean);
+    $('#condSum').textContent = parts.length ? (parts.length > 3 ? parts.slice(0, 3).join(' · ') + ` 외 ${parts.length - 3}` : parts.join(' · ')) : '';
+    // 고른 조건에 맞는 이름 후보 수 (성별 기준 · 인기 + 새 이름) — 너무 적으면 미리 알려 줌
+    const picked = [...document.querySelectorAll('#feelChips .chip[aria-pressed="true"]')];
+    $('#feelNote').textContent = picked.length ? picked.map(b => `${b.querySelector('b').textContent}: ${b.dataset.desc}`).join(' / ')
+      : '이름의 끝소리(받침)와 자음으로 나눈 6가지예요 · 모든 이름은 이 중 딱 하나에 속해요 · 고르지 않으면 전체에서 찾아요';
+    const cnt = $('#feelCnt'), g = $('#gender').value || 'U', len = n => n.length === 2 || $('#allowOne').checked;
+    // 분위기마다 지금 조건(성별·첫/끝 글자)에서 남는 이름 수 → 0개인 분위기는 흐리게 (예: 여자 이름엔 '힘 있고 묵직한'이 없음)
+    const base = [...new Set(NAMES[g].concat(GEN[g] || []))].filter(x => len(x) && condOk({ ...c, feels: [] }, x));
+    document.querySelectorAll('#feelChips .chip').forEach(b => { const k = base.filter(x => feelOf(x) === b.dataset.feel).length;
+      b.classList.toggle('empty', !k); b.querySelector('small').textContent = k ? b.dataset.ex : '해당 이름 없음'; });
+    if (!c.feels.length && !c.first && !c.last) { cnt.textContent = ''; cnt.classList.remove('zero'); return; }
+    const n = [...new Set(NAMES[g].concat(GEN[g] || []))].filter(x => len(x) && condOk(c, x)).length;
+    cnt.textContent = n ? '' : '조건에 맞는 이름이 없어요 · 분위기나 글자 조건을 바꿔 보세요';   // 개수는 보여 주지 않음 (한자 조합 수로 오해할 수 있어서) · 없을 때만 안내
+    cnt.classList.toggle('zero', !n);
+  }
+  document.querySelectorAll('#feelChips .chip').forEach(b => b.addEventListener('click', () => {
+    const on = b.getAttribute('aria-pressed') !== 'true';
+    // 최대 2개: 이미 2개를 골랐으면 새로 고를 수 없음 (하나를 먼저 해제)
+    if (on && document.querySelectorAll('#feelChips .chip[aria-pressed="true"]').length >= FEEL_MAX) {
+      b.classList.remove('deny'); void b.offsetWidth; b.classList.add('deny');
+      toast(`분위기는 최대 ${FEEL_MAX}개까지 고를 수 있어요 · 하나를 해제한 뒤 골라 주세요`); return;
+    }
+    b.setAttribute('aria-pressed', on);
+    updCondSum();
+  }));
+  $('#recCond').addEventListener('input', updCondSum); $('#recCond').addEventListener('change', updCondSum);
+  ['#gender', '#allowOne'].forEach(id => $(id).addEventListener('change', updCondSum));
+  updCondSum();
 
   // ---------- 성씨 선택 ----------
   const surSel = $('#sur');
@@ -1756,7 +2309,8 @@ const HANJA_UPDATES = [{"date":"2026-11-14","chars":[["玹","현","옥돌"],["�
     box.innerHTML = `
       <div class="pillars">${sj.hourKnown ? '' : '<div class="pillar ghost"><span class="plabel">시주</span><span class="gz">?</span><span class="gz">?</span><span class="pko">시간 모름</span></div>'}${cols}</div>
       <p class="sajumeta">양력 ${i.y}.${i.m}.${i.d} · ${sj.animal}띠 · ${sj.jieqi} 절기 구간${sj.tzNote ? ' · ' + sj.tzNote : ''}</p>
-      ${sj.jieqiDay ? '<p class="err" style="margin:0;font-size:12px">이날은 절기가 바뀌는 날이라 태어난 시각을 모르면 월주가 달라질 수 있어요. 시각을 입력하면 정확해집니다.</p>' : ''}
+      ${sj.jieqiDay ? '<p class="edge">이날은 절기가 바뀌는 날이라 태어난 시각을 모르면 월주가 달라질 수 있어요. 시각을 입력하면 정확해집니다.</p>' : ''}
+      ${sj.hourKnown && sj.hourEdge !== null && sj.hourEdge <= 5 ? `<p class="edge">보정한 출생 시각이 시(時)가 바뀌는 경계에서 ${sj.hourEdge}분 거리예요. 기록이 몇 분만 달라도 시주가 바뀔 수 있으니 출생증명서의 시각을 한 번 더 확인해 주세요.</p>` : ''}
       <div class="bars">${bars}</div>
       <dl class="yong">
         <div><dt>일간</dt><dd>${sj.dayMaster.stem}(${sj.dayMaster.ko}) ${elTag(sj.dayMaster.el)} · ${sj.strong ? '신강' : '신약'}</dd></div>
@@ -1771,15 +2325,60 @@ const HANJA_UPDATES = [{"date":"2026-11-14","chars":[["玹","현","옥돌"],["�
     const c = word.charCodeAt(word.length - 1) - 0xAC00;
     return word + (c >= 0 && c <= 11171 && c % 28 ? withB : withoutB);
   }
-  function nameMeaning(given) {
-    const k = given.map(g => g.mean);
-    if (k.length === 1) return `${josa(k[0], '을', '를')} 지닌 사람이 되라는 뜻을 담았습니다.`;
-    const t = [
-      () => `${josa(k[0], '과', '와')} ${josa(k[1], '을', '를')} 함께 지닌 사람이 되라는 뜻을 담았습니다.`,
-      () => `${josa(k[0], '을', '를')} 바탕으로 ${josa(k[1], '을', '를')} 이루어 가는 사람이 되라는 뜻입니다.`,
-      () => `${josa(k[0], '과', '와')} ${josa(k[1], '이', '가')} 조화를 이루는 삶을 바라는 이름입니다.`,
-    ];
-    return t[(given[0].ch.charCodeAt(0) + given[1].ch.charCodeAt(0)) % t.length]();
+  // ---------- 이름 풀이: 정해진 덕담 문장 대신, 엔진이 계산한 값(용신·발음오행·81수리·음양)을 근거로 씀 ----------
+  const elK = e => `${e}(${N.EL_KO[e]})`;
+  const hzJ = (g, withB, withoutB) => `${g.ch}(${g.hun} ${g.eum})` + (hasBat(g.eum) ? withB : withoutB);   // 瑞(상서 서)가
+  // 81수리 4격이 맡는 시기·영역 (성명학에서 널리 쓰는 구분)
+  const GY_LIFE = { 원격: ['초년', '~20세', '타고난 기질·성장기'], 형격: ['청년', '20~40세', '사회 활동·일'], 이격: ['중장년', '40~60세', '대인 관계·가정'], 정격: ['전체운', '평생', '이름 전체의 흐름'] };
+  function reading(given, ev, sj) {
+    const strong = [];   // [이어지는 말, 꾸미는 말] — 한 줄 요약(제목)에 씀
+    // 1) 사주 보완: 어떤 글자가 어떤 기운을 채우는지
+    let saju;
+    if (sj && sj.need && sj.need.length) {
+      const fill = given.map((g, k) => ({ g, e: ev.gEls[k], r: sj.need.indexOf(ev.gEls[k]) }));
+      const hit = fill.filter(x => x.r >= 0);
+      const tag = r => r === 0 ? '가장 필요한(용신)' : r === 1 ? '그다음으로 필요한(희신)' : '사주에 비어 있는';
+      if (hit.length) {
+        const grp = []; hit.forEach(x => { const o = grp.find(y => y.e === x.e); o ? o.gs.push(x.g) : grp.push({ e: x.e, r: x.r, gs: [x.g] }); });
+        const who = gs => gs.length === 1 ? hzJ(gs[0], '이', '가') : `${gs.slice(0, -1).map(g => `${g.ch}(${g.hun} ${g.eum})` + (hasBat(g.eum) ? '과' : '와')).join(' ')} ${hzJ(gs[gs.length - 1], '이', '가')} 함께`;
+        saju = `사주에 ${grp.map(x => `${tag(x.r)} ${elK(x.e)} 기운을 ${who(x.gs)}`).join(', ')} 채워 줍니다.`;
+        const best = hit.slice().sort((a, b) => a.r - b.r)[0];
+        strong.push([`사주에 필요한 ${elK(best.e)} 기운을 채우고`, `사주에 필요한 ${elK(best.e)} 기운을 채우는`]);
+      } else {
+        saju = `이름 한자의 기운(${[...new Set(ev.gEls)].map(elK).join('·')})이 사주에 필요한 ${sj.need.slice(0, 2).map(elK).join('·')} 기운과 겹치지 않아, 사주 보완 효과는 크지 않습니다.`;
+      }
+    } else {
+      saju = '생년월일을 넣지 않아 사주 보완은 평가하지 않았고, 획수와 소리 위주로 보았습니다.';
+    }
+    // 2) 발음오행: 성 → 이름 소리의 흐름
+    const chain = ev.syl.map((x, k) => `${x}(${ev.sEls[k]})`).join(' → ');
+    const clash = ev.soundRel.map((r, k) => r === '상극' ? `${ev.syl[k]}→${ev.syl[k + 1]}` : '').filter(Boolean);
+    let sound;
+    if (ev.soundRel.every(r => r === '상생')) { sound = `${chain}: 소리의 기운이 차례로 서로 살려 주는 상생 흐름이라, 부를 때 막힘이 없습니다.`; strong.push(['소리가 상생으로 이어지고', '소리가 상생으로 이어지는']); }
+    else if (!clash.length) sound = `${chain}: 상생과 같은 기운(비화)으로 이어져 무난하게 흐릅니다.`;
+    else sound = `${chain}: ${ev.soundRel.map((r, k) => `${ev.syl[k]}→${ev.syl[k + 1]}${josa(ev.syl[k + 1], '은', '는').slice(1)} ${r === '상생' ? '서로 살려 주는 상생' : r === '비화' ? '같은 기운(비화)' : '부딪히는 상극'}`).join(', ')}으로 이어집니다.`;
+    // 81수리 강점
+    const bad = ev.gyeok.filter(g => g.grade === 0), half = ev.gyeok.filter(g => g.grade === 1);
+    if (!bad.length && !half.length) strong.push(['81수리 4격이 모두 길하고', '81수리 4격이 모두 길한']);
+    else if (!bad.length) strong.push(['흉수 없이 4격이 고르고', '흉수 없이 4격이 고른']);
+    if (ev.mixed) strong.push(['음양이 고루 섞이고', '음양이 고루 섞인']);
+    // 3) 아쉬운 점: 가장 크게 깎인 이유 하나를 숨기지 않고 알려 줌
+    const avoidHit = sj && sj.avoid ? given.filter((g, k) => sj.avoid.includes(ev.gEls[k])) : [];
+    const ownWarn = ev.warn.filter(w => !w.startsWith('흉수'));
+    let flaw = '', none = false;
+    if (ownWarn.length) flaw = `${ownWarn[0]} — 이 점 때문에 감점이 있었습니다.`;
+    else if (bad.length) { const g = bad[0], L = GY_LIFE[g.key]; flaw = `${g.key} ${g.num}수(${g.name})는 흉수로 보는 수라, ${L[0]}(${L[1]}) ${L[2]} 쪽 점수가 깎였습니다.`; }
+    else if (avoidHit.length) flaw = `${avoidHit.map(g => `${g.ch}의 ${elK(g.el)}`).join(', ')} 기운은 사주에 이미 많은 기운이라 보완 점수가 낮습니다.`;
+    else if (!ev.mixed) flaw = `획수가 모두 ${ev.yy[0] === '양' ? '홀수(양)' : '짝수(음)'}라 음양이 한쪽으로 치우친 점이 아쉽습니다 (음양 0/10점).`;
+    else if (clash.length) flaw = `성과 이름 소리 사이에 상극(${clash.join(', ')})이 있어 발음오행에서 ${Math.round((15 - ev.parts.sound) * 10) / 10}점이 빠졌습니다.`;
+    else if (ev.samRel.includes('상극')) flaw = `천격·인격·지격(삼원오행) 흐름에 상극이 있어 삼원오행이 ${ev.parts.sam}/10점입니다.`;
+    else if (half.length) { const g = half[0], L = GY_LIFE[g.key]; flaw = `${g.key} ${g.num}수(${g.name})는 반길(半吉)이라 ${L[0]} 운에서 만점보다 5점 낮습니다.`; }
+    else if (sj && sj.need && ev.jaNote.every(n => n !== '용신 보완')) flaw = `사주에 가장 필요한 ${elK(sj.need[0])} 기운을 직접 채우는 글자는 없어 자원오행이 ${ev.parts.ja}/25점입니다.`;
+    else { flaw = '눈에 띄는 감점 요소가 없는 고른 구성입니다.'; none = true; }
+    // 한 줄 요약: 강점 최대 2개를 자연스럽게 이어 씀
+    const top = strong.slice(0, 2);
+    const head = !top.length ? '점수 구성이 무난한 이름' : top.length === 1 ? `${top[0][1]} 이름` : `${top[0][0]}, ${top[1][1]} 이름`;
+    return { head, saju, sound, flaw, none };
   }
 
   // 방문 통계 기록 (analytics.js가 없거나 꺼져 있으면 아무 일도 안 함)
@@ -1798,8 +2397,8 @@ const HANJA_UPDATES = [{"date":"2026-11-14","chars":[["玹","현","옥돌"],["�
     const v = m && (m.content.match(/[?&]v=([\w-]+)/) || [])[1];
     return v ? '&v=' + v : '';
   }
-  function cardText(ko, hz, given, ev) {
-    return `[가치작명소 추천 이름]\n${ko} (${hz}) · ${Math.round(ev.total)}점 ${ev.grade}\n“${nameMeaning(given)}”\n` +
+  function cardText(ko, hz, given, ev, head) {
+    return `[가치작명소 추천 이름]\n${ko} (${hz}) · ${Math.round(ev.total)}점 ${ev.grade}\n${head}\n` +
       given.map(g => `${g.ch} ${g.hun} ${g.eum} — ${g.mean}`).join('\n');
   }
   let toastTimer;
@@ -1849,56 +2448,75 @@ const HANJA_UPDATES = [{"date":"2026-11-14","chars":[["玹","현","옥돌"],["�
       : `<p class="inm ok"><span aria-hidden="true">✓</span> 모두 대법원 인명용 한자예요 <small>(2024년 6월 기준)</small></p>`)
       + (given.some(g => g.ext) ? `<p class="inm ext"><span aria-hidden="true">ⓘ</span> ${given.filter(g => g.ext).map(g => g.ch).join(', ')}: 인명용 전체에서 찾은 한자라 뜻은 사전 기준이에요</p>` : '');
   }
-  function nameCard(item, rank, sur, from) {
+  // 사주 기운 → 이름이 채우는 기운 비교 카드
+  function fillCard(given, ev, sj) {
+    if (!sj || !sj.need) return '<p class="muted fc-none">생년월일을 넣으면 사주에 부족한 기운과 이름이 채우는 기운을 나란히 보여 드려요.</p>';
+    const cnt = sj.count || null;
+    const st = e => sj.need[0] === e ? '용신' : sj.need.includes(e) ? '필요' : sj.avoid.includes(e) ? '많음' : '';
+    const left = N.ELS.map(e => `<li class="fc-e${st(e) ? ' s-' + ({ 용신: 'y', 필요: 'n', 많음: 'a' })[st(e)] : ''}"><span class="el el-${EL_CLASS[e]}">${e}<small>${N.EL_KO[e]}</small></span>${cnt ? `<b class="num">${sj.raw[e]}</b>` : ''}${st(e) ? `<em>${st(e)}</em>` : ''}</li>`).join('');
+    const right = given.map((g, k) => { const n = ev.jaNote[k]; const cls = n === '용신 보완' ? 'y' : n === '부족 오행 보완' ? 'n' : n.startsWith('과다') ? 'a' : '';
+      return `<li class="fc-g${cls ? ' s-' + cls : ''}"><b class="fc-hz">${g.ch}</b><span class="el el-${EL_CLASS[ev.gEls[k]]}">${ev.gEls[k]}<small>${N.EL_KO[ev.gEls[k]]}</small></span><em>${esc(n)}</em></li>`; }).join('');
+    return `<div class="fc"><div class="fc-col"><span class="fc-t">${cnt ? '사주 여덟 글자의 기운' : '사주에 필요한 기운'}</span><ul class="fc-els">${left}</ul></div>
+      <span class="fc-arr" aria-hidden="true"></span>
+      <div class="fc-col"><span class="fc-t">이름 한자가 더하는 기운</span><ul class="fc-gs">${right}</ul></div></div>`;
+  }
+  function nameCard(item, rank, sur, from, sj) {
     const { given, ev } = item;
     const fullKo = sur.ko + given.map(g => g.ko).join('');
     const fullH = sur.hanja + given.map(g => g.ch).join('');
     const key = fullH;
-    // 저장 버튼을 눌렀을 때 쓸 정보 (점수는 이 순간의 사주 기준)
+    const rd = reading(given, ev, sj);
+    const share = cardText(fullKo, fullH, given, ev, rd.head);
+    // 저장 버튼을 눌렀을 때 쓸 정보 (점수는 이 순간의 사주 기준 · 가족 투표 때 같은 점수를 다시 계산하도록 필요한/많은 기운도 보관)
     cardInfo.set(key, { key, ko: fullKo, hz: fullH, sur: { ko: sur.ko, hanja: sur.hanja }, from: from || 'rec',
       given: given.map(g => ({ ch: g.ch, ko: g.ko, eum: g.eum, hun: g.hun, mean: g.mean, strokes: g.strokes, el: g.el, inm: g.inm })),
-      score: Math.round(ev.total), grade: ev.grade, meaning: nameMeaning(given), share: cardText(fullKo, fullH, given, ev) });
+      score: Math.round(ev.total), grade: ev.grade, head: rd.head, why: [rd.saju, rd.sound, rd.flaw],
+      need: sj && sj.need ? sj.need.join('') : '', avoid: sj && sj.avoid ? sj.avoid.join('') : '', share });
     const isSaved = saved.some(x => x.key === key);
-    const chars = [
-      ...sur.hanja.split('').map((c, k) => ({ ch: c, ko: sur.ko[k] || sur.ko, sub: '성씨', strokes: sur.strokes[k], el: sur.els[k], surname: true })),
-      ...given.map(g => ({ ch: g.ch, ko: g.ko, sub: `${g.hun} ${g.eum}`, strokes: g.strokes, el: g.el })),
-    ];
     const P = ev.parts;
-    const parts = [['수리', P.suri, 40], ['자원오행', P.ja, 25], ['발음오행', P.sound, 15], ['음양', P.yinyang, 10], ['삼원오행', P.sam, 10]];
-    const gy = ev.gyeok.map(g => `<tr><th>${g.key}</th><td>${g.age}</td><td class="num">${g.num}</td>
-        <td><span class="pill g${g.grade}">${N.GRADE_KO[g.grade]}</span></td><td>${g.name} — ${g.desc}</td></tr>`).join('');
+    const parts = [['81수리', P.suri, 40], ['자원오행', P.ja, 25], ['발음오행', P.sound, 15], ['음양', P.yinyang, 10], ['삼원오행', P.sam, 10]];
+    const gy = ev.gyeok.map(g => { const L = GY_LIFE[g.key]; return `<li class="gy g${g.grade}">
+        <div class="gy-h"><b>${g.key}</b><span>${L[0]} · ${L[1]}</span><span class="pill g${g.grade}">${g.num}수 ${N.GRADE_KO[g.grade]}</span></div>
+        <p><span class="gy-a">${L[2]}</span> ${g.name} — ${g.desc}</p></li>`; }).join('');
     const alts = (item.alts || []).map(a => `<li><b>${a.given.map(g => g.ch).join('')}</b> ${esc(a.given.map(g => g.hun + ' ' + g.eum).join(', '))} <span class="num">${a.ev.total}점</span></li>`).join('');
     return `<article class="card">
-      <header class="chead">
-        ${rank ? `<span class="rank">${rank}</span>` : ''}
-        <div class="score" style="--p:${ev.total}"><b>${Math.round(ev.total)}</b><small>${ev.grade}</small></div>
+      <header class="c-top">
+        ${rank ? `<span class="c-rank" aria-label="${rank}위">${String(rank).padStart(2, '0')}</span>` : ''}<span class="cap">${rank ? 'Rank' : from === 'mine' ? '이름 풀이' : from === 'vote' ? '후보' : 'Name'}</span>
+        <span class="c-grade">${ev.grade}</span>
+        <span class="c-score"><b class="num">${Math.round(ev.total)}</b><small>/100점</small></span>
       </header>
-      <div class="chars">${chars.map(c => `<div class="ch${c.surname ? ' sur' : ''}">
-          <span class="hz">${c.ch}</span><span class="hk">${c.ko}</span>
-          <span class="hs">${esc(c.sub)}</span>
-          <span class="hm">${c.strokes}획 ${elTag(c.el)}</span></div>`).join('')}</div>
-      <div class="meaning">
-        <p class="msent">“${esc(nameMeaning(given))}”</p>
-        <ul class="mlist">${given.map(g => `<li><b>${g.ch}</b><span class="mh">${esc(g.hun)} ${g.eum}</span><span class="mk">${esc(g.mean)}</span></li>`).join('')}</ul>
+      <div class="c-name">
+        <div class="c-hz" aria-hidden="true">${[...sur.hanja].map(c => `<span class="sur">${c}</span>`).join('')}${given.map(g => `<span>${g.ch}</span>`).join('')}</div>
+        <div class="c-ko"><b>${esc(fullKo)}</b> <span>${given.map(g => `${esc(g.hun)} ${g.eum}`).join(' · ')}</span></div>
       </div>
-      <ul class="parts">${parts.map(([k, v, m]) => `<li><span>${k}</span><span class="pt"><i style="width:${v / m * 100}%"></i></span><span class="num">${v}/${m}</span></li>`).join('')}</ul>
+      <p class="c-head">${esc(rd.head)}</p>
+      <ul class="c-why">
+        <li><span class="wk"><i>01</i>사주 보완</span><span>${esc(rd.saju)}</span></li>
+        <li><span class="wk"><i>02</i>소리 흐름</span><span>${esc(rd.sound)}</span></li>
+        <li class="${rd.none ? 'ok' : 'flaw'}"><span class="wk"><i>03</i>${rd.none ? '감점 요소' : '아쉬운 점'}</span><span>${esc(rd.flaw)}</span></li>
+      </ul>
       ${inmLine(given)}
-      ${ev.warn.length ? `<p class="warn">${ev.warn.map(esc).join(' · ')}</p>` : ''}
-      <details class="dt"><summary><span class="dt-ic" aria-hidden="true">鑑</span><span class="dt-tx"><b class="dt-open">상세 감명 보기</b><b class="dt-close">상세 감명 접기</b><small>81수리 · 음양 · 오행 풀이</small></span><span class="dt-chev" aria-hidden="true"></span></summary>
-        <h4>원형이정 4격 (81수리)</h4>
-        <div class="tw"><table><tbody>${gy}</tbody></table></div>
+      <details class="dt"><summary><span class="dt-tx"><b class="dt-open">상세 감명 보기</b><b class="dt-close">상세 감명 접기</b><small>오행 보완 · 81수리 시기별 풀이 · 점수 구성</small></span><span class="dt-chev" aria-hidden="true"></span></summary>
+        <h4>사주에 필요한 기운 → 이름이 채우는 기운</h4>
+        ${fillCard(given, ev, sj)}
+        <h4>글자 풀이</h4>
+        <ul class="mlist">${given.map(g => `<li><b>${g.ch}</b><span class="mh">${esc(g.hun)} ${g.eum}</span><span class="mk">${esc(g.mean)} <span class="muted num">· ${g.strokes}획(원획)</span></span></li>`).join('')}</ul>
+        <h4>81수리 4격 · 시기별 풀이</h4>
+        <ul class="gys">${gy}</ul>
+        <h4>점수 구성 <span class="muted">${Math.round(ev.total * 10) / 10}/100</span></h4>
+        <ul class="parts">${parts.map(([k, v, m]) => `<li><span>${k}</span><span class="pt"><i style="width:${v / m * 100}%"></i></span><span class="num">${v}/${m}</span></li>`).join('')}</ul>
         <h4>음양 · 발음오행 · 삼원오행</h4>
         <ul class="facts">
           <li><b>획수 음양</b> ${ev.yy.join(' · ')} → ${ev.mixed ? '음양 조화' : '한쪽으로 치우침'}</li>
-          <li><b>발음오행</b> ${ev.syl.map((s, k) => `${s}(${N.CHO_NAME[N.decompose(s).cho]}) ${elTag(ev.sEls[k])}`).join(' → ')} <span class="muted">${ev.soundRel.join(', ')}</span></li>
+          <li><b>발음오행</b> ${ev.syl.map((x, k) => `${x}(${N.CHO_NAME[N.decompose(x).cho]}) ${elTag(ev.sEls[k])}`).join(' → ')} <span class="muted">${ev.soundRel.join(', ')}</span></li>
           <li><b>삼원오행</b> 천격 ${elTag(ev.sam[0])} → 인격 ${elTag(ev.sam[1])} → 지격 ${elTag(ev.sam[2])} <span class="muted">${ev.samRel.join(', ')}</span></li>
-          <li><b>자원오행</b> ${given.map((g, k) => `${g.ch} ${elTag(g.el)} <span class="muted">${ev.jaNote[k]}</span>`).join(' / ')}</li>
         </ul>
         ${alts ? `<h4>같은 소리의 다른 한자 조합</h4><ul class="alts">${alts}</ul>` : ''}
+        <p class="basis">대법원 인명용 한자 · 강희자전 원획 · 절기 만세력 기준으로 계산했어요</p>
       </details>
       <div class="cact">
         <button class="act save${isSaved ? ' on' : ''}" type="button" data-save="${esc(key)}" aria-pressed="${isSaved}">${isSaved ? '♥ 저장됨' : '♡ 저장'}</button>
-        <button class="act" type="button" data-share="${esc(cardText(fullKo, fullH, given, ev))}">공유하기</button>
+        <button class="act ghost" type="button" data-share="${esc(share)}">공유</button>
         <button class="act ghost" type="button" data-copy="${esc(fullKo + ' ' + fullH)}">이름 복사</button>
       </div>
     </article>`;
@@ -1925,32 +2543,220 @@ const HANJA_UPDATES = [{"date":"2026-11-14","chars":[["玹","현","옥돌"],["�
   function renderSaved() {
     document.querySelectorAll('.cnt').forEach(c => { c.textContent = saved.length || ''; c.hidden = !saved.length; });
     const out = $('#savedOut'); if (!out) return;
+    setTimeout(renderVoteBar, 0);
     $('#savedMeta').textContent = saved.length ? `${saved.length}개 · 최근 저장한 순서 · 점수는 저장할 때의 사주 기준` : '';
     if (!saved.length) {
-      out.innerHTML = '<div class="empty"><span class="empty-seal" aria-hidden="true">藏</span><p>추천 카드의 <b>♡ 저장</b>을 누르면 여기에 모여요 <small>(이 휴대폰·브라우저에 보관돼요)</small></p></div>';
+      out.innerHTML = '<div class="empty"><span class="empty-seal" aria-hidden="true">藏</span><p>추천 카드의 <b>♡ 저장</b>을 누르면 여기에 모여요. 2개 이상 모이면 <b>가족 투표</b> 링크를 보낼 수 있어요 <small>(이 휴대폰·브라우저에 보관돼요)</small></p></div>';
       return;
     }
     const fmt = t => new Intl.DateTimeFormat('ko-KR', { month: 'numeric', day: 'numeric' }).format(new Date(t));
-    out.innerHTML = saved.slice().sort((a, b) => b.savedAt - a.savedAt).map(r => `<article class="card scard">
-      <header class="chead"><span class="sdate">${fmt(r.savedAt)} 저장 · ${({ find: '한자 찾기', mine: '이름 비교' })[r.from] || '이름 추천'}</span>
-        <div class="score" style="--p:${r.score}"><b>${r.score}</b><small>${esc(r.grade)}</small></div></header>
-      <div class="chars">${[...r.sur.hanja].map((c, k) => `<div class="ch sur"><span class="hz">${c}</span><span class="hk">${r.sur.ko[k] || r.sur.ko}</span><span class="hs">성씨</span></div>`).join('')}
-        ${r.given.map(g => `<div class="ch"><span class="hz">${g.ch}</span><span class="hk">${g.ko}</span><span class="hs">${esc(g.hun)} ${g.eum}</span></div>`).join('')}</div>
-      <div class="meaning"><p class="msent">“${esc(r.meaning)}”</p>
-        <ul class="mlist">${r.given.map(g => `<li><b>${g.ch}</b><span class="mh">${esc(g.hun)} ${g.eum}</span><span class="mk">${esc(g.mean)}</span></li>`).join('')}</ul></div>
-      <div class="cact">
-        <button class="act" type="button" data-share="${esc(r.share)}">공유하기</button>
-        <button class="act ghost" type="button" data-copy="${esc(r.ko + ' ' + r.hz)}">이름 복사</button>
-        <button class="act ghost del" type="button" data-unsave="${esc(r.key)}">삭제</button>
-      </div></article>`).join('');
+    [...picks].forEach(k => { if (!saved.some(x => x.key === k)) picks.delete(k); });
+    // 목록: 투표 후보 선택 · 한자 · 이름 · 점수만 · '풀이 자세히 보기'를 펼치면 풀이와 버튼
+    out.innerHTML = saved.slice().sort((a, b) => b.savedAt - a.savedAt).map(r => { const on = picks.has(r.key); return `<article class="vrow scard${on ? ' picked' : ''}">
+      <div class="vr-top">
+        <button type="button" class="pick sm" data-pick="${esc(r.key)}" aria-pressed="${on}" aria-label="${esc(r.ko)} 투표 후보로 고르기"><span class="pk" aria-hidden="true"></span><span class="pk-t">후보</span></button>
+        <div class="vr-name"><span class="vr-hz" aria-hidden="true">${[...r.sur.hanja].map(c => `<span class="sur">${c}</span>`).join('')}${r.given.map(g => g.ch).join('')}</span>
+          <span class="vr-ko"><b>${esc(r.ko)}</b> · ${r.given.map(g => `${esc(g.hun)} ${g.eum}`).join(' · ')}</span></div>
+        <span class="vr-sc"><b>${r.score}</b>점</span>
+      </div>
+      <details class="vr-more"><summary>풀이 자세히 보기 <span class="sdate">${fmt(r.savedAt)} · ${({ find: '한자 찾기', mine: '이름 비교' })[r.from] || '이름 추천'}</span></summary>
+        <div class="sv-body">
+          <p class="c-head">${esc(r.head || r.meaning || '')}</p>
+          ${r.why ? `<ul class="c-why">${r.why.map((t, k) => `<li${k === 2 ? ' class="flaw"' : ''}><span class="wk"><i>0${k + 1}</i>${['사주 보완', '소리 흐름', '아쉬운 점'][k]}</span><span>${esc(t)}</span></li>`).join('')}</ul>` : ''}
+          <ul class="mlist">${r.given.map(g => `<li><b>${g.ch}</b><span class="mh">${esc(g.hun)} ${g.eum}</span><span class="mk">${esc(g.mean)}</span></li>`).join('')}</ul>
+          <div class="cact">
+            <button class="act ghost" type="button" data-share="${esc(r.share)}">공유</button>
+            <button class="act ghost" type="button" data-copy="${esc(r.ko + ' ' + r.hz)}">이름 복사</button>
+            <button class="act ghost del" type="button" data-unsave="${esc(r.key)}">삭제</button>
+          </div>
+        </div>
+      </details></article>`; }).join('');
   }
+  // ---------- 가족 투표: 저장한 이름 2~5개를 링크로 보내고, 가족이 풀이를 보고 ♥ 투표 ----------
+  // 링크에는 이름·한자·점수·사주에 필요한 기운(오행 글자)만 담음 (생년월일·성별은 넣지 않음)
+  // 투표는 Supabase family_votes 표에 '누가(호칭) · 몇 번째 이름'만 저장 · 표가 없으면 카톡으로 답장하는 방식으로 대신함
+  const picks = new Set();
+  const POLL_KEY = 'gachi-polls';
+  const getPolls = () => { try { return JSON.parse(localStorage.getItem(POLL_KEY) || '[]'); } catch (e) { return []; } };
+  const b64e = str => btoa(String.fromCharCode(...new TextEncoder().encode(str))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  const b64d = str => new TextDecoder().decode(Uint8Array.from(atob(str.replace(/-/g, '+').replace(/_/g, '/')), c => c.charCodeAt(0)));
+  const baseUrl = () => { const h = location.hostname; return location.protocol === 'https:' && h && !/claude|anthropic/.test(h) ? location.origin + location.pathname : PUBLIC_URL; };
+  function renderVoteBar() {
+    const bar = $('#voteBar'); if (!bar) return;
+    bar.hidden = !saved.length && !getPolls().length;
+    const n = picks.size, polls = getPolls();
+    const fmt = t => new Intl.DateTimeFormat('ko-KR', { month: 'numeric', day: 'numeric' }).format(new Date(t));
+    bar.innerHTML = `<div class="vb-row"><div class="vb-tx"><b>가족 투표</b><span>${saved.length < 2 ? '이름을 2개 이상 저장하면 투표를 만들 수 있어요' : n < 2 ? `카드의 <b>투표 후보</b>를 2~5개 골라 주세요${n ? ` · ${n}개 고름` : ''}` : n > 5 ? `후보는 5개까지예요 · 지금 ${n}개` : `<b>${n}개</b>를 골랐어요 · 링크를 보내면 가족이 투표해요`}</span></div>
+      <button type="button" class="act" id="voteMake"${n < 2 || n > 5 ? ' disabled' : ''}>투표 링크 보내기</button></div>
+      ${polls.length ? `<details class="mypolls"><summary>내가 만든 투표 ${polls.length}개 · 결과 보기</summary><ul>${polls.slice().reverse().map(p => `<li><a href="${esc(p.url)}">${esc(p.names.join(' · '))}</a><span>${fmt(p.at)}</span></li>`).join('')}</ul></details>` : ''}`;
+  }
+  document.addEventListener('click', async e => {
+    const pk = e.target.closest('[data-pick]');
+    if (pk) { const k = pk.dataset.pick; picks.has(k) ? picks.delete(k) : picks.add(k); pk.setAttribute('aria-pressed', picks.has(k)); pk.closest('.scard').classList.toggle('picked', picks.has(k)); renderVoteBar(); return; }
+    if (!e.target.closest('#voteMake')) return;
+    const items = saved.filter(r => picks.has(r.key)).slice(0, 5);
+    if (items.length < 2) return;
+    const id = Array.from(crypto.getRandomValues(new Uint8Array(10)), x => 'abcdefghijklmnopqrstuvwxyz0123456789'[x % 36]).join('');
+    const d = b64e(JSON.stringify(items.map(r => [r.sur.ko, r.sur.hanja, r.given.map(g => g.ch).join(''), r.given.map(g => g.ko).join(''), r.score, r.need || '', r.avoid || ''])));
+    const url = `${baseUrl()}?vote=${id}&d=${d}`;
+    const polls = getPolls(); polls.push({ id, url, names: items.map(r => r.ko), at: Date.now() });
+    try { localStorage.setItem(POLL_KEY, JSON.stringify(polls.slice(-20))); } catch (x) {}
+    renderVoteBar(); T('vote_make', { n: items.length });
+    const text = `우리 아기 이름 후보 ${items.length}개예요. 풀이를 보고 마음에 드는 이름에 투표해 주세요!\n${items.map(r => `· ${r.ko} (${r.hz})`).join('\n')}`;
+    if (navigator.share) { try { await navigator.share({ title: '가치작명소 가족 투표', text, url }); return; } catch (x) { if (x && x.name === 'AbortError') return; } }
+    try { await navigator.clipboard.writeText(text + '\n' + url); toast('투표 링크를 복사했어요! 가족 단톡방에 붙여넣기 하세요'); } catch (x) { showShareBox(text + '\n' + url); }
+  });
+
+  // 투표 화면 (링크로 들어온 경우)
+  const VOTE = (() => {
+    const q = new URLSearchParams(location.search), id = q.get('vote'), d = q.get('d');
+    if (!id || !d || !/^[a-z0-9]{10}$/.test(id)) return null;
+    try {
+      const rows = JSON.parse(b64d(d));
+      if (!Array.isArray(rows) || rows.length < 2 || rows.length > 5) return null;
+      const EL = /^[木火土金水]{0,5}$/;
+      const items = rows.map(r => Array.isArray(r) && r.length === 7 && typeof r[2] === 'string' && typeof r[3] === 'string' && r[2].length === r[3].length && r[2].length >= 1 && r[2].length <= 2
+        && /^[가-힣]+$/.test(r[3]) && SURNAMES.some(x => x[0] === r[0] && x[1] === r[1]) && EL.test(r[5]) && EL.test(r[6]) ? r : null);
+      return items.every(Boolean) ? { id, items } : null;
+    } catch (e) { return null; }
+  })();
+  const SB = () => { const C = window.GACHI_CONFIG || {}; return C.supabaseUrl && C.supabaseAnonKey && location.protocol === 'https:' ? C : null; };
+  const sbHead = C => Object.assign({ apikey: C.supabaseAnonKey, 'Content-Type': 'application/json' }, /^eyJ/.test(C.supabaseAnonKey) ? { Authorization: 'Bearer ' + C.supabaseAnonKey } : {});
+  let voteCards = [];
+  async function showVote() {
+    setTab('vote');
+    const out = $('#voteOut');
+    const build = () => VOTE.items.map((r, i) => {
+      const row = SURNAMES.find(x => x[0] === r[0] && x[1] === r[1]);
+      const sur = { ko: row[0], hanja: row[1], strokes: row[2], els: row[3] };
+      const given = [...r[2]].map((ch, k) => { const h = N.candidates(r[3][k], true).find(x => x.ch === ch); return h ? { ...h, ko: r[3][k] } : null; });
+      if (given.some(x => !x)) return null;
+      const sj = r[5] ? { need: [...r[5]], avoid: [...r[6]] } : null;
+      return { i, sur, given, sj, ev: N.evaluate(sur, given, sj) };
+    });
+    voteCards = build();
+    if (voteCards.some(x => !x)) { await loadExt(); voteCards = build(); }
+    voteCards = voteCards.filter(Boolean);
+    if (voteCards.length < 2) { out.innerHTML = '<p class="err">투표 링크를 읽지 못했어요. 링크가 잘렸는지 확인해 주세요.</p>'; $('#voteSend').hidden = true; return; }
+    // 목록: 이름·한자·점수 + ♡ 버튼만 · '풀이 자세히 보기'를 펼치면 상세 카드
+    out.innerHTML = voteCards.map((x, n) => { const ko = x.sur.ko + x.given.map(g => g.ko).join('');
+      return `<article class="vrow">
+        <div class="vr-top"><span class="vr-no">${String(n + 1).padStart(2, '0')}</span>
+          <div class="vr-name"><span class="vr-hz">${[...x.sur.hanja].map(c => `<span class="sur">${c}</span>`).join('')}${x.given.map(g => g.ch).join('')}</span>
+            <span class="vr-ko"><b>${esc(ko)}</b> · ${x.given.map(g => `${esc(g.hun)} ${g.eum}`).join(' · ')}</span></div>
+          <span class="vr-sc"><b>${Math.round(x.ev.total)}</b>점</span>
+          <button class="vr-like" type="button" data-like="${x.i}" aria-pressed="false" aria-label="${esc(ko)} 좋아요">♡</button></div>
+        <details class="vr-more"><summary>풀이 자세히 보기</summary>${nameCard({ given: x.given, ev: x.ev }, 0, x.sur, 'vote', x.sj).replace(/<div class="cact">[\s\S]*?<\/div>\s*<\/article>$/, '</article>')}</details>
+      </article>`; }).join('');
+    out.classList.add('locked');
+    let voted = null; try { voted = localStorage.getItem('gachi-voted-' + VOTE.id); } catch (e) {}
+    if (voted) { voted.split(',').forEach(k => { const b = out.querySelector(`[data-like="${k}"]`); if (b) { b.setAttribute('aria-pressed', 'true'); b.textContent = '♥'; b.closest('.vrow').classList.add('liked'); } }); out.classList.remove('locked'); $('#voteSend').hidden = true; $('#voteWho').hidden = true; $('#voteHint').textContent = '이미 투표했어요'; }
+    const mine = getPolls().some(p => p.id === VOTE.id);
+    if (mine && !document.querySelector('.vh-mine')) $('.vote-hero').insertAdjacentHTML('beforeend', '<p class="vh-mine">내가 만든 투표예요 · 가족 투표 결과는 아래에서 볼 수 있어요 <button type="button" class="sh-go" id="voteReshare">링크 다시 보내기 ›</button></p>');
+    T('vote_open', { n: voteCards.length, mine });
+    loadTally();
+  }
+  // 호칭을 고르거나 적으면 ♡ 버튼이 열림
+  // 이미 투표한 호칭(서버 기록 기준): 같은 호칭은 한 번만 투표 가능
+  const votedWho = new Set();
+  const normWho = w => String(w || '').replace(/\s/g, '');
+  function markVotedChips() {
+    document.querySelectorAll('#whoChips .chip').forEach(b => {
+      const name = b.dataset.who || b.textContent.trim(); b.dataset.who = name;
+      const done = votedWho.has(normWho(name));
+      b.disabled = done; b.classList.toggle('done', done);
+      b.innerHTML = done ? `${esc(name)} <small>투표함</small>` : esc(name);
+      if (done && b.getAttribute('aria-pressed') === 'true') b.setAttribute('aria-pressed', 'false');
+    });
+    whoReady();
+  }
+  function whoReady() {
+    if ($('#voteSend').hidden) return;   // 이미 투표를 마친 화면이면 안내를 바꾸지 않음
+    const etc = $('#whoEtc').value.trim(), dup = etc && votedWho.has(normWho(etc));
+    const ok = !dup && (!!document.querySelector('#whoChips .chip[aria-pressed="true"]') || !!etc);
+    $('#voteOut').classList.toggle('locked', !ok);
+    $('#voteHint').textContent = dup ? `‘${etc}’님은 이미 투표했어요` : ok ? '여러 개 골라도 돼요' : '먼저 위에서 누구인지 골라 주세요';
+  }
+  $('#whoEtc').addEventListener('input', () => { if ($('#whoEtc').value.trim()) document.querySelectorAll('#whoChips .chip').forEach(b => b.setAttribute('aria-pressed', 'false')); whoReady(); });
+  async function loadTally() {
+    const box = $('#voteRes'), C = SB();
+    if (!C) { box.hidden = true; return; }
+    try {
+      const r = await fetch(C.supabaseUrl.replace(/\/$/, '') + '/rest/v1/rpc/vote_tally', { method: 'POST', headers: sbHead(C), body: JSON.stringify({ p_poll: VOTE.id }) });
+      if (!r.ok) throw 0;
+      const rows = await r.json();
+      rows.forEach(v => votedWho.add(normWho(v.who))); markVotedChips();
+      const cnt = {}, who = {};
+      rows.forEach(v => String(v.picks).split(',').forEach(k => { cnt[k] = (cnt[k] || 0) + 1; (who[k] = who[k] || []).push(v.who); }));
+      const max = Math.max(1, ...Object.values(cnt));
+      box.hidden = false;
+      box.innerHTML = `<h4>지금까지 투표 <span class="muted">${rows.length}명 참여</span></h4>
+        ${rows.length ? `<ul class="tally">${voteCards.map(x => { const c = cnt[x.i] || 0; return `<li class="${c && c === max ? 'top' : ''}"><span class="tn">${esc(x.sur.ko + x.given.map(g => g.ko).join(''))}</span><span class="tr"><i style="width:${c / max * 100}%"></i></span><b class="num">${c}</b><small>${esc((who[x.i] || []).join(', '))}</small></li>`; }).join('')}</ul>` : '<p class="muted">아직 투표한 가족이 없어요. 링크를 단톡방에 보내 보세요.</p>'}
+        <button type="button" class="act ghost" id="tallyReload">결과 새로 보기</button>`;
+    } catch (e) { box.hidden = false; box.innerHTML = '<p class="muted">투표 결과 모아 보기를 지금은 불러올 수 없어요. 투표하면 카톡으로 답장을 보낼 수 있어요.</p>'; }
+  }
+  document.addEventListener('click', async e => {
+    const lk = e.target.closest('[data-like]');
+    if (lk && !$('#voteSend').hidden) {
+      // 누구인지 먼저 골라야 투표할 수 있음
+      if ($('#voteOut').classList.contains('locked')) { toast('먼저 누가 투표하는지 골라 주세요'); $('#voteWho').scrollIntoView({ behavior: 'smooth', block: 'center' }); return; }
+      const on = lk.getAttribute('aria-pressed') !== 'true'; lk.setAttribute('aria-pressed', on); lk.textContent = on ? '♥' : '♡'; lk.closest('.vrow').classList.toggle('liked', on); return; }
+    const wc = e.target.closest('#whoChips .chip');
+    if (wc) { document.querySelectorAll('#whoChips .chip').forEach(b => b.setAttribute('aria-pressed', b === wc)); $('#whoEtc').value = ''; whoReady(); return; }
+    if (e.target.closest('#tallyReload')) { loadTally(); return; }
+    if (e.target.closest('#voteReshare')) {
+      const url = location.href, text = `우리 아기 이름 후보 ${voteCards.length}개예요. 풀이를 보고 마음에 드는 이름에 투표해 주세요!`;
+      if (navigator.share) { try { await navigator.share({ title: '가치작명소 가족 투표', text, url }); return; } catch (x) { if (x && x.name === 'AbortError') return; } }
+      try { await navigator.clipboard.writeText(text + '\n' + url); toast('투표 링크를 복사했어요'); } catch (x) { showShareBox(text + '\n' + url); }
+      return;
+    }
+    if (e.target.closest('#voteTell')) {   // 사용자가 직접 눌렀을 때만 공유 창
+      const text = $('#voteRes').dataset.text || '';
+      if (navigator.share) { try { await navigator.share({ text }); return; } catch (x) { if (x && x.name === 'AbortError') return; } }
+      try { await navigator.clipboard.writeText(text); toast('내 선택을 복사했어요! 단톡방에 붙여넣기 하세요'); } catch (x) { showShareBox(text); }
+      return;
+    }
+    if (!e.target.closest('#voteGo')) return;
+    const liked = [...document.querySelectorAll('#voteOut [data-like][aria-pressed="true"]')].map(b => b.dataset.like);
+    if (!liked.length) { toast('마음에 드는 이름에 ♡를 먼저 눌러 주세요'); return; }
+    const chip = document.querySelector('#whoChips .chip[aria-pressed="true"]');
+    const who = ($('#whoEtc').value.trim() || (chip ? chip.dataset.who || chip.textContent.trim() : '') || '가족').replace(/[<>]/g, '').slice(0, 12);
+    if (votedWho.has(normWho(who))) { toast(`‘${who}’님은 이미 투표했어요 · 한 사람당 한 번만 투표할 수 있어요`); return; }
+    const btn = $('#voteGo'); btn.disabled = true;
+    const C = SB(); let ok = false, st = 0;
+    if (C) { try { const r = await fetch(C.supabaseUrl.replace(/\/$/, '') + '/rest/v1/family_votes', { method: 'POST', headers: Object.assign(sbHead(C), { Prefer: 'return=minimal' }), body: JSON.stringify({ poll: VOTE.id, who, picks: liked.join(',') }) }); ok = r.ok; st = r.status; } catch (x) {} }
+    if (st === 409) {   // 같은 투표에 같은 호칭이 이미 있음 (서버에서 막음)
+      btn.disabled = false; votedWho.add(normWho(who)); markVotedChips(); loadTally();
+      toast(`‘${who}’님은 이미 투표했어요 · 한 사람당 한 번만 투표할 수 있어요`); return;
+    }
+    btn.disabled = false;
+    T('vote_cast', { n: liked.length, saved: ok, status: st });   // 저장 실패 원인 확인용 (응답 번호만)
+    const names = liked.map(k => { const x = voteCards.find(v => String(v.i) === k); return x ? `${x.sur.ko}${x.given.map(g => g.ko).join('')}(${x.sur.hanja}${x.given.map(g => g.ch).join('')})` : ''; }).filter(Boolean);
+    if (ok) {
+      try { localStorage.setItem('gachi-voted-' + VOTE.id, liked.join(',')); } catch (x) {}
+      $('#voteSend').hidden = true; $('#voteWho').hidden = true; $('#voteHint').textContent = '투표했어요'; toast('투표했어요! 아래에서 가족들의 투표를 볼 수 있어요'); loadTally();
+    } else {
+      // 결과를 모으지 못한 경우: 공유 창을 바로 띄우지 않고, 투표 완료 화면에서 원하는 사람만 '선택 알려 주기'를 누르게 함
+      try { localStorage.setItem('gachi-voted-' + VOTE.id, liked.join(',')); } catch (x) {}
+      $('#voteSend').hidden = true; $('#voteWho').hidden = true; $('#voteHint').textContent = '투표했어요';
+      const box = $('#voteRes'); box.hidden = false;
+      box.innerHTML = `<h4>투표했어요 ♥</h4>
+        <p class="muted">${esc(who)}님의 선택: <b>${names.map(esc).join(', ')}</b></p>
+        <p class="muted">지금은 가족 투표를 한곳에 모으지 못했어요. 링크를 보내 준 가족에게 선택을 알려 주세요.</p>
+        <button type="button" class="act" id="voteTell">내 선택 알려 주기</button>`;
+      box.dataset.text = `[가족 투표] ${who}: ${names.join(', ')} ♥`;
+      box.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  });
   document.addEventListener('click', e => {
     const s = e.target.closest('[data-save]'), u = e.target.closest('[data-unsave]');
     if (s) {
       const key = s.dataset.save, i = saved.findIndex(x => x.key === key);
       if (i >= 0) { saved.splice(i, 1); toast('저장을 취소했어요'); }
       else { const info = cardInfo.get(key); if (!info) return; saved.push({ ...info, savedAt: Date.now() }); T('save_name');
-        toast(persist() ? '저장했어요 · 아래 ‘저장’ 탭에서 다시 볼 수 있어요' : '이 브라우저에서는 저장이 안 돼요 (개인정보 보호 모드 확인)'); }
+        const ok = persist(), tip = ok && saved.length === 2 && !flagOn('gachi-vote-tip');
+        if (tip) setFlag('gachi-vote-tip');
+        toast(!ok ? '이 브라우저에서는 저장이 안 돼요 (개인정보 보호 모드 확인)' : tip ? '저장했어요 · 이제 저장한 이름으로 가족 투표를 만들 수 있어요 ♥' : '저장했어요 · 아래 ‘저장’ 탭에서 다시 볼 수 있어요'); }
       persist(); syncSaveButtons(key); renderSaved(); updateSaveHint(); refreshEndCard();
     } else if (u) {
       const key = u.dataset.unsave; saved = saved.filter(x => x.key !== key); persist(); renderSaved(); syncSaveButtons(key); toast('삭제했어요');
@@ -1975,32 +2781,37 @@ const HANJA_UPDATES = [{"date":"2026-11-14","chars":[["玹","현","옥돌"],["�
   function buildPool(sj) {
     const sur = surname();
     const gender = $('#gender').value;
-    const c = recCond(), condOn = !!(c.first || c.last || c.bat);
+    const c = recCond(), condOn = !!(c.first || c.last || c.bat || c.feels.length);
     const len = n => n.length === 2 || $('#allowOne').checked;
     const popular = NAMES[gender].filter(len), newer = (GEN[gender] || []).filter(len);
-    let names = (c.style === 'new' ? popular.concat(newer) : popular).filter(n => condOk(c, n));
+    // 흔한 정도: 인기 이름 위주 / 너무 흔하지 않게(가장 흔한 이름 제외 + 새 이름) / 새로운 이름까지
+    let names = (c.style === 'any' ? popular.concat(newer) : c.style === 'new' ? newer : c.style === 'mid' ? popular.filter(n => !TOP_COMMON.has(n)).concat(newer) : popular).filter(n => condOk(c, n));
     let widened = false;
     // 조건에 맞는 인기 이름이 적으면 새로운 이름까지 자동으로 넓힘
-    if (c.style !== 'new' && condOn && names.length < 20) { names = names.concat(newer.filter(n => condOk(c, n))); widened = true; }
+    if (c.style === 'pop' && condOn && names.length < 20) { names = names.concat(newer.filter(n => condOk(c, n))); widened = true; }
     const hs = hangSpec();
-    let fixed = null;
+    let fixed = null, realSet = null;
     if (hs) {
       const other = new Set();
-      const src = c.style === 'new' || widened ? NAMES[gender].concat(GEN[gender] || []) : NAMES[gender];
+      const src = c.style !== 'pop' || widened ? NAMES[gender].concat(GEN[gender] || []) : NAMES[gender];
       src.forEach(n => { if (n.length === 2) other.add(n[1 - hs.pos]); });
       // 입력한 소리(예: 律 → '율')를 그대로 이름에 사용
       const say = $('#hangEum').value.trim() || hs.h.eum;
       names = [...other].filter(o => o !== say).map(o => hs.pos === 0 ? say + o : o + say).filter(n => !NG.has(n) && condOk(c, n));
+      // 그 성별에서 실제로 쓰는 이름(인기·새 이름 목록)에 있는 조합을 우선 · 10개보다 적을 때만 그 밖의 조합까지
+      const known = new Set([...NAMES[gender], ...(GEN[gender] || [])]), real = names.filter(n => known.has(n));
+      if (real.length >= 10) names = real; else realSet = new Set(real);   // 적으면 실제 이름을 앞에, 나머지 조합은 뒤에
       fixed = hs.pos === 0 ? [hs.h, null] : [null, hs.h];
     }
-    const parts = [c.first && `첫 글자 ‘${c.first}’`, c.last && `끝 글자 ‘${c.last}’`, c.bat === 'none' && '받침 없음', c.bat === 'last' && '끝 받침 없음', c.style === 'new' && '새로운 이름 포함'].filter(Boolean);
+    const parts = [c.first && `첫 글자 ‘${c.first}’`, c.last && `끝 글자 ‘${c.last}’`, c.bat === 'none' && '받침 없음', c.bat === 'last' && '끝 받침 없음',
+      c.feels.length && c.feels.map(f => `‘${FEEL_KO[f]}’`).join(' 또는 '), c.style === 'mid' && '너무 흔하지 않게', c.style === 'new' && '새로운 이름 위주'].filter(Boolean);
     poolNote = (parts.length ? ' · 조건: ' + parts.join(', ') : '') + (widened ? ' · 조건에 맞는 인기 이름이 적어 새로운 이름까지 넓혔어요' : '');
     // '인기 이름 위주'인데 조건 때문에 자동으로 넓힌 경우: 인기 이름을 먼저, 새로운 이름은 그 뒤에 (각각 점수순)
     const popSet = new Set(NAMES[gender]);
     pool = names.map(n => {
       const r = N.rankHanja(sur, n.split(''), sj, fixed, true);
-      return r.length ? { hangul: n, ...r[0], alts: r.slice(1, 4), pop: popSet.has(n) } : null;
-    }).filter(Boolean).sort((a, b) => (widened && !hs ? (b.pop - a.pop) : 0) || b.ev.total - a.ev.total);
+      return r.length ? { hangul: n, ...r[0], alts: r.slice(1, 4), pop: popSet.has(n), real: !realSet || realSet.has(n) } : null;
+    }).filter(Boolean).sort((a, b) => (b.real - a.real) || (widened && !hs ? (b.pop - a.pop) : 0) || b.ev.total - a.ev.total);
     // 다양하게: 같은 첫 글자로 시작하는 이름은 앞쪽에 2개까지만, 나머지는 뒤로 (항렬자로 첫 글자가 고정된 경우 제외)
     if (!(hs && hs.pos === 0) && !c.first) {
       const cnt = {}, front = [], back = [];
@@ -2019,11 +2830,12 @@ const HANJA_UPDATES = [{"date":"2026-11-14","chars":[["玹","현","옥돌"],["�
     recPage = Math.max(0, Math.min(recPage, pages - 1));
     const from = recPage * PAGE, list = view.slice(from, from + PAGE), last = recPage >= pages - 1;
     $('#recMeta').textContent = (showAll ? `전체 후보 ${pool.length}개 · ${from + 1}~${from + list.length}위` : `점수 상위 ${view.length}개만 골랐어요 · ${from + 1}~${from + list.length}위`) + poolNote;
-    let html = list.map((x, k) => nameCard(x, from + k + 1, surname(), 'rec')).join('');
+    const sj = readBirth();
+    let html = list.map((x, k) => nameCard(x, from + k + 1, surname(), 'rec', sj)).join('');
     if (last) html += endCard();
     $('#recOut').innerHTML = html;
     renderPager($('#recPager'), recPage, pages, n => goRecPage(n));
-    $('#moreBtn').hidden = last;
+    $('#moreBtn').hidden = last; $('#resetBtn').hidden = false;
     updateSaveHint();
   }
   // 마지막 페이지 아래 마무리 카드: 저장 안내 + (상위 20개만 보는 중이면) 나머지 후보 열기
@@ -2033,22 +2845,40 @@ const HANJA_UPDATES = [{"date":"2026-11-14","chars":[["玹","현","옥돌"],["�
       <span class="empty-seal" aria-hidden="true">藏</span>
       <div class="ec-tx">
         <b>${showAll ? `후보 ${pool.length}개를 모두 봤어요` : `상위 ${Math.min(TOP, pool.length)}개를 모두 봤어요`}</b>
-        <p>${n ? `저장한 이름이 <b>${n}개</b> 있어요. 저장 탭에서 모아 보고 가족과 비교해 보세요.` : '마음에 든 이름에 <b>♡ 저장</b>을 눌러 두면, 저장 탭에서 모아 보고 가족과 비교할 수 있어요.'}</p>
+        <p>${n >= 2 ? `저장한 이름이 <b>${n}개</b> 있어요. 링크 하나로 <b>가족에게 투표</b>를 받아 보세요.` : n ? `저장한 이름이 <b>${n}개</b> 있어요. 2개 이상 모으면 <b>가족 투표</b>를 만들 수 있어요.` : '마음에 든 이름에 <b>♡ 저장</b>을 눌러 두면, 모아 보고 <b>가족 투표</b>도 만들 수 있어요.'}</p>
         <div class="ec-act">
-          ${n ? `<button type="button" class="act" data-goto="saved">저장한 이름 ${n}개 보기 ›</button>` : ''}
+          ${n >= 2 ? `<button type="button" class="act" data-vote-start="end">가족 투표 만들기 ›</button>` : n ? `<button type="button" class="act" data-goto="saved">저장한 이름 보기 ›</button>` : ''}
           ${!showAll && rest > 0 ? `<button type="button" class="rp-link" data-showall>점수가 조금 낮은 후보 ${rest}개 더 보기</button>` : ''}
         </div>
       </div></div>`;
   }
   // 결과 위 한 줄 안내 칩: 저장한 이름이 없을 때만, 닫으면 다시 안 보임
+  function flagOn(k) { try { return localStorage.getItem(k) === '1'; } catch (e) { return false; } }
+  function setFlag(k) { try { localStorage.setItem(k, '1'); } catch (e) {} }
   function updateSaveHint() {
     const h = $('#saveHint'); if (!h) return;
-    h.hidden = !pool.length || saved.length > 0 || hintOff();
+    const voteMode = saved.length >= 2 && !flagOn('gachi-vote-hint-off') && !getPolls().length;
+    const saveMode = !saved.length && !hintOff();
+    h.hidden = !pool.length || (!voteMode && !saveMode);
+    h.dataset.mode = voteMode ? 'vote' : 'save';
+    h.querySelector('.sh-ic').textContent = voteMode ? '♥' : '♡';
+    h.querySelector('.sh-tx').innerHTML = voteMode
+      ? `저장한 이름 <b>${saved.length}개</b>, 가족은 어떤 이름이 좋을까요? <button type="button" class="sh-go" data-vote-start="hint">가족 투표 만들기 ›</button>`
+      : '마음에 드는 이름은 <b>저장</b>해 두세요 · 2개 이상 모으면 <b>가족 투표</b>를 만들 수 있어요';
   }
+  // 가족 투표 시작: 저장 탭으로 가서 최근 저장한 이름(최대 5개)을 후보로 미리 골라 둠 → 버튼 한 번이면 링크 보내기
+  document.addEventListener('click', e => {
+    const b = e.target.closest('[data-vote-start]'); if (!b) return;
+    picks.clear(); saved.slice().sort((a, c) => c.savedAt - a.savedAt).slice(0, 5).forEach(r => picks.add(r.key));
+    setTab('saved'); renderSaved();
+    setTimeout(() => { const v = $('#voteBar'); if (v) v.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 50);
+    toast(`최근 저장한 ${picks.size}개를 후보로 골라 뒀어요 · 빼고 싶은 이름은 ‘투표 후보’를 눌러 해제하세요`);
+    T('vote_cta', { from: b.dataset.voteStart });
+  });
   document.addEventListener('click', e => {
     if (e.target.closest('[data-goto="saved"]')) { setTab('saved'); window.scrollTo(0, 0); T('tab', { tab: 'saved' }); }
     if (e.target.closest('[data-showall]')) { showAll = true; goRecPage(TOP / PAGE); T('show_all'); }
-    if (e.target.closest('#saveHintClose')) { try { localStorage.setItem('gachi-hint-off', '1'); } catch (x) {} $('#saveHint').hidden = true; }
+    if (e.target.closest('#saveHintClose')) { setFlag($('#saveHint').dataset.mode === 'vote' ? 'gachi-vote-hint-off' : 'gachi-hint-off'); $('#saveHint').hidden = true; }
   });
   function goRecPage(n) {
     recPage = n; renderRecPage(); T('more', { page: recPage + 1 });
@@ -2081,7 +2911,7 @@ const HANJA_UPDATES = [{"date":"2026-11-14","chars":[["玹","현","옥돌"],["�
   }
 
   // ---------- 기능 2: 한자 찾기 ----------
-  let findList = [], findShown = 0;
+  let findList = [], findShown = 0, findSj = null;
   function showFind() {
     reveal('#findOut');
     const raw = $('#wantName').value.replace(/\s/g, '');
@@ -2105,7 +2935,8 @@ const HANJA_UPDATES = [{"date":"2026-11-14","chars":[["玹","현","옥돌"],["�
         <ul>${base.concat(more.slice(0, 40)).map(h => `<li>${elTag(h.el)}<b>${h.ch}</b> ${esc(h.hun)} ${h.eum} <span class="num">${h.strokes}획</span><small class="ck">${h.ext ? '사전 뜻' : esc(h.mean)}</small></li>`).join('') || '<li class="muted">데이터에 없는 음입니다</li>'}${more.length > 40 ? `<li class="muted">외 ${more.length - 40}자 (아래 결과에는 모두 반영)</li>` : ''}</ul></div>`; }).join('');
     $('#candOut').innerHTML = cand;
     if (missing.length) { out.innerHTML = `<p class="rp-inline"><button type="button" class="rp-link" data-report="${missing[0]}" data-where="find">‘${missing[0]}’ 한자 제보하기</button> · 알려 주시면 추가할게요</p><p class="err">‘${missing.join(', ')}’ 음의 이름용 한자가 데이터에 없어 한자 조합을 만들 수 없습니다.</p>`; $('#findMore').hidden = true; $('#findMeta').textContent = ''; return; }
-    findList = N.rankHanja(surname('f-'), syl, sj && !sj.error ? sj : null, null, false, ext);
+    findSj = sj && !sj.error ? sj : null;
+    findList = N.rankHanja(surname('f-'), syl, findSj, null, false, ext);
     findShown = 0; out.innerHTML = '';
     $('#findMeta').textContent = `${surname('f-').ko}${raw} · 가능한 한자 조합 ${findList.length.toLocaleString('ko-KR')}개를 점수순으로 정렬했습니다${sj && !sj.error ? ' (사주 반영)' : ' (사주 미반영)'}${ext ? ' · 인명용 한자 전체에서 찾음' : ''}.`
       + (autoExt ? ' 엄선 한자에 없는 소리라 인명용 전체로 넓혀서 찾았어요.' : '');
@@ -2113,7 +2944,7 @@ const HANJA_UPDATES = [{"date":"2026-11-14","chars":[["玹","현","옥돌"],["�
   }
   function moreFind() {
     const next = findList.slice(findShown, findShown + 6);
-    $('#findOut').insertAdjacentHTML('beforeend', next.map((x, k) => nameCard(x, findShown + k + 1, surname('f-'), 'find')).join(''));
+    $('#findOut').insertAdjacentHTML('beforeend', next.map((x, k) => nameCard(x, findShown + k + 1, surname('f-'), 'find', findSj)).join(''));
     findShown += next.length;
     $('#findMore').hidden = findShown >= findList.length;
   }
@@ -2220,8 +3051,8 @@ const HANJA_UPDATES = [{"date":"2026-11-14","chars":[["玹","현","옥돌"],["�
         <button class="btn" type="button" id="toRename">이 사주에 맞는 개명 후보 더 보기 ›</button>
         <p class="note">※ 참고용 점수예요. 이름에는 사주 외에도 가족의 바람과 살아온 시간이 담겨 있어요. 개명은 법원 허가 절차가 필요하니 충분히 고민한 뒤 결정하세요.</p>
       </div>`;
-    out.innerHTML = `<div class="mine">${vs}<h5 class="sub-h">지금 이름 풀이</h5>${nameCard({ given: me.given, ev }, 0, sur, 'mine')}
-      ${cev ? `<h5 class="sub-h">개명할 이름 풀이</h5>${nameCard({ given: cand.given, ev: cev }, 0, sur, 'mine')}` : ''}${bars}</div>`;
+    out.innerHTML = `<div class="mine">${vs}<h5 class="sub-h">지금 이름 풀이</h5>${nameCard({ given: me.given, ev }, 0, sur, 'mine', sj)}
+      ${cev ? `<h5 class="sub-h">개명할 이름 풀이</h5>${nameCard({ given: cand.given, ev: cev }, 0, sur, 'mine', sj)}` : ''}${bars}</div>`;
     $('#mineMeta').textContent = `${meName}${cev ? ' vs ' + cName : ''} · 사주 반영 · 참고용`;
     T('mine', { score: Math.round(ev.total), cand: !!cev });   // 이름 자체는 보내지 않음
   }
@@ -2370,6 +3201,7 @@ const HANJA_UPDATES = [{"date":"2026-11-14","chars":[["玹","현","옥돌"],["�
   // ---------- 탭 ----------
   function setTab(t) {
     document.querySelectorAll('[role=tab]').forEach(b => b.setAttribute('aria-selected', b.dataset.tab === t));
+    document.body.classList.toggle('voting', t === 'vote');
     document.querySelectorAll('[role=tabpanel]').forEach(p => (p.hidden = p.id !== 'p-' + t));
     // (탭 기억 안 함: 항상 이름 추천으로 시작)
     if (t === 'saved') renderSaved();
@@ -2415,6 +3247,18 @@ const HANJA_UPDATES = [{"date":"2026-11-14","chars":[["玹","현","옥돌"],["�
     if (mobile.matches) { setCollapsed(true); $('#recOut').scrollIntoView({ behavior: 'smooth', block: 'start' }); }
   });
   $('#moreBtn').addEventListener('click', () => goRecPage(recPage + 1));
+  // 입력값 초기화: 이름 추천 입력을 모두 지우고 결과를 닫은 뒤 맨 위로
+  $('#resetBtn').addEventListener('click', () => {
+    const f = $('#recForm'); f.reset();
+    $('#sur').value = ''; $('#sur').dispatchEvent(new Event('change', { bubbles: true }));
+    document.querySelectorAll('#feelChips .chip').forEach(b => b.setAttribute('aria-pressed', 'false'));
+    $('#hangBox').hidden = true; $('#useHang').setAttribute('aria-expanded', 'false'); fillHangSel();
+    $('#leapWrap').hidden = true; $('#btime').disabled = false; $('#recCond').open = false;
+    f.querySelectorAll('.ferr').forEach(x => x.remove());
+    pool = []; $('#recOut').innerHTML = ''; $('#recPager').hidden = true; $('#moreBtn').hidden = true; $('#resetBtn').hidden = true; $('#saveHint').hidden = true;
+    $('#recOut').closest('.sec').classList.add('pre'); renderSaju(null); $('#fsum').hidden = true; setCollapsed(false);
+    updCondSum(); markNeed(); updateSummary(); window.scrollTo({ top: 0, behavior: 'smooth' }); toast('입력값을 초기화했어요'); T('reset');
+  });
   $('#findForm').addEventListener('submit', async e => {
     e.preventDefault();
     if (!validate($('#findForm')) || ($('#useSaju').checked && !birthOk('f-'))) return;
@@ -2475,12 +3319,25 @@ const HANJA_UPDATES = [{"date":"2026-11-14","chars":[["玹","현","옥돌"],["�
     const total = week.reduce((n, x) => n + g[x].length, 0);
     const chip = c => { const h = N.byChar(c[0]); return `<li><b>${esc(c[0])}</b><span>${esc(c[2])} ${esc(c[1])}${h ? ` · ${h.strokes}획 · ${h.el}` : ''}</span></li>`; };
     const el = document.createElement('div'); el.className = 'notice'; el.setAttribute('role', 'status');
-    el.innerHTML = `<span class="nb-tag">공지</span><p>${md(date)} 추가된 한자 : ${list}</p>
+    const msg = `${md(date)} 추가된 한자 : ${list}`;
+    // 한 줄 전광판: 글이 칸보다 길면 옆으로 흐름 (같은 글을 이어 붙여 끊김 없이 반복 · 누르거나 마우스를 올리면 멈춤)
+    el.innerHTML = `<span class="nb-tag">공지</span><p class="nb-tick"><span class="nb-run"><span class="nb-msg">${msg}</span></span></p>
       <button type="button" class="nb-more" aria-expanded="false" aria-controls="nbWeek" aria-label="최근 1주일 추가된 한자 펼쳐 보기" title="최근 1주일 추가된 한자"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6"/></svg></button>
       <button type="button" class="nb-x" aria-label="공지 닫기">✕</button>
       <div class="nb-week" id="nbWeek" hidden><p class="nb-sum">최근 1주일 동안 추가된 한자 ${total}자 · 한자 찾기 · 이름 비교에서 바로 고를 수 있어요</p>${
         week.map(x => `<div class="nb-day"><h4>${md(x)}</h4><ul>${g[x].map(chip).join('')}</ul></div>`).join('')}</div>`;
     document.querySelector('.mast').after(el);
+    const tick = el.querySelector('.nb-tick'), run = el.querySelector('.nb-run');
+    const roll = () => {
+      run.querySelectorAll('.nb-msg[aria-hidden]').forEach(x => x.remove()); tick.classList.remove('roll');
+      const w = run.querySelector('.nb-msg').offsetWidth;
+      if (w <= tick.clientWidth || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      run.insertAdjacentHTML('beforeend', `<span class="nb-msg" aria-hidden="true">${msg}</span>`);
+      run.style.setProperty('--nb-dur', Math.max(8, (w + 48) / 42) + 's');   // 초당 약 42px
+      tick.classList.add('roll');
+    };
+    roll(); addEventListener('resize', roll); if (document.fonts) document.fonts.ready.then(roll);
+    tick.addEventListener('click', () => tick.classList.toggle('paused'));
     const more = el.querySelector('.nb-more');
     more.addEventListener('click', () => { const open = more.getAttribute('aria-expanded') !== 'true'; more.setAttribute('aria-expanded', open); el.querySelector('.nb-week').hidden = !open; if (open) T('notice_more'); });
     el.querySelector('.nb-x').addEventListener('click', () => { try { localStorage.setItem(KEY, sig); } catch (e) {} el.remove(); });
@@ -2501,6 +3358,8 @@ const HANJA_UPDATES = [{"date":"2026-11-14","chars":[["玹","현","옥돌"],["�
   if (!['rec', 'find', 'mine', 'saved'].includes(tab)) tab = 'rec';
   setTab(tab);
   renderSaved();
+  if (VOTE) showVote();   // 가족 투표 링크로 들어온 경우: 투표 화면부터
+  else if (new URLSearchParams(location.search).has('vote')) setTimeout(() => toast('투표 링크가 잘렸거나 올바르지 않아요 · 링크를 보낸 가족에게 다시 받아 주세요'), 400);
 })();
 
 </script>
