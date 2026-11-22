@@ -1089,6 +1089,17 @@ table.vs td.win { background: color-mix(in srgb, var(--point) 7%, transparent) }
 .field.miss input, .field.miss select { box-shadow: 0 0 0 3px color-mix(in srgb, var(--seal) 18%, transparent); border-color: var(--seal) }
 .field[data-req]:not(.need) > label::after { color: var(--point) }
 .cnt { background: var(--point); color: var(--accent-ink) }
+
+/* 결과 화면 버튼: 초기화 + 다음 5개 (폰에서는 화면 아래에 떠 있음) */
+.fabs { display: flex; gap: 8px; align-items: center }
+.fabs .btn { min-height: 44px; padding: 0 16px; font-size: 15px; border-radius: 999px; display: inline-flex; align-items: center; gap: 6px; width: auto }
+#resetBtn { background: var(--surface); color: var(--ink); border: 1px solid var(--line2) }
+@media (max-width: 760px) {
+  .fabs { position: fixed; z-index: 19; right: max(16px, env(safe-area-inset-right, 0px)); bottom: calc(80px + env(safe-area-inset-bottom, 0px)) }
+  .fabs .btn { min-height: 50px; padding: 0 18px; box-shadow: 0 8px 22px rgb(0 0 0 / .18) }
+  #moreBtn { position: static; right: auto; bottom: auto; background: var(--point); color: var(--accent-ink); border: 0 }
+  #resetBtn { box-shadow: 0 8px 22px rgb(0 0 0 / .14) }
+}
 </style>
 
 
@@ -1196,7 +1207,10 @@ table.vs td.win { background: color-mix(in srgb, var(--point) 7%, transparent) }
     <section class="sec pre">
       <div class="sechead">
         <div><span class="cap">Name Report</span><h3>사주 맞춤 추천 이름</h3><p id="recMeta"></p></div>
-        <button class="btn ghost" type="button" id="moreBtn" hidden>다음 5개 보기 <span aria-hidden="true">›</span></button>
+        <div class="fabs">
+          <button class="btn ghost" type="button" id="resetBtn" hidden><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M3 12a9 9 0 1 0 3-6.7L3 8M3 3v5h5"/></svg>초기화</button>
+          <button class="btn" type="button" id="moreBtn" hidden>다음 5개 <span aria-hidden="true">›</span></button>
+        </div>
       </div>
       <p class="savehint" id="saveHint" hidden><span class="sh-ic" aria-hidden="true">♡</span><span>마음에 드는 이름은 <b>저장</b>해 두세요 · 저장 탭에서 모아 비교할 수 있어요</span><button type="button" id="saveHintClose" aria-label="안내 닫기">✕</button></p>
       <div class="cards" id="recOut">

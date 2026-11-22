@@ -347,7 +347,9 @@
       const hit = fill.filter(x => x.r >= 0);
       const tag = r => r === 0 ? '가장 필요한(용신)' : r === 1 ? '그다음으로 필요한(희신)' : '사주에 비어 있는';
       if (hit.length) {
-        saju = `사주에 ${hit.map(x => `${tag(x.r)} ${elK(x.e)} 기운을 ${hzJ(x.g, '이', '가')}`).join(', ')} 채워 줍니다.`;
+        const grp = []; hit.forEach(x => { const o = grp.find(y => y.e === x.e); o ? o.gs.push(x.g) : grp.push({ e: x.e, r: x.r, gs: [x.g] }); });
+        const who = gs => gs.length === 1 ? hzJ(gs[0], '이', '가') : `${gs.slice(0, -1).map(g => `${g.ch}(${g.hun} ${g.eum})` + (hasBat(g.eum) ? '과' : '와')).join(' ')} ${hzJ(gs[gs.length - 1], '이', '가')} 함께`;
+        saju = `사주에 ${grp.map(x => `${tag(x.r)} ${elK(x.e)} 기운을 ${who(x.gs)}`).join(', ')} 채워 줍니다.`;
         const best = hit.slice().sort((a, b) => a.r - b.r)[0];
         strong.push([`사주에 필요한 ${elK(best.e)} 기운을 채우고`, `사주에 필요한 ${elK(best.e)} 기운을 채우는`]);
       } else {
@@ -774,7 +776,7 @@
     if (last) html += endCard();
     $('#recOut').innerHTML = html;
     renderPager($('#recPager'), recPage, pages, n => goRecPage(n));
-    $('#moreBtn').hidden = last;
+    $('#moreBtn').hidden = last; $('#resetBtn').hidden = false;
     updateSaveHint();
   }
   // 마지막 페이지 아래 마무리 카드: 저장 안내 + (상위 20개만 보는 중이면) 나머지 후보 열기
@@ -1168,6 +1170,18 @@
     if (mobile.matches) { setCollapsed(true); $('#recOut').scrollIntoView({ behavior: 'smooth', block: 'start' }); }
   });
   $('#moreBtn').addEventListener('click', () => goRecPage(recPage + 1));
+  // 입력값 초기화: 이름 추천 입력을 모두 지우고 결과를 닫은 뒤 맨 위로
+  $('#resetBtn').addEventListener('click', () => {
+    const f = $('#recForm'); f.reset();
+    $('#sur').value = ''; $('#sur').dispatchEvent(new Event('change', { bubbles: true }));
+    document.querySelectorAll('#feelChips .chip').forEach(b => b.setAttribute('aria-pressed', 'false'));
+    $('#hangBox').hidden = true; $('#useHang').setAttribute('aria-expanded', 'false'); fillHangSel();
+    $('#leapWrap').hidden = true; $('#btime').disabled = false; $('#recCond').open = false;
+    f.querySelectorAll('.ferr').forEach(x => x.remove());
+    pool = []; $('#recOut').innerHTML = ''; $('#recPager').hidden = true; $('#moreBtn').hidden = true; $('#resetBtn').hidden = true; $('#saveHint').hidden = true;
+    $('#recOut').closest('.sec').classList.add('pre'); renderSaju(null); $('#fsum').hidden = true; setCollapsed(false);
+    updCondSum(); markNeed(); updateSummary(); window.scrollTo({ top: 0, behavior: 'smooth' }); toast('입력값을 초기화했어요'); T('reset');
+  });
   $('#findForm').addEventListener('submit', async e => {
     e.preventDefault();
     if (!validate($('#findForm')) || ($('#useSaju').checked && !birthOk('f-'))) return;
