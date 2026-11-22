@@ -644,13 +644,29 @@
     if (voteCards.some(x => !x)) { await loadExt(); voteCards = build(); }
     voteCards = voteCards.filter(Boolean);
     if (voteCards.length < 2) { out.innerHTML = '<p class="err">투표 링크를 읽지 못했어요. 링크가 잘렸는지 확인해 주세요.</p>'; $('#voteSend').hidden = true; return; }
-    out.innerHTML = voteCards.map(x => nameCard({ given: x.given, ev: x.ev }, 0, x.sur, 'vote', x.sj).replace(/<div class="cact">[\s\S]*?<\/div>\s*<\/article>$/,
-      `<div class="cact"><button class="act like" type="button" data-like="${x.i}" aria-pressed="false">♡ 이 이름 좋아요</button></div></article>`)).join('');
+    // 목록: 이름·한자·점수 + ♡ 버튼만 · '풀이 자세히 보기'를 펼치면 상세 카드
+    out.innerHTML = voteCards.map((x, n) => { const ko = x.sur.ko + x.given.map(g => g.ko).join('');
+      return `<article class="vrow">
+        <div class="vr-top"><span class="vr-no">${String(n + 1).padStart(2, '0')}</span>
+          <div class="vr-name"><span class="vr-hz">${[...x.sur.hanja].map(c => `<span class="sur">${c}</span>`).join('')}${x.given.map(g => g.ch).join('')}</span>
+            <span class="vr-ko"><b>${esc(ko)}</b> · ${x.given.map(g => `${esc(g.hun)} ${g.eum}`).join(' · ')}</span></div>
+          <span class="vr-sc"><b>${Math.round(x.ev.total)}</b>점</span>
+          <button class="vr-like" type="button" data-like="${x.i}" aria-pressed="false" aria-label="${esc(ko)} 좋아요">♡</button></div>
+        <details class="vr-more"><summary>풀이 자세히 보기</summary>${nameCard({ given: x.given, ev: x.ev }, 0, x.sur, 'vote', x.sj).replace(/<div class="cact">[\s\S]*?<\/div>\s*<\/article>$/, '</article>')}</details>
+      </article>`; }).join('');
+    out.classList.add('locked');
     let voted = null; try { voted = localStorage.getItem('gachi-voted-' + VOTE.id); } catch (e) {}
-    if (voted) { voted.split(',').forEach(k => { const b = out.querySelector(`[data-like="${k}"]`); if (b) { b.setAttribute('aria-pressed', 'true'); b.textContent = '♥ 좋아요'; } }); $('#voteSend').hidden = true; }
+    if (voted) { voted.split(',').forEach(k => { const b = out.querySelector(`[data-like="${k}"]`); if (b) { b.setAttribute('aria-pressed', 'true'); b.textContent = '♥'; b.closest('.vrow').classList.add('liked'); } }); out.classList.remove('locked'); $('#voteSend').hidden = true; $('#voteWho').hidden = true; $('#voteHint').textContent = '이미 투표했어요'; }
     T('vote_open', { n: voteCards.length, mine: getPolls().some(p => p.id === VOTE.id) });
     loadTally();
   }
+  // 호칭을 고르거나 적으면 ♡ 버튼이 열림
+  function whoReady() {
+    const ok = !!document.querySelector('#whoChips .chip[aria-pressed="true"]') || !!$('#whoEtc').value.trim();
+    $('#voteOut').classList.toggle('locked', !ok);
+    $('#voteHint').textContent = ok ? '여러 개 골라도 돼요' : '먼저 위에서 누구인지 골라 주세요';
+  }
+  $('#whoEtc').addEventListener('input', () => { if ($('#whoEtc').value.trim()) document.querySelectorAll('#whoChips .chip').forEach(b => b.setAttribute('aria-pressed', 'false')); whoReady(); });
   async function loadTally() {
     const box = $('#voteRes'), C = SB();
     if (!C) { box.hidden = true; return; }
@@ -669,9 +685,12 @@
   }
   document.addEventListener('click', async e => {
     const lk = e.target.closest('[data-like]');
-    if (lk && !$('#voteSend').hidden) { const on = lk.getAttribute('aria-pressed') !== 'true'; lk.setAttribute('aria-pressed', on); lk.textContent = on ? '♥ 좋아요' : '♡ 이 이름 좋아요'; lk.closest('.card').classList.toggle('liked', on); return; }
+    if (lk && !$('#voteSend').hidden) {
+      // 누구인지 먼저 골라야 투표할 수 있음
+      if ($('#voteOut').classList.contains('locked')) { toast('먼저 누가 투표하는지 골라 주세요'); $('#voteWho').scrollIntoView({ behavior: 'smooth', block: 'center' }); return; }
+      const on = lk.getAttribute('aria-pressed') !== 'true'; lk.setAttribute('aria-pressed', on); lk.textContent = on ? '♥' : '♡'; lk.closest('.vrow').classList.toggle('liked', on); return; }
     const wc = e.target.closest('#whoChips .chip');
-    if (wc) { document.querySelectorAll('#whoChips .chip').forEach(b => b.setAttribute('aria-pressed', b === wc)); $('#whoEtc').value = ''; return; }
+    if (wc) { document.querySelectorAll('#whoChips .chip').forEach(b => b.setAttribute('aria-pressed', b === wc)); $('#whoEtc').value = ''; whoReady(); return; }
     if (e.target.closest('#tallyReload')) { loadTally(); return; }
     if (!e.target.closest('#voteGo')) return;
     const liked = [...document.querySelectorAll('#voteOut [data-like][aria-pressed="true"]')].map(b => b.dataset.like);
@@ -686,7 +705,7 @@
     const names = liked.map(k => { const x = voteCards.find(v => String(v.i) === k); return x ? `${x.sur.ko}${x.given.map(g => g.ko).join('')}(${x.sur.hanja}${x.given.map(g => g.ch).join('')})` : ''; }).filter(Boolean);
     if (ok) {
       try { localStorage.setItem('gachi-voted-' + VOTE.id, liked.join(',')); } catch (x) {}
-      $('#voteSend').hidden = true; toast('투표했어요! 아래에서 가족들의 투표를 볼 수 있어요'); loadTally();
+      $('#voteSend').hidden = true; $('#voteWho').hidden = true; $('#voteHint').textContent = '투표했어요'; toast('투표했어요! 아래에서 가족들의 투표를 볼 수 있어요'); loadTally();
     } else {
       // 결과를 모으는 서버가 없으면: 답장 글로 보내기
       const text = `[가족 투표] ${who}: ${names.join(', ')} ♥`;

@@ -1100,6 +1100,30 @@ table.vs td.win { background: color-mix(in srgb, var(--point) 7%, transparent) }
   #moreBtn { position: static; right: auto; bottom: auto; background: var(--point); color: var(--accent-ink); border: 0 }
   #resetBtn { box-shadow: 0 8px 22px rgb(0 0 0 / .14) }
 }
+
+/* 가족 투표: 이름 목록(접힘) + 펼치면 상세 풀이 */
+.vote-list { display: grid; gap: 12px }
+.vrows { display: grid; gap: 10px }
+.vrow { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; overflow: hidden }
+.vrow.liked { border-color: var(--point); box-shadow: 0 0 0 1px var(--point) }
+.vr-top { display: flex; align-items: center; gap: 12px; padding: 14px 14px 14px 16px }
+.vr-no { font: 500 13px var(--f-mono); color: var(--point); flex: none }
+.vr-name { flex: 1; min-width: 0; display: grid; gap: 2px }
+.vr-hz { font: 600 26px/1.15 var(--f-display); color: var(--ink); letter-spacing: .06em }
+.vr-hz .sur { color: var(--faint); font-weight: 500 }
+.vr-ko { font-size: 13.5px; color: var(--ink2); overflow-wrap: anywhere } .vr-ko b { color: var(--ink); font-size: 15px }
+.vr-sc { flex: none; text-align: right; font-size: 12px; color: var(--faint) } .vr-sc b { display: block; font: 500 22px/1 var(--f-mono); color: var(--ink) }
+.vr-like { flex: none; min-width: 64px; min-height: 44px; border-radius: 12px; border: 1px solid var(--line2); background: var(--surface); color: var(--ink); font: 700 14px var(--f-body); cursor: pointer; padding: 0 10px }
+.vr-like[aria-pressed="true"] { background: var(--point); color: var(--accent-ink); border-color: var(--point) }
+.vrows.locked .vr-like { opacity: .45 }
+.vr-more { border-top: 1px solid var(--line) }
+.vr-more > summary { list-style: none; display: flex; justify-content: space-between; align-items: center; padding: 11px 16px; font: 600 13px var(--f-body); color: var(--ink2); min-height: 44px; cursor: pointer }
+.vr-more > summary::-webkit-details-marker { display: none }
+.vr-more > summary::after { content: ""; width: 7px; height: 7px; border-right: 2px solid var(--faint); border-bottom: 2px solid var(--faint); transform: rotate(45deg); margin-top: -4px; transition: transform .2s }
+.vr-more[open] > summary::after { transform: rotate(-135deg); margin-top: 4px }
+.vr-more .card { border: 0; border-radius: 0; box-shadow: none; padding-top: 4px }
+.vr-more .card .c-top, .vr-more .card .c-name { display: none }
+.vr-more .card .c-head { border-top: 0; padding-top: 0 }
 </style>
 
 
@@ -1355,17 +1379,22 @@ table.vs td.win { background: color-mix(in srgb, var(--point) 7%, transparent) }
       <div class="vote-hero">
         <span class="vh-k">가족 투표</span>
         <h3>아기 이름 후보에 투표해 주세요</h3>
-        <p>이름마다 풀이를 읽어 보고, 마음에 드는 이름에 <b>♡</b>를 눌러 주세요. 여러 개 골라도 돼요.</p>
+        <p>누구인지 고른 뒤, 마음에 드는 이름에 <b>♡</b>를 눌러 주세요. 여러 개 골라도 되고, 이름을 누르면 풀이를 볼 수 있어요.</p>
       </div>
-      <div class="cards" id="voteOut"></div>
-      <div class="vote-send" id="voteSend">
-        <span class="lbl" id="whoLbl">누가 투표하나요?</span>
+      <div class="vote-send" id="voteWho">
+        <p class="sec-no" id="whoLbl"><i>01</i>누가 투표하나요?</p>
         <div class="chips" id="whoChips" role="group" aria-labelledby="whoLbl">
           <button type="button" class="chip" aria-pressed="false">엄마</button><button type="button" class="chip" aria-pressed="false">아빠</button>
           <button type="button" class="chip" aria-pressed="false">할머니</button><button type="button" class="chip" aria-pressed="false">할아버지</button>
           <button type="button" class="chip" aria-pressed="false">외할머니</button><button type="button" class="chip" aria-pressed="false">외할아버지</button>
         </div>
         <input type="text" id="whoEtc" maxlength="8" placeholder="직접 입력 (예: 이모, 큰아빠)" aria-label="호칭 직접 입력">
+      </div>
+      <div class="vote-list" id="voteListBox">
+        <p class="sec-no"><i>02</i>마음에 드는 이름에 ♡ <span class="fhint" id="voteHint">먼저 위에서 누구인지 골라 주세요</span></p>
+        <div class="vrows" id="voteOut"></div>
+      </div>
+      <div class="vote-send" id="voteSend">
         <button class="btn" type="button" id="voteGo">투표하기</button>
         <small class="muted">호칭과 고른 이름 번호만 저장돼요. 생년월일은 링크에도 들어 있지 않아요.</small>
       </div>
