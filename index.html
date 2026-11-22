@@ -769,6 +769,8 @@ p.intro-s { margin: 0; color: var(--ink2); font-size: 13.5px; line-height: 1.5; 
 .chip[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink) }
 .fhint { font-weight: 500; font-size: 12px; color: var(--faint) }
 .feel-note { margin-top: 2px; font-size: 12px; color: var(--muted) }
+.feel-cnt { font-size: 12.5px; font-weight: 600; color: var(--ink2) } .feel-cnt:empty { display: none } .feel-cnt.zero { color: var(--bad) }
+#recCond .chip { padding: 7px 12px; min-height: 36px; font-size: 13.5px }
 
 /* 사주 명식 */
 .sajuout { border-top: 1px solid var(--line); padding-top: 18px; gap: 14px }
@@ -1063,20 +1065,28 @@ table.vs td.win { background: var(--gold-soft) }
         <div class="field">
           <span class="lbl" id="feelLbl">이름 분위기 <span class="fhint">여러 개 고를 수 있어요</span></span>
           <div class="chips" id="feelChips" role="group" aria-labelledby="feelLbl">
-            <button type="button" class="chip" data-feel="soft" aria-pressed="false" title="ㄴ·ㄹ·ㅁ·ㅇ·ㅎ·ㅅ 위주의 둥근 소리">부드러운</button>
-            <button type="button" class="chip" data-feel="clear" aria-pressed="false" title="ㄱ·ㄷ·ㅈ·ㅊ 같은 또렷한 첫소리">또렷한</button>
-            <button type="button" class="chip" data-feel="bright" aria-pressed="false" title="ㅏ·ㅗ 같은 밝은 모음">밝은</button>
-            <button type="button" class="chip" data-feel="calm" aria-pressed="false" title="ㅓ·ㅜ·ㅡ·ㅣ 같은 차분한 모음">차분한</button>
+            <button type="button" class="chip" data-feel="soft" aria-pressed="false" title="ㄱ·ㄷ·ㅈ 같은 딱딱한 소리와 막히는 받침이 없는 둥근 소리">부드러운</button>
+            <button type="button" class="chip" data-feel="clear" aria-pressed="false" title="ㄱ·ㄷ·ㅈ·ㅊ 같은 또렷한 첫소리나 받침이 있는 소리">또렷한</button>
+            <button type="button" class="chip" data-feel="bright" aria-pressed="false" title="ㅏ·ㅗ 같은 밝은 모음이 들어간 이름">밝은</button>
+            <button type="button" class="chip" data-feel="calm" aria-pressed="false" title="ㅓ·ㅜ·ㅡ·ㅣ 같은 차분한 모음으로만 된 이름">차분한</button>
+            <button type="button" class="chip" data-feel="lively" aria-pressed="false" title="또렷한 첫소리로 시작해 받침 없이 가볍게 끝나는 이름">경쾌한</button>
+            <button type="button" class="chip" data-feel="heavy" aria-pressed="false" title="두 글자 모두 받침이 있어 무게감 있는 이름">묵직한</button>
+            <button type="button" class="chip" data-feel="airy" aria-pressed="false" title="ㅅ·ㅎ처럼 바람 소리가 나는 첫소리가 들어간 이름">맑고 시원한</button>
+            <button type="button" class="chip" data-feel="flow" aria-pressed="false" title="ㄹ 소리가 들어가 굴러가듯 이어지는 이름">흐르는 듯한</button>
+            <button type="button" class="chip" data-feel="round" aria-pressed="false" title="ㅇ·ㅎ 첫소리로만 된 동그란 느낌의 이름">둥글둥글한</button>
+            <button type="button" class="chip" data-feel="ring" aria-pressed="false" title="ㄴ·ㅁ·ㅇ 받침으로 끝나 울림이 남는 이름">울림이 남는</button>
+            <button type="button" class="chip" data-feel="open" aria-pressed="false" title="모든 글자에 받침이 없는 열린 소리">받침 없는</button>
+            <button type="button" class="chip" data-feel="lastopen" aria-pressed="false" title="끝 글자에 받침이 없어 부르기 편한 이름">끝소리가 열린</button>
             <button type="button" class="chip" data-feel="neutral" aria-pressed="false" title="남녀 모두 쓰는 이름">중성적인</button>
           </div>
           <small class="muted feel-note" id="feelNote">이름 소리(자음·모음·받침)로 골라요 · 고르지 않으면 모든 분위기에서 찾아요</small>
+          <small class="feel-cnt" id="feelCnt" aria-live="polite"></small>
         </div>
         <div class="row">
           <div class="field"><label for="cFirst">첫 글자</label><input type="text" id="cFirst" maxlength="1" placeholder="예: 서" autocomplete="off"></div>
           <div class="field"><label for="cLast">끝 글자</label><input type="text" id="cLast" maxlength="1" placeholder="예: 윤" autocomplete="off"></div>
         </div>
         <div class="row">
-          <div class="field"><label for="cBat">받침</label><select id="cBat"><option value="">상관없음</option><option value="none">받침 없는 이름만</option><option value="last">끝 글자만 받침 없음</option></select></div>
           <div class="field"><label for="cStyle">흔한 정도</label><select id="cStyle"><option value="pop">인기 이름 위주</option><option value="mid">너무 흔하지 않게</option><option value="new">새로운 이름까지</option></select></div>
         </div>
         <small class="muted">‘너무 흔하지 않게’는 가장 흔한 이름은 빼고, 이름에 잘 쓰는 글자로 만든 새 이름을 섞어요</small>
