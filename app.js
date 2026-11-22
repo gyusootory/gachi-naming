@@ -663,10 +663,24 @@
     loadTally();
   }
   // 호칭을 고르거나 적으면 ♡ 버튼이 열림
+  // 이미 투표한 호칭(서버 기록 기준): 같은 호칭은 한 번만 투표 가능
+  const votedWho = new Set();
+  const normWho = w => String(w || '').replace(/\s/g, '');
+  function markVotedChips() {
+    document.querySelectorAll('#whoChips .chip').forEach(b => {
+      const name = b.dataset.who || b.textContent.trim(); b.dataset.who = name;
+      const done = votedWho.has(normWho(name));
+      b.disabled = done; b.classList.toggle('done', done);
+      b.innerHTML = done ? `${esc(name)} <small>투표함</small>` : esc(name);
+      if (done && b.getAttribute('aria-pressed') === 'true') b.setAttribute('aria-pressed', 'false');
+    });
+    whoReady();
+  }
   function whoReady() {
-    const ok = !!document.querySelector('#whoChips .chip[aria-pressed="true"]') || !!$('#whoEtc').value.trim();
+    const etc = $('#whoEtc').value.trim(), dup = etc && votedWho.has(normWho(etc));
+    const ok = !dup && (!!document.querySelector('#whoChips .chip[aria-pressed="true"]') || !!etc);
     $('#voteOut').classList.toggle('locked', !ok);
-    $('#voteHint').textContent = ok ? '여러 개 골라도 돼요' : '먼저 위에서 누구인지 골라 주세요';
+    $('#voteHint').textContent = dup ? `‘${etc}’님은 이미 투표했어요` : ok ? '여러 개 골라도 돼요' : '먼저 위에서 누구인지 골라 주세요';
   }
   $('#whoEtc').addEventListener('input', () => { if ($('#whoEtc').value.trim()) document.querySelectorAll('#whoChips .chip').forEach(b => b.setAttribute('aria-pressed', 'false')); whoReady(); });
   async function loadTally() {
@@ -676,6 +690,7 @@
       const r = await fetch(C.supabaseUrl.replace(/\/$/, '') + '/rest/v1/rpc/vote_tally', { method: 'POST', headers: sbHead(C), body: JSON.stringify({ p_poll: VOTE.id }) });
       if (!r.ok) throw 0;
       const rows = await r.json();
+      rows.forEach(v => votedWho.add(normWho(v.who))); markVotedChips();
       const cnt = {}, who = {};
       rows.forEach(v => String(v.picks).split(',').forEach(k => { cnt[k] = (cnt[k] || 0) + 1; (who[k] = who[k] || []).push(v.who); }));
       const max = Math.max(1, ...Object.values(cnt));
@@ -704,10 +719,15 @@
     const liked = [...document.querySelectorAll('#voteOut [data-like][aria-pressed="true"]')].map(b => b.dataset.like);
     if (!liked.length) { toast('마음에 드는 이름에 ♡를 먼저 눌러 주세요'); return; }
     const chip = document.querySelector('#whoChips .chip[aria-pressed="true"]');
-    const who = ($('#whoEtc').value.trim() || (chip ? chip.textContent : '') || '가족').replace(/[<>]/g, '').slice(0, 12);
+    const who = ($('#whoEtc').value.trim() || (chip ? chip.dataset.who || chip.textContent.trim() : '') || '가족').replace(/[<>]/g, '').slice(0, 12);
+    if (votedWho.has(normWho(who))) { toast(`‘${who}’님은 이미 투표했어요 · 한 사람당 한 번만 투표할 수 있어요`); return; }
     const btn = $('#voteGo'); btn.disabled = true;
     const C = SB(); let ok = false, st = 0;
     if (C) { try { const r = await fetch(C.supabaseUrl.replace(/\/$/, '') + '/rest/v1/family_votes', { method: 'POST', headers: Object.assign(sbHead(C), { Prefer: 'return=minimal' }), body: JSON.stringify({ poll: VOTE.id, who, picks: liked.join(',') }) }); ok = r.ok; st = r.status; } catch (x) {} }
+    if (st === 409) {   // 같은 투표에 같은 호칭이 이미 있음 (서버에서 막음)
+      btn.disabled = false; votedWho.add(normWho(who)); markVotedChips(); loadTally();
+      toast(`‘${who}’님은 이미 투표했어요 · 한 사람당 한 번만 투표할 수 있어요`); return;
+    }
     btn.disabled = false;
     T('vote_cast', { n: liked.length, saved: ok, status: st });   // 저장 실패 원인 확인용 (응답 번호만)
     const names = liked.map(k => { const x = voteCards.find(v => String(v.i) === k); return x ? `${x.sur.ko}${x.given.map(g => g.ko).join('')}(${x.sur.hanja}${x.given.map(g => g.ch).join('')})` : ''; }).filter(Boolean);

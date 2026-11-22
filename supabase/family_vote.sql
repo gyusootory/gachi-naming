@@ -11,6 +11,8 @@ create table if not exists public.family_votes (
   picks       text not null check (picks ~ '^[0-4](,[0-4]){0,4}$')
 );
 create index if not exists family_votes_poll on public.family_votes (poll);
+-- 같은 투표에서 같은 호칭(엄마·아빠 등)은 한 번만 (공백은 무시하고 비교)
+create unique index if not exists family_votes_poll_who on public.family_votes (poll, (replace(who, ' ', '')));
 alter table public.family_votes enable row level security;
 
 -- 누구나 투표(추가)만 가능 · 목록 전체 읽기는 막음
