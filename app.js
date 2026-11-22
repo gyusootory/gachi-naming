@@ -559,24 +559,26 @@
     }
     const fmt = t => new Intl.DateTimeFormat('ko-KR', { month: 'numeric', day: 'numeric' }).format(new Date(t));
     [...picks].forEach(k => { if (!saved.some(x => x.key === k)) picks.delete(k); });
-    out.innerHTML = saved.slice().sort((a, b) => b.savedAt - a.savedAt).map(r => { const on = picks.has(r.key); return `<article class="card scard${on ? ' picked' : ''}">
-      <header class="c-top">
-        <button type="button" class="pick" data-pick="${esc(r.key)}" aria-pressed="${on}"><span class="pk" aria-hidden="true"></span>투표 후보</button>
-        <span class="sdate">${fmt(r.savedAt)} · ${({ find: '한자 찾기', mine: '이름 비교' })[r.from] || '이름 추천'}</span>
-        <span class="c-score"><b class="num">${r.score}</b><small>/100점</small></span>
-      </header>
-      <div class="c-name">
-        <div class="c-hz" aria-hidden="true">${[...r.sur.hanja].map(c => `<span class="sur">${c}</span>`).join('')}${r.given.map(g => `<span>${g.ch}</span>`).join('')}</div>
-        <div class="c-ko"><b>${esc(r.ko)}</b> <span>${r.given.map(g => `${esc(g.hun)} ${g.eum}`).join(' · ')}</span></div>
+    // 목록: 투표 후보 선택 · 한자 · 이름 · 점수만 · '풀이 자세히 보기'를 펼치면 풀이와 버튼
+    out.innerHTML = saved.slice().sort((a, b) => b.savedAt - a.savedAt).map(r => { const on = picks.has(r.key); return `<article class="vrow scard${on ? ' picked' : ''}">
+      <div class="vr-top">
+        <button type="button" class="pick sm" data-pick="${esc(r.key)}" aria-pressed="${on}" aria-label="${esc(r.ko)} 투표 후보로 고르기"><span class="pk" aria-hidden="true"></span><span class="pk-t">후보</span></button>
+        <div class="vr-name"><span class="vr-hz" aria-hidden="true">${[...r.sur.hanja].map(c => `<span class="sur">${c}</span>`).join('')}${r.given.map(g => g.ch).join('')}</span>
+          <span class="vr-ko"><b>${esc(r.ko)}</b> · ${r.given.map(g => `${esc(g.hun)} ${g.eum}`).join(' · ')}</span></div>
+        <span class="vr-sc"><b>${r.score}</b>점</span>
       </div>
-      <p class="c-head">${esc(r.head || r.meaning || '')}</p>
-      ${r.why ? `<ul class="c-why">${r.why.map((t, k) => `<li${k === 2 ? ' class="flaw"' : ''}><span class="wk"><i>0${k + 1}</i>${['사주 보완', '소리 흐름', '아쉬운 점'][k]}</span><span>${esc(t)}</span></li>`).join('')}</ul>`
-        : `<ul class="mlist">${r.given.map(g => `<li><b>${g.ch}</b><span class="mh">${esc(g.hun)} ${g.eum}</span><span class="mk">${esc(g.mean)}</span></li>`).join('')}</ul>`}
-      <div class="cact">
-        <button class="act ghost" type="button" data-share="${esc(r.share)}">공유</button>
-        <button class="act ghost" type="button" data-copy="${esc(r.ko + ' ' + r.hz)}">이름 복사</button>
-        <button class="act ghost del" type="button" data-unsave="${esc(r.key)}">삭제</button>
-      </div></article>`; }).join('');
+      <details class="vr-more"><summary>풀이 자세히 보기 <span class="sdate">${fmt(r.savedAt)} · ${({ find: '한자 찾기', mine: '이름 비교' })[r.from] || '이름 추천'}</span></summary>
+        <div class="sv-body">
+          <p class="c-head">${esc(r.head || r.meaning || '')}</p>
+          ${r.why ? `<ul class="c-why">${r.why.map((t, k) => `<li${k === 2 ? ' class="flaw"' : ''}><span class="wk"><i>0${k + 1}</i>${['사주 보완', '소리 흐름', '아쉬운 점'][k]}</span><span>${esc(t)}</span></li>`).join('')}</ul>` : ''}
+          <ul class="mlist">${r.given.map(g => `<li><b>${g.ch}</b><span class="mh">${esc(g.hun)} ${g.eum}</span><span class="mk">${esc(g.mean)}</span></li>`).join('')}</ul>
+          <div class="cact">
+            <button class="act ghost" type="button" data-share="${esc(r.share)}">공유</button>
+            <button class="act ghost" type="button" data-copy="${esc(r.ko + ' ' + r.hz)}">이름 복사</button>
+            <button class="act ghost del" type="button" data-unsave="${esc(r.key)}">삭제</button>
+          </div>
+        </div>
+      </details></article>`; }).join('');
   }
   // ---------- 가족 투표: 저장한 이름 2~5개를 링크로 보내고, 가족이 풀이를 보고 ♥ 투표 ----------
   // 링크에는 이름·한자·점수·사주에 필요한 기운(오행 글자)만 담음 (생년월일·성별은 넣지 않음)
@@ -598,7 +600,7 @@
   }
   document.addEventListener('click', async e => {
     const pk = e.target.closest('[data-pick]');
-    if (pk) { const k = pk.dataset.pick; picks.has(k) ? picks.delete(k) : picks.add(k); pk.setAttribute('aria-pressed', picks.has(k)); pk.closest('.card').classList.toggle('picked', picks.has(k)); renderVoteBar(); return; }
+    if (pk) { const k = pk.dataset.pick; picks.has(k) ? picks.delete(k) : picks.add(k); pk.setAttribute('aria-pressed', picks.has(k)); pk.closest('.scard').classList.toggle('picked', picks.has(k)); renderVoteBar(); return; }
     if (!e.target.closest('#voteMake')) return;
     const items = saved.filter(r => picks.has(r.key)).slice(0, 5);
     if (items.length < 2) return;
