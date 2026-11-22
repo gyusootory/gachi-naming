@@ -20,8 +20,8 @@
 
   // ---------- 인기 이름(한글) 후보 ----------
   const NAMES = {
-    M: '도윤 서준 하준 은우 시우 지호 예준 유준 수호 이준 준우 지후 건우 우진 선우 서진 민준 현우 연우 유찬 정우 승우 시윤 지환 승민 준서 지훈 윤우 태윤 민재 은찬 하율 도현 재윤 시후 한결 준혁 지성 민성 현준 성민 동현 재민 태민 승현 민호 재현 현서 우현 준영 은호 태현 성준 진우 시원 규민 영준 준호 상우 민혁 재원 정민 경민 세진 진호 태준 선호 민규 승준 은성 윤호 지혁 서우 주원 도원 시현 주안 연호 성현 원준 준희 태하 이현 도하 율 윤재 태경 정훈 지완 건희 승훈 현호 우재 해준 하진 경준 범준 석진 의준 상현'.split(' '),
-    F: '서아 하윤 지안 이서 서윤 하은 지우 아윤 수아 윤서 지아 서연 하린 채원 지유 다은 예린 소율 시아 유나 서하 예은 연우 수빈 나은 채윤 민서 지원 서은 예서 윤아 하율 가은 아린 소은 지민 유진 세아 은서 다인 수연 지윤 서현 예원 채은 하연 유주 소윤 다현 서영 민지 수민 혜원 지혜 예진 가윤 나윤 서진 아인 유하 연서 수현 다연 하진 지은 채아 은채 이현 시은 예나 주아 세은 효주 연아 수진 해인 소연 가희 은지 정원 서희 다온 윤하 소희 채린 혜인 예지 아현 지수 하영 서율 리아 미소 보은 선아 은솔'.split(' '),
+    M: '도윤 서준 하준 은우 시우 지호 예준 유준 수호 이준 준우 지후 건우 우진 선우 서진 민준 현우 연우 유찬 정우 승우 시윤 지환 승민 준서 지훈 윤우 태윤 민재 은찬 하율 도현 재윤 시후 한결 준혁 지성 민성 현준 성민 동현 재민 태민 승현 민호 재현 현서 우현 준영 은호 태현 성준 진우 시원 규민 영준 준호 상우 민혁 재원 정민 경민 세진 진호 태준 선호 민규 승준 은성 윤호 지혁 서우 주원 도원 시현 주안 연호 성현 원준 준희 태하 이현 도하 율 윤재 태경 정훈 지완 건희 승훈 현호 우재 해준 하진 경준 범준 석진 의준 상현 민우 민찬 민석 민기 민결 민후 민율 지민 지원 지안 지율 지한 지운 지오 지웅 준수 준기 준성 준형 준후 준원 준하 준겸 현수 현성 현민 현빈 현석 현규 현태 현진 현종 현욱 현오 현율 태양 태우 태영 태훈 태호 태성 태율 태오 태건 태이 태연 태환 승원 승재 승호 승빈 승찬 승유 승기 승완 승헌 성훈 성빈 성호 성우 성재 성진 성원 성윤 성규 성찬 동하 동건 동욱 동훈 동준 동윤 동원 동민 동주 동혁 도훈 도경 도율 도진 도영 도건 도겸 도준 도형 도담 도운 도엽 도한 도연 재훈 재성 재준 재희 재영 재율 재하 재우 재범 재혁 재이 재경 재환 건호 건영 건율 건하 건후 건형 건욱 우빈 우영 우석 우형 우주 우찬 유진 유성 유신 유건 유안 유한 유겸 은재 은수 은후 은결 은혁 은규 은석 은빈 시헌 시안 시준 시훈 시혁 시온 시율 서후 서원 서율 서한 서운 서빈 선율 선재 선규 영민 영우 영훈 영재 영호 영빈 영진 예성 예찬 예강 예승 원우 원호 원재 원석 원빈 윤성 윤찬 윤후 윤석 윤겸 윤건 이안 이찬 이수 이한 하람 하온 하민 하겸 하성 하빈 한빈 한준 한서 해성 해람 해온 형준 형우 호준 호연 효준 효민 효재 희찬 희준 강민 강현 강준 경훈 경수 경태 규현 규빈 규원 기현 기훈 기윤 기범 다온 대현 대호 로운 무진 범수 범진 보겸 상민 상훈 상진 상윤 석현 석훈 석준 세준 세훈 세현 세윤 수현 수민 수혁 수환 수완 시완 연준 연재 오준 온유 요한 용준 이도 인호 일우 장우 정호 정원 정빈 정현 제민 제현 제윤 종현 종민 주호 주환 주혁 주완 주한 진혁 진영 진성 진욱 찬영 찬우 찬희 찬율 창민 채민 현승 형민 혜성 호영 휘민 희성'.split(' '),
+    F: '서아 하윤 지안 이서 서윤 하은 지우 아윤 수아 윤서 지아 서연 하린 채원 지유 다은 예린 소율 시아 유나 서하 예은 연우 수빈 나은 채윤 민서 지원 서은 예서 윤아 하율 가은 아린 소은 지민 유진 세아 은서 다인 수연 지윤 서현 예원 채은 하연 유주 소윤 다현 서영 민지 수민 혜원 지혜 예진 가윤 나윤 서진 아인 유하 연서 수현 다연 하진 지은 채아 은채 이현 시은 예나 주아 세은 효주 연아 수진 해인 소연 가희 은지 정원 서희 다온 윤하 소희 채린 혜인 예지 아현 지수 하영 서율 리아 미소 보은 선아 은솔 가람 가온 가린 가현 나연 나현 나린 나경 나래 나희 다윤 다희 다예 다빈 도연 도희 로아 리원 리안 린아 미나 미래 민아 민경 민채 민하 민희 보민 보람 보경 보현 서경 서린 서이 선영 설아 세린 세빈 세희 세연 소미 소담 소민 소이 소정 소현 소예 수지 수희 수정 수인 수안 수림 승아 승연 승희 시연 시현 시하 아영 아정 연지 연희 연재 영서 예빈 예림 예담 예슬 온유 유빈 유리 유림 유정 유경 유이 윤지 윤슬 윤주 윤채 윤희 은유 은하 은아 은우 은재 이나 이안 이수 인서 인아 재이 재희 정윤 정아 정은 정민 주하 주희 주원 주은 지나 지현 지효 지인 지율 지호 진아 채연 채이 채희 채령 초원 초희 태희 태린 하나 하람 하경 하온 하이 한나 해나 해린 혜린 혜윤 혜진 혜나 혜수 효린 효은 효원 희원 희서 희주 규리 리하 서담 서우 예온 지온 채온 해온 가영 가령 가빈 다정 다경 다혜 도은 도아 려원 보윤 서정 서원 서휘 선희 성아 성은 세인 소린 소원 시원 아진 연수 연진 영은 예주 예하 원희 유선 윤정 은수 은진 은혜 의진 인영 재인 재원 정연 정현 정인 주연 주현 지영 지연 진서 진희 채현 채율 태은 해원 현아 현지 현정 효정 효진 희진 나영 민영 시온'.split(' '),
   };
   NAMES.U = [...new Set([...NAMES.M, ...NAMES.F])];
   // ---------- 새로운 이름 후보: 이름에 잘 쓰는 앞·뒤 글자 조합 (인기 이름에 없는 것만) ----------
@@ -72,7 +72,7 @@
   // 조건 상자 제목 옆: 고른 조건 요약
   function updCondSum() {
     const c = recCond();
-    const parts = [c.first && `첫 ‘${c.first}’`, c.last && `끝 ‘${c.last}’`, ...c.feels.map(f => FEEL_KO[f]), c.style === 'mid' && '덜 흔하게', c.style === 'new' && '새 이름'].filter(Boolean);
+    const parts = [c.first && `첫 ‘${c.first}’`, c.last && `끝 ‘${c.last}’`, ...c.feels.map(f => FEEL_KO[f]), c.style === 'mid' && '덜 흔하게', c.style === 'new' && '새 이름 위주'].filter(Boolean);
     $('#condSum').textContent = parts.length ? (parts.length > 3 ? parts.slice(0, 3).join(' · ') + ` 외 ${parts.length - 3}` : parts.join(' · ')) : '';
     // 고른 조건에 맞는 이름 후보 수 (성별 기준 · 인기 + 새 이름) — 너무 적으면 미리 알려 줌
     const picked = [...document.querySelectorAll('#feelChips .chip[aria-pressed="true"]')];
@@ -82,10 +82,10 @@
     // 분위기마다 지금 조건(성별·첫/끝 글자)에서 남는 이름 수 → 0개인 분위기는 흐리게 (예: 여자 이름엔 '힘 있고 묵직한'이 없음)
     const base = [...new Set(NAMES[g].concat(GEN[g] || []))].filter(x => len(x) && condOk({ ...c, feels: [] }, x));
     document.querySelectorAll('#feelChips .chip').forEach(b => { const k = base.filter(x => feelOf(x) === b.dataset.feel).length;
-      b.classList.toggle('empty', !k); b.querySelector('small').textContent = k ? `${b.dataset.ex} · ${k}개` : '해당 이름 없음'; });
+      b.classList.toggle('empty', !k); b.querySelector('small').textContent = k ? b.dataset.ex : '해당 이름 없음'; });
     if (!c.feels.length && !c.first && !c.last) { cnt.textContent = ''; cnt.classList.remove('zero'); return; }
     const n = [...new Set(NAMES[g].concat(GEN[g] || []))].filter(x => len(x) && condOk(c, x)).length;
-    cnt.textContent = n ? `조건에 맞는 이름 후보 ${n}개` : '조건에 맞는 이름이 없어요 · 분위기나 글자 조건을 바꿔 보세요';
+    cnt.textContent = n ? '' : '조건에 맞는 이름이 없어요 · 분위기나 글자 조건을 바꿔 보세요';   // 개수는 보여 주지 않음 (한자 조합 수로 오해할 수 있어서) · 없을 때만 안내
     cnt.classList.toggle('zero', !n);
   }
   document.querySelectorAll('#feelChips .chip').forEach(b => b.addEventListener('click', () => {
@@ -727,7 +727,7 @@
     const len = n => n.length === 2 || $('#allowOne').checked;
     const popular = NAMES[gender].filter(len), newer = (GEN[gender] || []).filter(len);
     // 흔한 정도: 인기 이름 위주 / 너무 흔하지 않게(가장 흔한 이름 제외 + 새 이름) / 새로운 이름까지
-    let names = (c.style === 'new' ? popular.concat(newer) : c.style === 'mid' ? popular.filter(n => !TOP_COMMON.has(n)).concat(newer) : popular).filter(n => condOk(c, n));
+    let names = (c.style === 'any' ? popular.concat(newer) : c.style === 'new' ? newer : c.style === 'mid' ? popular.filter(n => !TOP_COMMON.has(n)).concat(newer) : popular).filter(n => condOk(c, n));
     let widened = false;
     // 조건에 맞는 인기 이름이 적으면 새로운 이름까지 자동으로 넓힘
     if (c.style === 'pop' && condOn && names.length < 20) { names = names.concat(newer.filter(n => condOk(c, n))); widened = true; }
@@ -743,7 +743,7 @@
       fixed = hs.pos === 0 ? [hs.h, null] : [null, hs.h];
     }
     const parts = [c.first && `첫 글자 ‘${c.first}’`, c.last && `끝 글자 ‘${c.last}’`, c.bat === 'none' && '받침 없음', c.bat === 'last' && '끝 받침 없음',
-      c.feels.length && c.feels.map(f => `‘${FEEL_KO[f]}’`).join(' 또는 '), c.style === 'mid' && '너무 흔하지 않게', c.style === 'new' && '새로운 이름 포함'].filter(Boolean);
+      c.feels.length && c.feels.map(f => `‘${FEEL_KO[f]}’`).join(' 또는 '), c.style === 'mid' && '너무 흔하지 않게', c.style === 'new' && '새로운 이름 위주'].filter(Boolean);
     poolNote = (parts.length ? ' · 조건: ' + parts.join(', ') : '') + (widened ? ' · 조건에 맞는 인기 이름이 적어 새로운 이름까지 넓혔어요' : '');
     // '인기 이름 위주'인데 조건 때문에 자동으로 넓힌 경우: 인기 이름을 먼저, 새로운 이름은 그 뒤에 (각각 점수순)
     const popSet = new Set(NAMES[gender]);
