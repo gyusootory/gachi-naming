@@ -1070,6 +1070,25 @@ table.vs td.win { background: color-mix(in srgb, var(--point) 7%, transparent) }
   #moreBtn { background: var(--point); color: var(--accent-ink) }
 }
 @media (max-width: 370px) { .c-hz { font-size: 40px } }
+
+/* 분위기 칩: 6가지 · 2열 */
+.chips.feel { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px }
+.chips.feel .chip { display: grid; justify-items: start; gap: 2px; text-align: left; border-radius: 12px; padding: 10px 12px; min-height: 56px }
+.chips.feel .chip b { font: 700 14px var(--f-body); letter-spacing: -.02em }
+.chips.feel .chip small { font-size: 12px; color: var(--muted); font-weight: 500 }
+.chips.feel .chip[aria-pressed="true"] small { color: inherit; opacity: .8 }
+.chips.feel .chip.empty { opacity: .45 }
+.chips.feel .chip.deny { animation: deny .3s ease }
+@keyframes deny { 25% { transform: translateX(-3px) } 75% { transform: translateX(3px) } }
+@media (min-width: 761px) { .chips.feel { grid-template-columns: repeat(3, minmax(0, 1fr)) } }
+/* 필수 표시: 주황 대신 포인트(딥 네이비) 톤 · 오류 문구만 차분한 진홍색 */
+:root { --seal: #b42335 } :root[data-theme="dark"] { --seal: #ff8e98 }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --seal: #ff8e98 } }
+.req-badge { background: color-mix(in srgb, var(--point) 10%, transparent); color: var(--point); font-weight: 700 }
+.field.need input, .field.need select, .field.need .combo-in { border-color: color-mix(in srgb, var(--point) 45%, var(--line2)); background-color: color-mix(in srgb, var(--point) 4%, var(--surface)) }
+.field.miss input, .field.miss select { box-shadow: 0 0 0 3px color-mix(in srgb, var(--seal) 18%, transparent); border-color: var(--seal) }
+.field[data-req]:not(.need) > label::after { color: var(--point) }
+.cnt { background: var(--point); color: var(--accent-ink) }
 </style>
 
 
@@ -1149,23 +1168,16 @@ table.vs td.win { background: color-mix(in srgb, var(--point) 7%, transparent) }
       <details class="cond" id="recCond">
         <summary>원하는 이름 조건 <span class="opt">선택</span> <span class="cond-sum" id="condSum"></span></summary>
         <div class="field">
-          <span class="lbl" id="feelLbl">이름 분위기 <span class="fhint">여러 개 고를 수 있어요</span></span>
-          <div class="chips" id="feelChips" role="group" aria-labelledby="feelLbl">
-            <button type="button" class="chip" data-feel="soft" aria-pressed="false" title="ㄱ·ㄷ·ㅈ 같은 딱딱한 소리와 막히는 받침이 없는 둥근 소리">부드러운</button>
-            <button type="button" class="chip" data-feel="clear" aria-pressed="false" title="ㄱ·ㄷ·ㅈ·ㅊ 같은 또렷한 첫소리나 받침이 있는 소리">또렷한</button>
-            <button type="button" class="chip" data-feel="bright" aria-pressed="false" title="ㅏ·ㅗ 같은 밝은 모음이 들어간 이름">밝은</button>
-            <button type="button" class="chip" data-feel="calm" aria-pressed="false" title="ㅓ·ㅜ·ㅡ·ㅣ 같은 차분한 모음으로만 된 이름">차분한</button>
-            <button type="button" class="chip" data-feel="lively" aria-pressed="false" title="또렷한 첫소리로 시작해 받침 없이 가볍게 끝나는 이름">경쾌한</button>
-            <button type="button" class="chip" data-feel="heavy" aria-pressed="false" title="두 글자 모두 받침이 있어 무게감 있는 이름">묵직한</button>
-            <button type="button" class="chip" data-feel="airy" aria-pressed="false" title="ㅅ·ㅎ처럼 바람 소리가 나는 첫소리가 들어간 이름">맑고 시원한</button>
-            <button type="button" class="chip" data-feel="flow" aria-pressed="false" title="ㄹ 소리가 들어가 굴러가듯 이어지는 이름">흐르는 듯한</button>
-            <button type="button" class="chip" data-feel="round" aria-pressed="false" title="ㅇ·ㅎ 첫소리로만 된 동그란 느낌의 이름">둥글둥글한</button>
-            <button type="button" class="chip" data-feel="ring" aria-pressed="false" title="ㄴ·ㅁ·ㅇ 받침으로 끝나 울림이 남는 이름">울림이 남는</button>
-            <button type="button" class="chip" data-feel="open" aria-pressed="false" title="모든 글자에 받침이 없는 열린 소리">받침 없는</button>
-            <button type="button" class="chip" data-feel="lastopen" aria-pressed="false" title="끝 글자에 받침이 없어 부르기 편한 이름">끝소리가 열린</button>
-            <button type="button" class="chip" data-feel="neutral" aria-pressed="false" title="남녀 모두 쓰는 이름">중성적인</button>
+          <span class="lbl" id="feelLbl">이름 분위기 <span class="fhint">최대 2개 선택</span></span>
+          <div class="chips feel" id="feelChips" role="group" aria-labelledby="feelLbl">
+            <button type="button" class="chip" data-feel="light" aria-pressed="false" data-desc="받침 없이 끝나고, 소리가 모두 부드러운 이름 (ㅇ·ㅎ·ㅅ·ㄴ·ㄹ·ㅁ 위주)" data-ex="서아 · 연우" title="받침 없이 끝나고, 소리가 모두 부드러운 이름 (ㅇ·ㅎ·ㅅ·ㄴ·ㄹ·ㅁ 위주)"><b>맑고 가벼운</b><small>서아 · 연우</small></button>
+            <button type="button" class="chip" data-feel="lively" aria-pressed="false" data-desc="받침 없이 끝나고, ㄱ·ㄷ·ㅈ·ㅊ 같은 또렷한 소리가 들어간 이름" data-ex="지우 · 건우" title="받침 없이 끝나고, ㄱ·ㄷ·ㅈ·ㅊ 같은 또렷한 소리가 들어간 이름"><b>밝고 경쾌한</b><small>지우 · 건우</small></button>
+            <button type="button" class="chip" data-feel="cozy" aria-pressed="false" data-desc="ㄴ·ㅁ·ㅇ 받침으로 끝나고, 소리가 모두 부드러운 이름" data-ex="서윤 · 하린" title="ㄴ·ㅁ·ㅇ 받침으로 끝나고, 소리가 모두 부드러운 이름"><b>부드럽고 포근한</b><small>서윤 · 하린</small></button>
+            <button type="button" class="chip" data-feel="neat" aria-pressed="false" data-desc="ㄴ·ㅁ·ㅇ 받침으로 끝나고, 또렷한 소리가 들어간 이름" data-ex="도윤 · 지안" title="ㄴ·ㅁ·ㅇ 받침으로 끝나고, 또렷한 소리가 들어간 이름"><b>단정하고 또렷한</b><small>도윤 · 지안</small></button>
+            <button type="button" class="chip" data-feel="flow" aria-pressed="false" data-desc="ㄹ 받침으로 끝나 굴러가듯 이어지는 이름" data-ex="하율 · 한결" title="ㄹ 받침으로 끝나 굴러가듯 이어지는 이름"><b>유려하게 흐르는</b><small>하율 · 한결</small></button>
+            <button type="button" class="chip" data-feel="firm" aria-pressed="false" data-desc="ㄱ·ㅂ·ㅅ 같은 받침으로 단단하게 끝나는 이름" data-ex="준혁 · 은석" title="ㄱ·ㅂ·ㅅ 같은 받침으로 단단하게 끝나는 이름"><b>힘 있고 묵직한</b><small>준혁 · 은석</small></button>
           </div>
-          <small class="muted feel-note" id="feelNote">이름 소리(자음·모음·받침)로 골라요 · 고르지 않으면 모든 분위기에서 찾아요</small>
+          <small class="muted feel-note" id="feelNote">이름의 끝소리(받침)와 자음으로 나눈 6가지예요 · 모든 이름은 이 중 딱 하나에 속해요 · 고르지 않으면 전체에서 찾아요</small>
           <small class="feel-cnt" id="feelCnt" aria-live="polite"></small>
         </div>
         <div class="row">

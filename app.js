@@ -45,31 +45,18 @@
   GEN.U = [...new Set([...GEN.M, ...GEN.F])].filter(n => !NAMES.U.includes(n));
   const hasBat = c => (c.charCodeAt(0) - 0xAC00) % 28 !== 0;
   // ---------- 이름 분위기: 한글 소리(첫소리·모음·받침)로만 판정 (뜻 추측 없이 누구나 확인 가능한 기준) ----------
-  const FEEL_KO = { soft: '부드러운', clear: '또렷한', bright: '밝은', calm: '차분한', lively: '경쾌한', heavy: '묵직한', airy: '맑고 시원한', flow: '흐르는 듯한',
-    round: '둥글둥글한', ring: '울림이 남는', open: '받침 없는', lastopen: '끝소리가 열린', neutral: '중성적인' };
-  // 서로 반대라 함께 고를 수 없는 분위기 (하나를 고르면 반대쪽은 자동으로 풀림)
-  const FEEL_OFF = { soft: ['clear', 'lively', 'heavy'], clear: ['soft', 'round'], bright: ['calm'], calm: ['bright'], lively: ['soft', 'heavy', 'ring', 'round'],
-    heavy: ['soft', 'lively', 'open', 'lastopen'], round: ['clear', 'lively'], ring: ['lively', 'open', 'lastopen'], open: ['heavy', 'ring'], lastopen: ['heavy', 'ring'] };
-  const FIRM_CHO = new Set([0, 1, 3, 4, 7, 8, 10, 12, 13, 14, 15, 16, 17]);          // ㄱㄲㄷㄸㅂㅃㅆㅈㅉㅊㅋㅌㅍ
-  const HARD_JONG = new Set([1, 2, 3, 7, 17, 18, 19, 20, 22, 23, 24, 25, 26, 27]);   // 막히는 받침 (ㄱ·ㄷ·ㅂ·ㅅ 계열)
-  const BRIGHT_V = new Set([0, 1, 2, 3, 8, 9, 10, 11, 12]);                          // 밝은(양성) 모음 ㅏㅐㅑㅒㅗㅘㅙㅚㅛ
-  const BOTH = new Set([...NAMES.M, ...GEN.M].filter(n => new Set([...NAMES.F, ...GEN.F]).has(n)));   // 남녀 모두 쓰는 이름
-  function feelOk(f, n) {
-    const ds = [...n].map(N.decompose).filter(Boolean);
-    if (f === 'soft') return ds.every(d => !FIRM_CHO.has(d.cho) && !HARD_JONG.has(d.jong));
-    if (f === 'clear') return ds.some(d => FIRM_CHO.has(d.cho) || HARD_JONG.has(d.jong));
-    if (f === 'bright') return ds.some(d => BRIGHT_V.has(d.jung));
-    if (f === 'calm') return ds.every(d => !BRIGHT_V.has(d.jung));
-    if (f === 'lively') return ds.length > 0 && FIRM_CHO.has(ds[0].cho) && ds[ds.length - 1].jong === 0;
-    if (f === 'heavy') return ds.length === 2 && ds.every(d => d.jong !== 0);
-    if (f === 'airy') return ds.some(d => d.cho === 9 || d.cho === 10 || d.cho === 18);         // ㅅ ㅆ ㅎ
-    if (f === 'flow') return ds.some(d => d.cho === 5 || d.jong === 8);                          // ㄹ
-    if (f === 'round') return ds.every(d => d.cho === 11 || d.cho === 18);                       // ㅇ ㅎ
-    if (f === 'ring') return [4, 16, 21].includes(ds[ds.length - 1].jong);                      // 끝 받침 ㄴ ㅁ ㅇ
-    if (f === 'open') return ds.every(d => d.jong === 0);
-    if (f === 'lastopen') return ds[ds.length - 1].jong === 0;
-    if (f === 'neutral') return BOTH.has(n);
-    return true;
+  // 서로 겹치지 않는 6가지 분위기: 끝소리(받침 없음 / ㄴ·ㅁ·ㅇ / ㄹ / 그 밖의 받침) × 자음(부드러움 / 또렷함)
+  // 모든 이름은 정확히 하나에 속함 (빠짐·겹침 없음) · 2개를 고르면 '둘 중 하나'에 속하는 이름을 찾음
+  const FEEL_KO = { light: '맑고 가벼운', lively: '밝고 경쾌한', cozy: '부드럽고 포근한', neat: '단정하고 또렷한', flow: '유려하게 흐르는', firm: '힘 있고 묵직한' };
+  const FEEL_MAX = 2;
+  const FIRM_CHO = new Set([0, 1, 3, 4, 7, 8, 10, 12, 13, 14, 15, 16, 17]);          // ㄱㄲㄷㄸㅂㅃㅆㅈㅉㅊㅋㅌㅍ (또렷한 소리)
+  function feelOf(n) {
+    const ds = [...n].map(N.decompose).filter(Boolean); if (!ds.length) return '';
+    const j = ds[ds.length - 1].jong, firm = ds.some(d => FIRM_CHO.has(d.cho));
+    if (j === 0) return firm ? 'lively' : 'light';
+    if (j === 4 || j === 16 || j === 21) return firm ? 'neat' : 'cozy';   // ㄴ ㅁ ㅇ
+    if (j >= 8 && j <= 15) return 'flow';                                // ㄹ (겹받침 포함)
+    return 'firm';                                                       // ㄱ ㄷ ㅂ ㅅ ㅈ … 그 밖의 받침
   }
   // 가장 흔한 이름(남녀 각 상위 15개): '너무 흔하지 않게'에서 뺌
   const TOP_COMMON = new Set([...NAMES.M.slice(0, 15), ...NAMES.F.slice(0, 15)]);
@@ -81,27 +68,39 @@
   }
   const condOk = (c, n) => (!c.first || n[0] === c.first) && (!c.last || n[n.length - 1] === c.last)
     && (c.bat !== 'none' || ![...n].some(hasBat)) && (c.bat !== 'last' || !hasBat(n[n.length - 1]))
-    && c.feels.every(f => feelOk(f, n));
+    && (!c.feels.length || c.feels.includes(feelOf(n)));
   // 조건 상자 제목 옆: 고른 조건 요약
   function updCondSum() {
     const c = recCond();
     const parts = [c.first && `첫 ‘${c.first}’`, c.last && `끝 ‘${c.last}’`, ...c.feels.map(f => FEEL_KO[f]), c.style === 'mid' && '덜 흔하게', c.style === 'new' && '새 이름'].filter(Boolean);
     $('#condSum').textContent = parts.length ? (parts.length > 3 ? parts.slice(0, 3).join(' · ') + ` 외 ${parts.length - 3}` : parts.join(' · ')) : '';
     // 고른 조건에 맞는 이름 후보 수 (성별 기준 · 인기 + 새 이름) — 너무 적으면 미리 알려 줌
+    const picked = [...document.querySelectorAll('#feelChips .chip[aria-pressed="true"]')];
+    $('#feelNote').textContent = picked.length ? picked.map(b => `${b.querySelector('b').textContent}: ${b.dataset.desc}`).join(' / ')
+      : '이름의 끝소리(받침)와 자음으로 나눈 6가지예요 · 모든 이름은 이 중 딱 하나에 속해요 · 고르지 않으면 전체에서 찾아요';
     const cnt = $('#feelCnt'), g = $('#gender').value || 'U', len = n => n.length === 2 || $('#allowOne').checked;
-    if (!c.feels.length && !c.first && !c.last) { cnt.textContent = ''; return; }
+    // 분위기마다 지금 조건(성별·첫/끝 글자)에서 남는 이름 수 → 0개인 분위기는 흐리게 (예: 여자 이름엔 '힘 있고 묵직한'이 없음)
+    const base = [...new Set(NAMES[g].concat(GEN[g] || []))].filter(x => len(x) && condOk({ ...c, feels: [] }, x));
+    document.querySelectorAll('#feelChips .chip').forEach(b => { const k = base.filter(x => feelOf(x) === b.dataset.feel).length;
+      b.classList.toggle('empty', !k); b.querySelector('small').textContent = k ? `${b.dataset.ex} · ${k}개` : '해당 이름 없음'; });
+    if (!c.feels.length && !c.first && !c.last) { cnt.textContent = ''; cnt.classList.remove('zero'); return; }
     const n = [...new Set(NAMES[g].concat(GEN[g] || []))].filter(x => len(x) && condOk(c, x)).length;
-    cnt.textContent = n ? `조건에 맞는 이름 후보 ${n}개` : '조건에 맞는 이름이 없어요 · 분위기를 하나 빼 보세요';
+    cnt.textContent = n ? `조건에 맞는 이름 후보 ${n}개` : '조건에 맞는 이름이 없어요 · 분위기나 글자 조건을 바꿔 보세요';
     cnt.classList.toggle('zero', !n);
   }
   document.querySelectorAll('#feelChips .chip').forEach(b => b.addEventListener('click', () => {
     const on = b.getAttribute('aria-pressed') !== 'true';
+    // 최대 2개: 이미 2개를 골랐으면 새로 고를 수 없음 (하나를 먼저 해제)
+    if (on && document.querySelectorAll('#feelChips .chip[aria-pressed="true"]').length >= FEEL_MAX) {
+      b.classList.remove('deny'); void b.offsetWidth; b.classList.add('deny');
+      toast(`분위기는 최대 ${FEEL_MAX}개까지 고를 수 있어요 · 하나를 해제한 뒤 골라 주세요`); return;
+    }
     b.setAttribute('aria-pressed', on);
-    if (on) (FEEL_OFF[b.dataset.feel] || []).forEach(k => { const o = document.querySelector(`#feelChips [data-feel="${k}"]`); if (o) o.setAttribute('aria-pressed', 'false'); });
     updCondSum();
   }));
   $('#recCond').addEventListener('input', updCondSum); $('#recCond').addEventListener('change', updCondSum);
   ['#gender', '#allowOne'].forEach(id => $(id).addEventListener('change', updCondSum));
+  updCondSum();
 
   // ---------- 성씨 선택 ----------
   const surSel = $('#sur');
@@ -744,7 +743,7 @@
       fixed = hs.pos === 0 ? [hs.h, null] : [null, hs.h];
     }
     const parts = [c.first && `첫 글자 ‘${c.first}’`, c.last && `끝 글자 ‘${c.last}’`, c.bat === 'none' && '받침 없음', c.bat === 'last' && '끝 받침 없음',
-      c.feels.length && c.feels.map(f => FEEL_KO[f]).join('·') + ' 느낌', c.style === 'mid' && '너무 흔하지 않게', c.style === 'new' && '새로운 이름 포함'].filter(Boolean);
+      c.feels.length && c.feels.map(f => `‘${FEEL_KO[f]}’`).join(' 또는 '), c.style === 'mid' && '너무 흔하지 않게', c.style === 'new' && '새로운 이름 포함'].filter(Boolean);
     poolNote = (parts.length ? ' · 조건: ' + parts.join(', ') : '') + (widened ? ' · 조건에 맞는 인기 이름이 적어 새로운 이름까지 넓혔어요' : '');
     // '인기 이름 위주'인데 조건 때문에 자동으로 넓힌 경우: 인기 이름을 먼저, 새로운 이름은 그 뒤에 (각각 점수순)
     const popSet = new Set(NAMES[gender]);
