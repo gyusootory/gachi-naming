@@ -692,25 +692,37 @@
     const wc = e.target.closest('#whoChips .chip');
     if (wc) { document.querySelectorAll('#whoChips .chip').forEach(b => b.setAttribute('aria-pressed', b === wc)); $('#whoEtc').value = ''; whoReady(); return; }
     if (e.target.closest('#tallyReload')) { loadTally(); return; }
+    if (e.target.closest('#voteTell')) {   // 사용자가 직접 눌렀을 때만 공유 창
+      const text = $('#voteRes').dataset.text || '';
+      if (navigator.share) { try { await navigator.share({ text }); return; } catch (x) { if (x && x.name === 'AbortError') return; } }
+      try { await navigator.clipboard.writeText(text); toast('내 선택을 복사했어요! 단톡방에 붙여넣기 하세요'); } catch (x) { showShareBox(text); }
+      return;
+    }
     if (!e.target.closest('#voteGo')) return;
     const liked = [...document.querySelectorAll('#voteOut [data-like][aria-pressed="true"]')].map(b => b.dataset.like);
     if (!liked.length) { toast('마음에 드는 이름에 ♡를 먼저 눌러 주세요'); return; }
     const chip = document.querySelector('#whoChips .chip[aria-pressed="true"]');
     const who = ($('#whoEtc').value.trim() || (chip ? chip.textContent : '') || '가족').replace(/[<>]/g, '').slice(0, 12);
     const btn = $('#voteGo'); btn.disabled = true;
-    const C = SB(); let ok = false;
-    if (C) { try { const r = await fetch(C.supabaseUrl.replace(/\/$/, '') + '/rest/v1/family_votes', { method: 'POST', headers: Object.assign(sbHead(C), { Prefer: 'return=minimal' }), body: JSON.stringify({ poll: VOTE.id, who, picks: liked.join(',') }) }); ok = r.ok; } catch (x) {} }
+    const C = SB(); let ok = false, st = 0;
+    if (C) { try { const r = await fetch(C.supabaseUrl.replace(/\/$/, '') + '/rest/v1/family_votes', { method: 'POST', headers: Object.assign(sbHead(C), { Prefer: 'return=minimal' }), body: JSON.stringify({ poll: VOTE.id, who, picks: liked.join(',') }) }); ok = r.ok; st = r.status; } catch (x) {} }
     btn.disabled = false;
-    T('vote_cast', { n: liked.length, saved: ok });
+    T('vote_cast', { n: liked.length, saved: ok, status: st });   // 저장 실패 원인 확인용 (응답 번호만)
     const names = liked.map(k => { const x = voteCards.find(v => String(v.i) === k); return x ? `${x.sur.ko}${x.given.map(g => g.ko).join('')}(${x.sur.hanja}${x.given.map(g => g.ch).join('')})` : ''; }).filter(Boolean);
     if (ok) {
       try { localStorage.setItem('gachi-voted-' + VOTE.id, liked.join(',')); } catch (x) {}
       $('#voteSend').hidden = true; $('#voteWho').hidden = true; $('#voteHint').textContent = '투표했어요'; toast('투표했어요! 아래에서 가족들의 투표를 볼 수 있어요'); loadTally();
     } else {
-      // 결과를 모으는 서버가 없으면: 답장 글로 보내기
-      const text = `[가족 투표] ${who}: ${names.join(', ')} ♥`;
-      if (navigator.share) { try { await navigator.share({ text }); return; } catch (x) { if (x && x.name === 'AbortError') return; } }
-      try { await navigator.clipboard.writeText(text); toast('투표 내용을 복사했어요! 단톡방에 붙여넣기 하세요'); } catch (x) { showShareBox(text); }
+      // 결과를 모으지 못한 경우: 공유 창을 바로 띄우지 않고, 투표 완료 화면에서 원하는 사람만 '선택 알려 주기'를 누르게 함
+      try { localStorage.setItem('gachi-voted-' + VOTE.id, liked.join(',')); } catch (x) {}
+      $('#voteSend').hidden = true; $('#voteWho').hidden = true; $('#voteHint').textContent = '투표했어요';
+      const box = $('#voteRes'); box.hidden = false;
+      box.innerHTML = `<h4>투표했어요 ♥</h4>
+        <p class="muted">${esc(who)}님의 선택: <b>${names.map(esc).join(', ')}</b></p>
+        <p class="muted">지금은 가족 투표를 한곳에 모으지 못했어요. 링크를 보내 준 가족에게 선택을 알려 주세요.</p>
+        <button type="button" class="act" id="voteTell">내 선택 알려 주기</button>`;
+      box.dataset.text = `[가족 투표] ${who}: ${names.join(', ')} ♥`;
+      box.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
   });
   document.addEventListener('click', e => {
