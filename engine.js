@@ -227,6 +227,8 @@
     if (!strong && !avoid.includes(wealth) && count[wealth] >= 2 && !need.includes(wealth)) avoid.push(wealth);
     return {
       input: opts, hourKnown: known, sajuYear: yy,
+      // 보정 후 시각(분)과 시(時) 경계까지 남은 분: 출생 기록이 몇 분 달라도 시주가 바뀌는지 안내용 (계산에는 영향 없음)
+      tmin: known ? tmin : null, hourEdge: known ? Math.min((tmin + 60) % 120, 120 - (tmin + 60) % 120) : null,
       pillars: pillars.map(p => ({ ...p, stem: STEMS[p.s], branch: BRANCHES[p.b],
         ko: STEMS_KO[p.s] + BRANCHES_KO[p.b], sEl: STEM_EL[p.s], bEl: BRANCH_EL[p.b] })),
       animal: ANIMALS[yB], dayMaster: { stem: STEMS[dS], ko: STEMS_KO[dS], el: me },

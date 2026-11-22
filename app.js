@@ -44,13 +44,47 @@
   });
   GEN.U = [...new Set([...GEN.M, ...GEN.F])].filter(n => !NAMES.U.includes(n));
   const hasBat = c => (c.charCodeAt(0) - 0xAC00) % 28 !== 0;
-  // 이름 추천 조건 (첫 글자·끝 글자·받침) 읽기
+  // ---------- 이름 분위기: 한글 소리(첫소리·모음·받침)로만 판정 (뜻 추측 없이 누구나 확인 가능한 기준) ----------
+  const FEEL_KO = { soft: '부드러운', clear: '또렷한', bright: '밝은', calm: '차분한', neutral: '중성적인' };
+  const FEEL_PAIR = { soft: 'clear', clear: 'soft', bright: 'calm', calm: 'bright' };   // 서로 반대라 함께 고를 수 없음
+  const FIRM_CHO = new Set([0, 1, 3, 4, 7, 8, 10, 12, 13, 14, 15, 16, 17]);          // ㄱㄲㄷㄸㅂㅃㅆㅈㅉㅊㅋㅌㅍ
+  const HARD_JONG = new Set([1, 2, 3, 7, 17, 18, 19, 20, 22, 23, 24, 25, 26, 27]);   // 막히는 받침 (ㄱ·ㄷ·ㅂ·ㅅ 계열)
+  const BRIGHT_V = new Set([0, 1, 2, 3, 8, 9, 10, 11, 12]);                          // 밝은(양성) 모음 ㅏㅐㅑㅒㅗㅘㅙㅚㅛ
+  const BOTH = new Set([...NAMES.M, ...GEN.M].filter(n => new Set([...NAMES.F, ...GEN.F]).has(n)));   // 남녀 모두 쓰는 이름
+  function feelOk(f, n) {
+    const ds = [...n].map(N.decompose).filter(Boolean);
+    if (f === 'soft') return ds.every(d => !FIRM_CHO.has(d.cho) && !HARD_JONG.has(d.jong));
+    if (f === 'clear') return ds.some(d => FIRM_CHO.has(d.cho) || HARD_JONG.has(d.jong));
+    if (f === 'bright') return ds.some(d => BRIGHT_V.has(d.jung));
+    if (f === 'calm') return ds.every(d => !BRIGHT_V.has(d.jung));
+    if (f === 'neutral') return BOTH.has(n);
+    return true;
+  }
+  // 가장 흔한 이름(남녀 각 상위 15개): '너무 흔하지 않게'에서 뺌
+  const TOP_COMMON = new Set([...NAMES.M.slice(0, 15), ...NAMES.F.slice(0, 15)]);
+  // 이름 추천 조건 (첫 글자·끝 글자·받침·분위기·흔한 정도) 읽기
   function recCond() {
     const one = v => (String(v).match(/[가-힣]/) || [''])[0];
-    return { first: one($('#cFirst').value), last: one($('#cLast').value), bat: $('#cBat').value, style: $('#cStyle').value };
+    const feels = [...document.querySelectorAll('#feelChips .chip[aria-pressed="true"]')].map(b => b.dataset.feel);
+    return { first: one($('#cFirst').value), last: one($('#cLast').value), bat: $('#cBat').value, style: $('#cStyle').value, feels };
   }
   const condOk = (c, n) => (!c.first || n[0] === c.first) && (!c.last || n[n.length - 1] === c.last)
-    && (c.bat !== 'none' || ![...n].some(hasBat)) && (c.bat !== 'last' || !hasBat(n[n.length - 1]));
+    && (c.bat !== 'none' || ![...n].some(hasBat)) && (c.bat !== 'last' || !hasBat(n[n.length - 1]))
+    && c.feels.every(f => feelOk(f, n));
+  // 조건 상자 제목 옆: 고른 조건 요약
+  function updCondSum() {
+    const c = recCond();
+    const parts = [c.first && `첫 ‘${c.first}’`, c.last && `끝 ‘${c.last}’`, c.bat && '받침', ...c.feels.map(f => FEEL_KO[f]), c.style === 'mid' && '덜 흔하게', c.style === 'new' && '새 이름'].filter(Boolean);
+    $('#condSum').textContent = parts.length ? parts.join(' · ') : '';
+  }
+  document.querySelectorAll('#feelChips .chip').forEach(b => b.addEventListener('click', () => {
+    const on = b.getAttribute('aria-pressed') !== 'true';
+    b.setAttribute('aria-pressed', on);
+    const pair = FEEL_PAIR[b.dataset.feel];
+    if (on && pair) { const o = document.querySelector(`#feelChips [data-feel="${pair}"]`); if (o) o.setAttribute('aria-pressed', 'false'); }
+    updCondSum();
+  }));
+  $('#recCond').addEventListener('input', updCondSum); $('#recCond').addEventListener('change', updCondSum);
 
   // ---------- 성씨 선택 ----------
   const surSel = $('#sur');
@@ -267,7 +301,8 @@
     box.innerHTML = `
       <div class="pillars">${sj.hourKnown ? '' : '<div class="pillar ghost"><span class="plabel">시주</span><span class="gz">?</span><span class="gz">?</span><span class="pko">시간 모름</span></div>'}${cols}</div>
       <p class="sajumeta">양력 ${i.y}.${i.m}.${i.d} · ${sj.animal}띠 · ${sj.jieqi} 절기 구간${sj.tzNote ? ' · ' + sj.tzNote : ''}</p>
-      ${sj.jieqiDay ? '<p class="err" style="margin:0;font-size:12px">이날은 절기가 바뀌는 날이라 태어난 시각을 모르면 월주가 달라질 수 있어요. 시각을 입력하면 정확해집니다.</p>' : ''}
+      ${sj.jieqiDay ? '<p class="edge">이날은 절기가 바뀌는 날이라 태어난 시각을 모르면 월주가 달라질 수 있어요. 시각을 입력하면 정확해집니다.</p>' : ''}
+      ${sj.hourKnown && sj.hourEdge !== null && sj.hourEdge <= 5 ? `<p class="edge">보정한 출생 시각이 시(時)가 바뀌는 경계에서 ${sj.hourEdge}분 거리예요. 기록이 몇 분만 달라도 시주가 바뀔 수 있으니 출생증명서의 시각을 한 번 더 확인해 주세요.</p>` : ''}
       <div class="bars">${bars}</div>
       <dl class="yong">
         <div><dt>일간</dt><dd>${sj.dayMaster.stem}(${sj.dayMaster.ko}) ${elTag(sj.dayMaster.el)} · ${sj.strong ? '신강' : '신약'}</dd></div>
@@ -282,15 +317,58 @@
     const c = word.charCodeAt(word.length - 1) - 0xAC00;
     return word + (c >= 0 && c <= 11171 && c % 28 ? withB : withoutB);
   }
-  function nameMeaning(given) {
-    const k = given.map(g => g.mean);
-    if (k.length === 1) return `${josa(k[0], '을', '를')} 지닌 사람이 되라는 뜻을 담았습니다.`;
-    const t = [
-      () => `${josa(k[0], '과', '와')} ${josa(k[1], '을', '를')} 함께 지닌 사람이 되라는 뜻을 담았습니다.`,
-      () => `${josa(k[0], '을', '를')} 바탕으로 ${josa(k[1], '을', '를')} 이루어 가는 사람이 되라는 뜻입니다.`,
-      () => `${josa(k[0], '과', '와')} ${josa(k[1], '이', '가')} 조화를 이루는 삶을 바라는 이름입니다.`,
-    ];
-    return t[(given[0].ch.charCodeAt(0) + given[1].ch.charCodeAt(0)) % t.length]();
+  // ---------- 이름 풀이: 정해진 덕담 문장 대신, 엔진이 계산한 값(용신·발음오행·81수리·음양)을 근거로 씀 ----------
+  const elK = e => `${e}(${N.EL_KO[e]})`;
+  const hzJ = (g, withB, withoutB) => `${g.ch}(${g.hun} ${g.eum})` + (hasBat(g.eum) ? withB : withoutB);   // 瑞(상서 서)가
+  // 81수리 4격이 맡는 시기·영역 (성명학에서 널리 쓰는 구분)
+  const GY_LIFE = { 원격: ['초년', '~20세', '타고난 기질·성장기'], 형격: ['청년', '20~40세', '사회 활동·일'], 이격: ['중장년', '40~60세', '대인 관계·가정'], 정격: ['전체운', '평생', '이름 전체의 흐름'] };
+  function reading(given, ev, sj) {
+    const strong = [];   // [이어지는 말, 꾸미는 말] — 한 줄 요약(제목)에 씀
+    // 1) 사주 보완: 어떤 글자가 어떤 기운을 채우는지
+    let saju;
+    if (sj && sj.need && sj.need.length) {
+      const fill = given.map((g, k) => ({ g, e: ev.gEls[k], r: sj.need.indexOf(ev.gEls[k]) }));
+      const hit = fill.filter(x => x.r >= 0);
+      const tag = r => r === 0 ? '가장 필요한(용신)' : r === 1 ? '그다음으로 필요한(희신)' : '사주에 비어 있는';
+      if (hit.length) {
+        saju = `사주에 ${hit.map(x => `${tag(x.r)} ${elK(x.e)} 기운을 ${hzJ(x.g, '이', '가')}`).join(', ')} 채워 줍니다.`;
+        const best = hit.slice().sort((a, b) => a.r - b.r)[0];
+        strong.push([`사주에 필요한 ${elK(best.e)} 기운을 채우고`, `사주에 필요한 ${elK(best.e)} 기운을 채우는`]);
+      } else {
+        saju = `이름 한자의 기운(${[...new Set(ev.gEls)].map(elK).join('·')})이 사주에 필요한 ${sj.need.slice(0, 2).map(elK).join('·')} 기운과 겹치지 않아, 사주 보완 효과는 크지 않습니다.`;
+      }
+    } else {
+      saju = '생년월일을 넣지 않아 사주 보완은 평가하지 않았고, 획수와 소리 위주로 보았습니다.';
+    }
+    // 2) 발음오행: 성 → 이름 소리의 흐름
+    const chain = ev.syl.map((x, k) => `${x}(${ev.sEls[k]})`).join(' → ');
+    const clash = ev.soundRel.map((r, k) => r === '상극' ? `${ev.syl[k]}→${ev.syl[k + 1]}` : '').filter(Boolean);
+    let sound;
+    if (ev.soundRel.every(r => r === '상생')) { sound = `${chain}: 소리의 기운이 차례로 서로 살려 주는 상생 흐름이라, 부를 때 막힘이 없습니다.`; strong.push(['소리가 상생으로 이어지고', '소리가 상생으로 이어지는']); }
+    else if (!clash.length) sound = `${chain}: 상생과 같은 기운(비화)으로 이어져 무난하게 흐릅니다.`;
+    else sound = `${chain}: ${ev.soundRel.map((r, k) => `${ev.syl[k]}→${ev.syl[k + 1]}${josa(ev.syl[k + 1], '은', '는').slice(1)} ${r === '상생' ? '서로 살려 주는 상생' : r === '비화' ? '같은 기운(비화)' : '부딪히는 상극'}`).join(', ')}으로 이어집니다.`;
+    // 81수리 강점
+    const bad = ev.gyeok.filter(g => g.grade === 0), half = ev.gyeok.filter(g => g.grade === 1);
+    if (!bad.length && !half.length) strong.push(['81수리 4격이 모두 길하고', '81수리 4격이 모두 길한']);
+    else if (!bad.length) strong.push(['흉수 없이 4격이 고르고', '흉수 없이 4격이 고른']);
+    if (ev.mixed) strong.push(['음양이 고루 섞이고', '음양이 고루 섞인']);
+    // 3) 아쉬운 점: 가장 크게 깎인 이유 하나를 숨기지 않고 알려 줌
+    const avoidHit = sj && sj.avoid ? given.filter((g, k) => sj.avoid.includes(ev.gEls[k])) : [];
+    const ownWarn = ev.warn.filter(w => !w.startsWith('흉수'));
+    let flaw = '', none = false;
+    if (ownWarn.length) flaw = `${ownWarn[0]} — 이 점 때문에 감점이 있었습니다.`;
+    else if (bad.length) { const g = bad[0], L = GY_LIFE[g.key]; flaw = `${g.key} ${g.num}수(${g.name})는 흉수로 보는 수라, ${L[0]}(${L[1]}) ${L[2]} 쪽 점수가 깎였습니다.`; }
+    else if (avoidHit.length) flaw = `${avoidHit.map(g => `${g.ch}의 ${elK(g.el)}`).join(', ')} 기운은 사주에 이미 많은 기운이라 보완 점수가 낮습니다.`;
+    else if (!ev.mixed) flaw = `획수가 모두 ${ev.yy[0] === '양' ? '홀수(양)' : '짝수(음)'}라 음양이 한쪽으로 치우친 점이 아쉽습니다 (음양 0/10점).`;
+    else if (clash.length) flaw = `성과 이름 소리 사이에 상극(${clash.join(', ')})이 있어 발음오행에서 ${Math.round((15 - ev.parts.sound) * 10) / 10}점이 빠졌습니다.`;
+    else if (ev.samRel.includes('상극')) flaw = `천격·인격·지격(삼원오행) 흐름에 상극이 있어 삼원오행이 ${ev.parts.sam}/10점입니다.`;
+    else if (half.length) { const g = half[0], L = GY_LIFE[g.key]; flaw = `${g.key} ${g.num}수(${g.name})는 반길(半吉)이라 ${L[0]} 운에서 만점보다 5점 낮습니다.`; }
+    else if (sj && sj.need && ev.jaNote.every(n => n !== '용신 보완')) flaw = `사주에 가장 필요한 ${elK(sj.need[0])} 기운을 직접 채우는 글자는 없어 자원오행이 ${ev.parts.ja}/25점입니다.`;
+    else { flaw = '눈에 띄는 감점 요소가 없는 고른 구성입니다.'; none = true; }
+    // 한 줄 요약: 강점 최대 2개를 자연스럽게 이어 씀
+    const top = strong.slice(0, 2);
+    const head = !top.length ? '점수 구성이 무난한 이름' : top.length === 1 ? `${top[0][1]} 이름` : `${top[0][0]}, ${top[1][1]} 이름`;
+    return { head, saju, sound, flaw, none };
   }
 
   // 방문 통계 기록 (analytics.js가 없거나 꺼져 있으면 아무 일도 안 함)
@@ -309,8 +387,8 @@
     const v = m && (m.content.match(/[?&]v=([\w-]+)/) || [])[1];
     return v ? '&v=' + v : '';
   }
-  function cardText(ko, hz, given, ev) {
-    return `[가치작명소 추천 이름]\n${ko} (${hz}) · ${Math.round(ev.total)}점 ${ev.grade}\n“${nameMeaning(given)}”\n` +
+  function cardText(ko, hz, given, ev, head) {
+    return `[가치작명소 추천 이름]\n${ko} (${hz}) · ${Math.round(ev.total)}점 ${ev.grade}\n${head}\n` +
       given.map(g => `${g.ch} ${g.hun} ${g.eum} — ${g.mean}`).join('\n');
   }
   let toastTimer;
@@ -360,56 +438,75 @@
       : `<p class="inm ok"><span aria-hidden="true">✓</span> 모두 대법원 인명용 한자예요 <small>(2024년 6월 기준)</small></p>`)
       + (given.some(g => g.ext) ? `<p class="inm ext"><span aria-hidden="true">ⓘ</span> ${given.filter(g => g.ext).map(g => g.ch).join(', ')}: 인명용 전체에서 찾은 한자라 뜻은 사전 기준이에요</p>` : '');
   }
-  function nameCard(item, rank, sur, from) {
+  // 사주 기운 → 이름이 채우는 기운 비교 카드
+  function fillCard(given, ev, sj) {
+    if (!sj || !sj.need) return '<p class="muted fc-none">생년월일을 넣으면 사주에 부족한 기운과 이름이 채우는 기운을 나란히 보여 드려요.</p>';
+    const cnt = sj.count || null;
+    const st = e => sj.need[0] === e ? '용신' : sj.need.includes(e) ? '필요' : sj.avoid.includes(e) ? '많음' : '';
+    const left = N.ELS.map(e => `<li class="fc-e${st(e) ? ' s-' + ({ 용신: 'y', 필요: 'n', 많음: 'a' })[st(e)] : ''}"><span class="el el-${EL_CLASS[e]}">${e}<small>${N.EL_KO[e]}</small></span>${cnt ? `<b class="num">${sj.raw[e]}</b>` : ''}${st(e) ? `<em>${st(e)}</em>` : ''}</li>`).join('');
+    const right = given.map((g, k) => { const n = ev.jaNote[k]; const cls = n === '용신 보완' ? 'y' : n === '부족 오행 보완' ? 'n' : n.startsWith('과다') ? 'a' : '';
+      return `<li class="fc-g${cls ? ' s-' + cls : ''}"><b class="fc-hz">${g.ch}</b><span class="el el-${EL_CLASS[ev.gEls[k]]}">${ev.gEls[k]}<small>${N.EL_KO[ev.gEls[k]]}</small></span><em>${esc(n)}</em></li>`; }).join('');
+    return `<div class="fc"><div class="fc-col"><span class="fc-t">${cnt ? '사주 여덟 글자의 기운' : '사주에 필요한 기운'}</span><ul class="fc-els">${left}</ul></div>
+      <span class="fc-arr" aria-hidden="true"></span>
+      <div class="fc-col"><span class="fc-t">이름 한자가 더하는 기운</span><ul class="fc-gs">${right}</ul></div></div>`;
+  }
+  function nameCard(item, rank, sur, from, sj) {
     const { given, ev } = item;
     const fullKo = sur.ko + given.map(g => g.ko).join('');
     const fullH = sur.hanja + given.map(g => g.ch).join('');
     const key = fullH;
-    // 저장 버튼을 눌렀을 때 쓸 정보 (점수는 이 순간의 사주 기준)
+    const rd = reading(given, ev, sj);
+    const share = cardText(fullKo, fullH, given, ev, rd.head);
+    // 저장 버튼을 눌렀을 때 쓸 정보 (점수는 이 순간의 사주 기준 · 가족 투표 때 같은 점수를 다시 계산하도록 필요한/많은 기운도 보관)
     cardInfo.set(key, { key, ko: fullKo, hz: fullH, sur: { ko: sur.ko, hanja: sur.hanja }, from: from || 'rec',
       given: given.map(g => ({ ch: g.ch, ko: g.ko, eum: g.eum, hun: g.hun, mean: g.mean, strokes: g.strokes, el: g.el, inm: g.inm })),
-      score: Math.round(ev.total), grade: ev.grade, meaning: nameMeaning(given), share: cardText(fullKo, fullH, given, ev) });
+      score: Math.round(ev.total), grade: ev.grade, head: rd.head, why: [rd.saju, rd.sound, rd.flaw],
+      need: sj && sj.need ? sj.need.join('') : '', avoid: sj && sj.avoid ? sj.avoid.join('') : '', share });
     const isSaved = saved.some(x => x.key === key);
-    const chars = [
-      ...sur.hanja.split('').map((c, k) => ({ ch: c, ko: sur.ko[k] || sur.ko, sub: '성씨', strokes: sur.strokes[k], el: sur.els[k], surname: true })),
-      ...given.map(g => ({ ch: g.ch, ko: g.ko, sub: `${g.hun} ${g.eum}`, strokes: g.strokes, el: g.el })),
-    ];
     const P = ev.parts;
-    const parts = [['수리', P.suri, 40], ['자원오행', P.ja, 25], ['발음오행', P.sound, 15], ['음양', P.yinyang, 10], ['삼원오행', P.sam, 10]];
-    const gy = ev.gyeok.map(g => `<tr><th>${g.key}</th><td>${g.age}</td><td class="num">${g.num}</td>
-        <td><span class="pill g${g.grade}">${N.GRADE_KO[g.grade]}</span></td><td>${g.name} — ${g.desc}</td></tr>`).join('');
+    const parts = [['81수리', P.suri, 40], ['자원오행', P.ja, 25], ['발음오행', P.sound, 15], ['음양', P.yinyang, 10], ['삼원오행', P.sam, 10]];
+    const gy = ev.gyeok.map(g => { const L = GY_LIFE[g.key]; return `<li class="gy g${g.grade}">
+        <div class="gy-h"><b>${g.key}</b><span>${L[0]} · ${L[1]}</span><span class="pill g${g.grade}">${g.num}수 ${N.GRADE_KO[g.grade]}</span></div>
+        <p><span class="gy-a">${L[2]}</span> ${g.name} — ${g.desc}</p></li>`; }).join('');
     const alts = (item.alts || []).map(a => `<li><b>${a.given.map(g => g.ch).join('')}</b> ${esc(a.given.map(g => g.hun + ' ' + g.eum).join(', '))} <span class="num">${a.ev.total}점</span></li>`).join('');
     return `<article class="card">
-      <header class="chead">
-        ${rank ? `<span class="rank">${rank}</span>` : ''}
-        <div class="score" style="--p:${ev.total}"><b>${Math.round(ev.total)}</b><small>${ev.grade}</small></div>
+      <header class="c-top">
+        ${rank ? `<span class="c-rank">${rank}위</span>` : `<span class="c-rank c-me">${from === 'mine' ? '풀이' : '이름'}</span>`}
+        <span class="c-grade">${ev.grade}</span>
+        <span class="c-score"><b class="num">${Math.round(ev.total)}</b><small>/100점</small></span>
       </header>
-      <div class="chars">${chars.map(c => `<div class="ch${c.surname ? ' sur' : ''}">
-          <span class="hz">${c.ch}</span><span class="hk">${c.ko}</span>
-          <span class="hs">${esc(c.sub)}</span>
-          <span class="hm">${c.strokes}획 ${elTag(c.el)}</span></div>`).join('')}</div>
-      <div class="meaning">
-        <p class="msent">“${esc(nameMeaning(given))}”</p>
-        <ul class="mlist">${given.map(g => `<li><b>${g.ch}</b><span class="mh">${esc(g.hun)} ${g.eum}</span><span class="mk">${esc(g.mean)}</span></li>`).join('')}</ul>
+      <div class="c-name">
+        <div class="c-hz" aria-hidden="true">${[...sur.hanja].map(c => `<span class="sur">${c}</span>`).join('')}${given.map(g => `<span>${g.ch}</span>`).join('')}</div>
+        <div class="c-ko"><b>${esc(fullKo)}</b> <span>${given.map(g => `${esc(g.hun)} ${g.eum}`).join(' · ')}</span></div>
       </div>
-      <ul class="parts">${parts.map(([k, v, m]) => `<li><span>${k}</span><span class="pt"><i style="width:${v / m * 100}%"></i></span><span class="num">${v}/${m}</span></li>`).join('')}</ul>
+      <p class="c-head">${esc(rd.head)}</p>
+      <ul class="c-why">
+        <li><span class="wk">사주</span><span>${esc(rd.saju)}</span></li>
+        <li><span class="wk">소리</span><span>${esc(rd.sound)}</span></li>
+        <li class="${rd.none ? 'ok' : 'flaw'}"><span class="wk">${rd.none ? '감점' : '아쉬운 점'}</span><span>${esc(rd.flaw)}</span></li>
+      </ul>
       ${inmLine(given)}
-      ${ev.warn.length ? `<p class="warn">${ev.warn.map(esc).join(' · ')}</p>` : ''}
-      <details class="dt"><summary><span class="dt-ic" aria-hidden="true">鑑</span><span class="dt-tx"><b class="dt-open">상세 감명 보기</b><b class="dt-close">상세 감명 접기</b><small>81수리 · 음양 · 오행 풀이</small></span><span class="dt-chev" aria-hidden="true"></span></summary>
-        <h4>원형이정 4격 (81수리)</h4>
-        <div class="tw"><table><tbody>${gy}</tbody></table></div>
+      <details class="dt"><summary><span class="dt-tx"><b class="dt-open">상세 감명 보기</b><b class="dt-close">상세 감명 접기</b><small>오행 보완 · 81수리 시기별 풀이 · 점수 구성</small></span><span class="dt-chev" aria-hidden="true"></span></summary>
+        <h4>사주에 필요한 기운 → 이름이 채우는 기운</h4>
+        ${fillCard(given, ev, sj)}
+        <h4>글자 풀이</h4>
+        <ul class="mlist">${given.map(g => `<li><b>${g.ch}</b><span class="mh">${esc(g.hun)} ${g.eum}</span><span class="mk">${esc(g.mean)} <span class="muted num">· ${g.strokes}획(원획)</span></span></li>`).join('')}</ul>
+        <h4>81수리 4격 · 시기별 풀이</h4>
+        <ul class="gys">${gy}</ul>
+        <h4>점수 구성 <span class="muted">${Math.round(ev.total * 10) / 10}/100</span></h4>
+        <ul class="parts">${parts.map(([k, v, m]) => `<li><span>${k}</span><span class="pt"><i style="width:${v / m * 100}%"></i></span><span class="num">${v}/${m}</span></li>`).join('')}</ul>
         <h4>음양 · 발음오행 · 삼원오행</h4>
         <ul class="facts">
           <li><b>획수 음양</b> ${ev.yy.join(' · ')} → ${ev.mixed ? '음양 조화' : '한쪽으로 치우침'}</li>
-          <li><b>발음오행</b> ${ev.syl.map((s, k) => `${s}(${N.CHO_NAME[N.decompose(s).cho]}) ${elTag(ev.sEls[k])}`).join(' → ')} <span class="muted">${ev.soundRel.join(', ')}</span></li>
+          <li><b>발음오행</b> ${ev.syl.map((x, k) => `${x}(${N.CHO_NAME[N.decompose(x).cho]}) ${elTag(ev.sEls[k])}`).join(' → ')} <span class="muted">${ev.soundRel.join(', ')}</span></li>
           <li><b>삼원오행</b> 천격 ${elTag(ev.sam[0])} → 인격 ${elTag(ev.sam[1])} → 지격 ${elTag(ev.sam[2])} <span class="muted">${ev.samRel.join(', ')}</span></li>
-          <li><b>자원오행</b> ${given.map((g, k) => `${g.ch} ${elTag(g.el)} <span class="muted">${ev.jaNote[k]}</span>`).join(' / ')}</li>
         </ul>
         ${alts ? `<h4>같은 소리의 다른 한자 조합</h4><ul class="alts">${alts}</ul>` : ''}
+        <p class="basis">대법원 인명용 한자 · 강희자전 원획 · 절기 만세력 기준으로 계산했어요</p>
       </details>
       <div class="cact">
         <button class="act save${isSaved ? ' on' : ''}" type="button" data-save="${esc(key)}" aria-pressed="${isSaved}">${isSaved ? '♥ 저장됨' : '♡ 저장'}</button>
-        <button class="act" type="button" data-share="${esc(cardText(fullKo, fullH, given, ev))}">공유하기</button>
+        <button class="act ghost" type="button" data-share="${esc(share)}">공유</button>
         <button class="act ghost" type="button" data-copy="${esc(fullKo + ' ' + fullH)}">이름 복사</button>
       </div>
     </article>`;
@@ -436,25 +533,149 @@
   function renderSaved() {
     document.querySelectorAll('.cnt').forEach(c => { c.textContent = saved.length || ''; c.hidden = !saved.length; });
     const out = $('#savedOut'); if (!out) return;
+    setTimeout(renderVoteBar, 0);
     $('#savedMeta').textContent = saved.length ? `${saved.length}개 · 최근 저장한 순서 · 점수는 저장할 때의 사주 기준` : '';
     if (!saved.length) {
       out.innerHTML = '<div class="empty"><span class="empty-seal" aria-hidden="true">藏</span><p>추천 카드의 <b>♡ 저장</b>을 누르면 여기에 모여요 <small>(이 휴대폰·브라우저에 보관돼요)</small></p></div>';
       return;
     }
     const fmt = t => new Intl.DateTimeFormat('ko-KR', { month: 'numeric', day: 'numeric' }).format(new Date(t));
-    out.innerHTML = saved.slice().sort((a, b) => b.savedAt - a.savedAt).map(r => `<article class="card scard">
-      <header class="chead"><span class="sdate">${fmt(r.savedAt)} 저장 · ${({ find: '한자 찾기', mine: '이름 비교' })[r.from] || '이름 추천'}</span>
-        <div class="score" style="--p:${r.score}"><b>${r.score}</b><small>${esc(r.grade)}</small></div></header>
-      <div class="chars">${[...r.sur.hanja].map((c, k) => `<div class="ch sur"><span class="hz">${c}</span><span class="hk">${r.sur.ko[k] || r.sur.ko}</span><span class="hs">성씨</span></div>`).join('')}
-        ${r.given.map(g => `<div class="ch"><span class="hz">${g.ch}</span><span class="hk">${g.ko}</span><span class="hs">${esc(g.hun)} ${g.eum}</span></div>`).join('')}</div>
-      <div class="meaning"><p class="msent">“${esc(r.meaning)}”</p>
-        <ul class="mlist">${r.given.map(g => `<li><b>${g.ch}</b><span class="mh">${esc(g.hun)} ${g.eum}</span><span class="mk">${esc(g.mean)}</span></li>`).join('')}</ul></div>
+    [...picks].forEach(k => { if (!saved.some(x => x.key === k)) picks.delete(k); });
+    out.innerHTML = saved.slice().sort((a, b) => b.savedAt - a.savedAt).map(r => { const on = picks.has(r.key); return `<article class="card scard${on ? ' picked' : ''}">
+      <header class="c-top">
+        <button type="button" class="pick" data-pick="${esc(r.key)}" aria-pressed="${on}"><span class="pk" aria-hidden="true"></span>투표 후보</button>
+        <span class="sdate">${fmt(r.savedAt)} · ${({ find: '한자 찾기', mine: '이름 비교' })[r.from] || '이름 추천'}</span>
+        <span class="c-score"><b class="num">${r.score}</b><small>/100점</small></span>
+      </header>
+      <div class="c-name">
+        <div class="c-hz" aria-hidden="true">${[...r.sur.hanja].map(c => `<span class="sur">${c}</span>`).join('')}${r.given.map(g => `<span>${g.ch}</span>`).join('')}</div>
+        <div class="c-ko"><b>${esc(r.ko)}</b> <span>${r.given.map(g => `${esc(g.hun)} ${g.eum}`).join(' · ')}</span></div>
+      </div>
+      <p class="c-head">${esc(r.head || r.meaning || '')}</p>
+      ${r.why ? `<ul class="c-why">${r.why.map((t, k) => `<li${k === 2 ? ' class="flaw"' : ''}><span class="wk">${['사주', '소리', '아쉬운 점'][k]}</span><span>${esc(t)}</span></li>`).join('')}</ul>`
+        : `<ul class="mlist">${r.given.map(g => `<li><b>${g.ch}</b><span class="mh">${esc(g.hun)} ${g.eum}</span><span class="mk">${esc(g.mean)}</span></li>`).join('')}</ul>`}
       <div class="cact">
-        <button class="act" type="button" data-share="${esc(r.share)}">공유하기</button>
+        <button class="act ghost" type="button" data-share="${esc(r.share)}">공유</button>
         <button class="act ghost" type="button" data-copy="${esc(r.ko + ' ' + r.hz)}">이름 복사</button>
         <button class="act ghost del" type="button" data-unsave="${esc(r.key)}">삭제</button>
-      </div></article>`).join('');
+      </div></article>`; }).join('');
   }
+  // ---------- 가족 투표: 저장한 이름 2~5개를 링크로 보내고, 가족이 풀이를 보고 ♥ 투표 ----------
+  // 링크에는 이름·한자·점수·사주에 필요한 기운(오행 글자)만 담음 (생년월일·성별은 넣지 않음)
+  // 투표는 Supabase family_votes 표에 '누가(호칭) · 몇 번째 이름'만 저장 · 표가 없으면 카톡으로 답장하는 방식으로 대신함
+  const picks = new Set();
+  const POLL_KEY = 'gachi-polls';
+  const getPolls = () => { try { return JSON.parse(localStorage.getItem(POLL_KEY) || '[]'); } catch (e) { return []; } };
+  const b64e = str => btoa(String.fromCharCode(...new TextEncoder().encode(str))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  const b64d = str => new TextDecoder().decode(Uint8Array.from(atob(str.replace(/-/g, '+').replace(/_/g, '/')), c => c.charCodeAt(0)));
+  const baseUrl = () => { const h = location.hostname; return location.protocol === 'https:' && h && !/claude|anthropic/.test(h) ? location.origin + location.pathname : PUBLIC_URL; };
+  function renderVoteBar() {
+    const bar = $('#voteBar'); if (!bar) return;
+    bar.hidden = saved.length < 2 && !getPolls().length;
+    const n = picks.size, polls = getPolls();
+    const fmt = t => new Intl.DateTimeFormat('ko-KR', { month: 'numeric', day: 'numeric' }).format(new Date(t));
+    bar.innerHTML = `<div class="vb-row"><div class="vb-tx"><b>가족 투표</b><span>${saved.length < 2 ? '이름을 2개 이상 저장하면 투표를 만들 수 있어요' : n < 2 ? `카드의 <b>투표 후보</b>를 2~5개 골라 주세요${n ? ` · ${n}개 고름` : ''}` : n > 5 ? `후보는 5개까지예요 · 지금 ${n}개` : `<b>${n}개</b>를 골랐어요 · 링크를 보내면 가족이 투표해요`}</span></div>
+      <button type="button" class="act" id="voteMake"${n < 2 || n > 5 ? ' disabled' : ''}>투표 링크 보내기</button></div>
+      ${polls.length ? `<details class="mypolls"><summary>내가 만든 투표 ${polls.length}개 · 결과 보기</summary><ul>${polls.slice().reverse().map(p => `<li><a href="${esc(p.url)}">${esc(p.names.join(' · '))}</a><span>${fmt(p.at)}</span></li>`).join('')}</ul></details>` : ''}`;
+  }
+  document.addEventListener('click', async e => {
+    const pk = e.target.closest('[data-pick]');
+    if (pk) { const k = pk.dataset.pick; picks.has(k) ? picks.delete(k) : picks.add(k); pk.setAttribute('aria-pressed', picks.has(k)); pk.closest('.card').classList.toggle('picked', picks.has(k)); renderVoteBar(); return; }
+    if (!e.target.closest('#voteMake')) return;
+    const items = saved.filter(r => picks.has(r.key)).slice(0, 5);
+    if (items.length < 2) return;
+    const id = Array.from(crypto.getRandomValues(new Uint8Array(10)), x => 'abcdefghijklmnopqrstuvwxyz0123456789'[x % 36]).join('');
+    const d = b64e(JSON.stringify(items.map(r => [r.sur.ko, r.sur.hanja, r.given.map(g => g.ch).join(''), r.given.map(g => g.ko).join(''), r.score, r.need || '', r.avoid || ''])));
+    const url = `${baseUrl()}?vote=${id}&d=${d}`;
+    const polls = getPolls(); polls.push({ id, url, names: items.map(r => r.ko), at: Date.now() });
+    try { localStorage.setItem(POLL_KEY, JSON.stringify(polls.slice(-20))); } catch (x) {}
+    renderVoteBar(); T('vote_make', { n: items.length });
+    const text = `우리 아기 이름 후보 ${items.length}개예요. 풀이를 보고 마음에 드는 이름에 투표해 주세요!\n${items.map(r => `· ${r.ko} (${r.hz})`).join('\n')}`;
+    if (navigator.share) { try { await navigator.share({ title: '가치작명소 가족 투표', text, url }); return; } catch (x) { if (x && x.name === 'AbortError') return; } }
+    try { await navigator.clipboard.writeText(text + '\n' + url); toast('투표 링크를 복사했어요! 가족 단톡방에 붙여넣기 하세요'); } catch (x) { showShareBox(text + '\n' + url); }
+  });
+
+  // 투표 화면 (링크로 들어온 경우)
+  const VOTE = (() => {
+    const q = new URLSearchParams(location.search), id = q.get('vote'), d = q.get('d');
+    if (!id || !d || !/^[a-z0-9]{10}$/.test(id)) return null;
+    try {
+      const rows = JSON.parse(b64d(d));
+      if (!Array.isArray(rows) || rows.length < 2 || rows.length > 5) return null;
+      const EL = /^[木火土金水]{0,5}$/;
+      const items = rows.map(r => Array.isArray(r) && r.length === 7 && typeof r[2] === 'string' && typeof r[3] === 'string' && r[2].length === r[3].length && r[2].length >= 1 && r[2].length <= 2
+        && /^[가-힣]+$/.test(r[3]) && SURNAMES.some(x => x[0] === r[0] && x[1] === r[1]) && EL.test(r[5]) && EL.test(r[6]) ? r : null);
+      return items.every(Boolean) ? { id, items } : null;
+    } catch (e) { return null; }
+  })();
+  const SB = () => { const C = window.GACHI_CONFIG || {}; return C.supabaseUrl && C.supabaseAnonKey && location.protocol === 'https:' ? C : null; };
+  const sbHead = C => Object.assign({ apikey: C.supabaseAnonKey, 'Content-Type': 'application/json' }, /^eyJ/.test(C.supabaseAnonKey) ? { Authorization: 'Bearer ' + C.supabaseAnonKey } : {});
+  let voteCards = [];
+  async function showVote() {
+    setTab('vote');
+    const out = $('#voteOut');
+    const build = () => VOTE.items.map((r, i) => {
+      const row = SURNAMES.find(x => x[0] === r[0] && x[1] === r[1]);
+      const sur = { ko: row[0], hanja: row[1], strokes: row[2], els: row[3] };
+      const given = [...r[2]].map((ch, k) => { const h = N.candidates(r[3][k], true).find(x => x.ch === ch); return h ? { ...h, ko: r[3][k] } : null; });
+      if (given.some(x => !x)) return null;
+      const sj = r[5] ? { need: [...r[5]], avoid: [...r[6]] } : null;
+      return { i, sur, given, sj, ev: N.evaluate(sur, given, sj) };
+    });
+    voteCards = build();
+    if (voteCards.some(x => !x)) { await loadExt(); voteCards = build(); }
+    voteCards = voteCards.filter(Boolean);
+    if (voteCards.length < 2) { out.innerHTML = '<p class="err">투표 링크를 읽지 못했어요. 링크가 잘렸는지 확인해 주세요.</p>'; $('#voteSend').hidden = true; return; }
+    out.innerHTML = voteCards.map(x => nameCard({ given: x.given, ev: x.ev }, 0, x.sur, 'vote', x.sj).replace(/<div class="cact">[\s\S]*?<\/div>\s*<\/article>$/,
+      `<div class="cact"><button class="act like" type="button" data-like="${x.i}" aria-pressed="false">♡ 이 이름 좋아요</button></div></article>`)).join('');
+    let voted = null; try { voted = localStorage.getItem('gachi-voted-' + VOTE.id); } catch (e) {}
+    if (voted) { voted.split(',').forEach(k => { const b = out.querySelector(`[data-like="${k}"]`); if (b) { b.setAttribute('aria-pressed', 'true'); b.textContent = '♥ 좋아요'; } }); $('#voteSend').hidden = true; }
+    T('vote_open', { n: voteCards.length, mine: getPolls().some(p => p.id === VOTE.id) });
+    loadTally();
+  }
+  async function loadTally() {
+    const box = $('#voteRes'), C = SB();
+    if (!C) { box.hidden = true; return; }
+    try {
+      const r = await fetch(C.supabaseUrl.replace(/\/$/, '') + '/rest/v1/rpc/vote_tally', { method: 'POST', headers: sbHead(C), body: JSON.stringify({ p_poll: VOTE.id }) });
+      if (!r.ok) throw 0;
+      const rows = await r.json();
+      const cnt = {}, who = {};
+      rows.forEach(v => String(v.picks).split(',').forEach(k => { cnt[k] = (cnt[k] || 0) + 1; (who[k] = who[k] || []).push(v.who); }));
+      const max = Math.max(1, ...Object.values(cnt));
+      box.hidden = false;
+      box.innerHTML = `<h4>지금까지 투표 <span class="muted">${rows.length}명 참여</span></h4>
+        ${rows.length ? `<ul class="tally">${voteCards.map(x => { const c = cnt[x.i] || 0; return `<li class="${c && c === max ? 'top' : ''}"><span class="tn">${esc(x.sur.ko + x.given.map(g => g.ko).join(''))}</span><span class="tr"><i style="width:${c / max * 100}%"></i></span><b class="num">${c}</b><small>${esc((who[x.i] || []).join(', '))}</small></li>`; }).join('')}</ul>` : '<p class="muted">아직 투표한 가족이 없어요. 링크를 단톡방에 보내 보세요.</p>'}
+        <button type="button" class="act ghost" id="tallyReload">결과 새로 보기</button>`;
+    } catch (e) { box.hidden = false; box.innerHTML = '<p class="muted">투표 결과 모아 보기를 지금은 불러올 수 없어요. 투표하면 카톡으로 답장을 보낼 수 있어요.</p>'; }
+  }
+  document.addEventListener('click', async e => {
+    const lk = e.target.closest('[data-like]');
+    if (lk && !$('#voteSend').hidden) { const on = lk.getAttribute('aria-pressed') !== 'true'; lk.setAttribute('aria-pressed', on); lk.textContent = on ? '♥ 좋아요' : '♡ 이 이름 좋아요'; lk.closest('.card').classList.toggle('liked', on); return; }
+    const wc = e.target.closest('#whoChips .chip');
+    if (wc) { document.querySelectorAll('#whoChips .chip').forEach(b => b.setAttribute('aria-pressed', b === wc)); $('#whoEtc').value = ''; return; }
+    if (e.target.closest('#tallyReload')) { loadTally(); return; }
+    if (!e.target.closest('#voteGo')) return;
+    const liked = [...document.querySelectorAll('#voteOut [data-like][aria-pressed="true"]')].map(b => b.dataset.like);
+    if (!liked.length) { toast('마음에 드는 이름에 ♡를 먼저 눌러 주세요'); return; }
+    const chip = document.querySelector('#whoChips .chip[aria-pressed="true"]');
+    const who = ($('#whoEtc').value.trim() || (chip ? chip.textContent : '') || '가족').replace(/[<>]/g, '').slice(0, 12);
+    const btn = $('#voteGo'); btn.disabled = true;
+    const C = SB(); let ok = false;
+    if (C) { try { const r = await fetch(C.supabaseUrl.replace(/\/$/, '') + '/rest/v1/family_votes', { method: 'POST', headers: Object.assign(sbHead(C), { Prefer: 'return=minimal' }), body: JSON.stringify({ poll: VOTE.id, who, picks: liked.join(',') }) }); ok = r.ok; } catch (x) {} }
+    btn.disabled = false;
+    T('vote_cast', { n: liked.length, saved: ok });
+    const names = liked.map(k => { const x = voteCards.find(v => String(v.i) === k); return x ? `${x.sur.ko}${x.given.map(g => g.ko).join('')}(${x.sur.hanja}${x.given.map(g => g.ch).join('')})` : ''; }).filter(Boolean);
+    if (ok) {
+      try { localStorage.setItem('gachi-voted-' + VOTE.id, liked.join(',')); } catch (x) {}
+      $('#voteSend').hidden = true; toast('투표했어요! 아래에서 가족들의 투표를 볼 수 있어요'); loadTally();
+    } else {
+      // 결과를 모으는 서버가 없으면: 답장 글로 보내기
+      const text = `[가족 투표] ${who}: ${names.join(', ')} ♥`;
+      if (navigator.share) { try { await navigator.share({ text }); return; } catch (x) { if (x && x.name === 'AbortError') return; } }
+      try { await navigator.clipboard.writeText(text); toast('투표 내용을 복사했어요! 단톡방에 붙여넣기 하세요'); } catch (x) { showShareBox(text); }
+    }
+  });
   document.addEventListener('click', e => {
     const s = e.target.closest('[data-save]'), u = e.target.closest('[data-unsave]');
     if (s) {
@@ -486,25 +707,27 @@
   function buildPool(sj) {
     const sur = surname();
     const gender = $('#gender').value;
-    const c = recCond(), condOn = !!(c.first || c.last || c.bat);
+    const c = recCond(), condOn = !!(c.first || c.last || c.bat || c.feels.length);
     const len = n => n.length === 2 || $('#allowOne').checked;
     const popular = NAMES[gender].filter(len), newer = (GEN[gender] || []).filter(len);
-    let names = (c.style === 'new' ? popular.concat(newer) : popular).filter(n => condOk(c, n));
+    // 흔한 정도: 인기 이름 위주 / 너무 흔하지 않게(가장 흔한 이름 제외 + 새 이름) / 새로운 이름까지
+    let names = (c.style === 'new' ? popular.concat(newer) : c.style === 'mid' ? popular.filter(n => !TOP_COMMON.has(n)).concat(newer) : popular).filter(n => condOk(c, n));
     let widened = false;
     // 조건에 맞는 인기 이름이 적으면 새로운 이름까지 자동으로 넓힘
-    if (c.style !== 'new' && condOn && names.length < 20) { names = names.concat(newer.filter(n => condOk(c, n))); widened = true; }
+    if (c.style === 'pop' && condOn && names.length < 20) { names = names.concat(newer.filter(n => condOk(c, n))); widened = true; }
     const hs = hangSpec();
     let fixed = null;
     if (hs) {
       const other = new Set();
-      const src = c.style === 'new' || widened ? NAMES[gender].concat(GEN[gender] || []) : NAMES[gender];
+      const src = c.style !== 'pop' || widened ? NAMES[gender].concat(GEN[gender] || []) : NAMES[gender];
       src.forEach(n => { if (n.length === 2) other.add(n[1 - hs.pos]); });
       // 입력한 소리(예: 律 → '율')를 그대로 이름에 사용
       const say = $('#hangEum').value.trim() || hs.h.eum;
       names = [...other].filter(o => o !== say).map(o => hs.pos === 0 ? say + o : o + say).filter(n => !NG.has(n) && condOk(c, n));
       fixed = hs.pos === 0 ? [hs.h, null] : [null, hs.h];
     }
-    const parts = [c.first && `첫 글자 ‘${c.first}’`, c.last && `끝 글자 ‘${c.last}’`, c.bat === 'none' && '받침 없음', c.bat === 'last' && '끝 받침 없음', c.style === 'new' && '새로운 이름 포함'].filter(Boolean);
+    const parts = [c.first && `첫 글자 ‘${c.first}’`, c.last && `끝 글자 ‘${c.last}’`, c.bat === 'none' && '받침 없음', c.bat === 'last' && '끝 받침 없음',
+      c.feels.length && c.feels.map(f => FEEL_KO[f]).join('·') + ' 느낌', c.style === 'mid' && '너무 흔하지 않게', c.style === 'new' && '새로운 이름 포함'].filter(Boolean);
     poolNote = (parts.length ? ' · 조건: ' + parts.join(', ') : '') + (widened ? ' · 조건에 맞는 인기 이름이 적어 새로운 이름까지 넓혔어요' : '');
     // '인기 이름 위주'인데 조건 때문에 자동으로 넓힌 경우: 인기 이름을 먼저, 새로운 이름은 그 뒤에 (각각 점수순)
     const popSet = new Set(NAMES[gender]);
@@ -530,7 +753,8 @@
     recPage = Math.max(0, Math.min(recPage, pages - 1));
     const from = recPage * PAGE, list = view.slice(from, from + PAGE), last = recPage >= pages - 1;
     $('#recMeta').textContent = (showAll ? `전체 후보 ${pool.length}개 · ${from + 1}~${from + list.length}위` : `점수 상위 ${view.length}개만 골랐어요 · ${from + 1}~${from + list.length}위`) + poolNote;
-    let html = list.map((x, k) => nameCard(x, from + k + 1, surname(), 'rec')).join('');
+    const sj = readBirth();
+    let html = list.map((x, k) => nameCard(x, from + k + 1, surname(), 'rec', sj)).join('');
     if (last) html += endCard();
     $('#recOut').innerHTML = html;
     renderPager($('#recPager'), recPage, pages, n => goRecPage(n));
@@ -592,7 +816,7 @@
   }
 
   // ---------- 기능 2: 한자 찾기 ----------
-  let findList = [], findShown = 0;
+  let findList = [], findShown = 0, findSj = null;
   function showFind() {
     reveal('#findOut');
     const raw = $('#wantName').value.replace(/\s/g, '');
@@ -616,7 +840,8 @@
         <ul>${base.concat(more.slice(0, 40)).map(h => `<li>${elTag(h.el)}<b>${h.ch}</b> ${esc(h.hun)} ${h.eum} <span class="num">${h.strokes}획</span><small class="ck">${h.ext ? '사전 뜻' : esc(h.mean)}</small></li>`).join('') || '<li class="muted">데이터에 없는 음입니다</li>'}${more.length > 40 ? `<li class="muted">외 ${more.length - 40}자 (아래 결과에는 모두 반영)</li>` : ''}</ul></div>`; }).join('');
     $('#candOut').innerHTML = cand;
     if (missing.length) { out.innerHTML = `<p class="rp-inline"><button type="button" class="rp-link" data-report="${missing[0]}" data-where="find">‘${missing[0]}’ 한자 제보하기</button> · 알려 주시면 추가할게요</p><p class="err">‘${missing.join(', ')}’ 음의 이름용 한자가 데이터에 없어 한자 조합을 만들 수 없습니다.</p>`; $('#findMore').hidden = true; $('#findMeta').textContent = ''; return; }
-    findList = N.rankHanja(surname('f-'), syl, sj && !sj.error ? sj : null, null, false, ext);
+    findSj = sj && !sj.error ? sj : null;
+    findList = N.rankHanja(surname('f-'), syl, findSj, null, false, ext);
     findShown = 0; out.innerHTML = '';
     $('#findMeta').textContent = `${surname('f-').ko}${raw} · 가능한 한자 조합 ${findList.length.toLocaleString('ko-KR')}개를 점수순으로 정렬했습니다${sj && !sj.error ? ' (사주 반영)' : ' (사주 미반영)'}${ext ? ' · 인명용 한자 전체에서 찾음' : ''}.`
       + (autoExt ? ' 엄선 한자에 없는 소리라 인명용 전체로 넓혀서 찾았어요.' : '');
@@ -624,7 +849,7 @@
   }
   function moreFind() {
     const next = findList.slice(findShown, findShown + 6);
-    $('#findOut').insertAdjacentHTML('beforeend', next.map((x, k) => nameCard(x, findShown + k + 1, surname('f-'), 'find')).join(''));
+    $('#findOut').insertAdjacentHTML('beforeend', next.map((x, k) => nameCard(x, findShown + k + 1, surname('f-'), 'find', findSj)).join(''));
     findShown += next.length;
     $('#findMore').hidden = findShown >= findList.length;
   }
@@ -731,8 +956,8 @@
         <button class="btn" type="button" id="toRename">이 사주에 맞는 개명 후보 더 보기 ›</button>
         <p class="note">※ 참고용 점수예요. 이름에는 사주 외에도 가족의 바람과 살아온 시간이 담겨 있어요. 개명은 법원 허가 절차가 필요하니 충분히 고민한 뒤 결정하세요.</p>
       </div>`;
-    out.innerHTML = `<div class="mine">${vs}<h5 class="sub-h">지금 이름 풀이</h5>${nameCard({ given: me.given, ev }, 0, sur, 'mine')}
-      ${cev ? `<h5 class="sub-h">개명할 이름 풀이</h5>${nameCard({ given: cand.given, ev: cev }, 0, sur, 'mine')}` : ''}${bars}</div>`;
+    out.innerHTML = `<div class="mine">${vs}<h5 class="sub-h">지금 이름 풀이</h5>${nameCard({ given: me.given, ev }, 0, sur, 'mine', sj)}
+      ${cev ? `<h5 class="sub-h">개명할 이름 풀이</h5>${nameCard({ given: cand.given, ev: cev }, 0, sur, 'mine', sj)}` : ''}${bars}</div>`;
     $('#mineMeta').textContent = `${meName}${cev ? ' vs ' + cName : ''} · 사주 반영 · 참고용`;
     T('mine', { score: Math.round(ev.total), cand: !!cev });   // 이름 자체는 보내지 않음
   }
@@ -881,6 +1106,7 @@
   // ---------- 탭 ----------
   function setTab(t) {
     document.querySelectorAll('[role=tab]').forEach(b => b.setAttribute('aria-selected', b.dataset.tab === t));
+    document.body.classList.toggle('voting', t === 'vote');
     document.querySelectorAll('[role=tabpanel]').forEach(p => (p.hidden = p.id !== 'p-' + t));
     // (탭 기억 안 함: 항상 이름 추천으로 시작)
     if (t === 'saved') renderSaved();
@@ -1012,4 +1238,5 @@
   if (!['rec', 'find', 'mine', 'saved'].includes(tab)) tab = 'rec';
   setTab(tab);
   renderSaved();
+  if (VOTE) showVote();   // 가족 투표 링크로 들어온 경우: 투표 화면부터
 })();
