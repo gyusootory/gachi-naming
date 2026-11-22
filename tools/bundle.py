@@ -60,7 +60,7 @@ for old in ['오행작명소.html', '오행작명소-웹앱.zip']:
 open(os.path.join(R, 'dist', '가치작명소.html'), 'w', encoding='utf-8').write(head + single + '\n</html>\n')
 
 # ② 설치형 웹앱
-pwa = (head + '<meta name="theme-color" content="#f2f4f6" media="(prefers-color-scheme: light)">\n<meta name="theme-color" content="#101013" media="(prefers-color-scheme: dark)">\n'
+pwa = (head + '<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">\n<meta name="theme-color" content="#0f1115" media="(prefers-color-scheme: dark)">\n'
        f'<link rel="canonical" href="{SITE}">\n'
        '<link rel="manifest" href="manifest.webmanifest">\n'
        '<link rel="icon" href="favicon.ico" sizes="any">\n'
@@ -80,7 +80,7 @@ if not os.path.exists(os.path.join(D, 'config.js')):  # 이미 키를 넣어 둔
 json.dump({
     'id': './', 'name': '가치작명소', 'short_name': '가치작명소', 'description': DESC, 'lang': 'ko',
     'start_url': './', 'scope': './', 'display': 'standalone', 'orientation': 'portrait',
-    'background_color': '#121826', 'theme_color': '#f2f4f6', 'categories': ['lifestyle', 'utilities'],
+    'background_color': '#121826', 'theme_color': '#ffffff', 'categories': ['lifestyle', 'utilities'],
     'icons': [{'src': 'icon-192.png', 'sizes': '192x192', 'type': 'image/png'},
               {'src': 'icon-512.png', 'sizes': '512x512', 'type': 'image/png'},
               {'src': 'icon-maskable-512.png', 'sizes': '512x512', 'type': 'image/png', 'purpose': 'maskable'}],

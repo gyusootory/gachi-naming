@@ -488,7 +488,7 @@
     const alts = (item.alts || []).map(a => `<li><b>${a.given.map(g => g.ch).join('')}</b> ${esc(a.given.map(g => g.hun + ' ' + g.eum).join(', '))} <span class="num">${a.ev.total}점</span></li>`).join('');
     return `<article class="card">
       <header class="c-top">
-        ${rank ? `<span class="c-rank">${rank}위</span>` : `<span class="c-rank c-me">${from === 'mine' ? '풀이' : '이름'}</span>`}
+        ${rank ? `<span class="c-rank" aria-label="${rank}위">${String(rank).padStart(2, '0')}</span>` : ''}<span class="cap">${rank ? 'Rank' : from === 'mine' ? '이름 풀이' : from === 'vote' ? '후보' : 'Name'}</span>
         <span class="c-grade">${ev.grade}</span>
         <span class="c-score"><b class="num">${Math.round(ev.total)}</b><small>/100점</small></span>
       </header>
@@ -498,9 +498,9 @@
       </div>
       <p class="c-head">${esc(rd.head)}</p>
       <ul class="c-why">
-        <li><span class="wk">사주</span><span>${esc(rd.saju)}</span></li>
-        <li><span class="wk">소리</span><span>${esc(rd.sound)}</span></li>
-        <li class="${rd.none ? 'ok' : 'flaw'}"><span class="wk">${rd.none ? '감점' : '아쉬운 점'}</span><span>${esc(rd.flaw)}</span></li>
+        <li><span class="wk"><i>01</i>사주 보완</span><span>${esc(rd.saju)}</span></li>
+        <li><span class="wk"><i>02</i>소리 흐름</span><span>${esc(rd.sound)}</span></li>
+        <li class="${rd.none ? 'ok' : 'flaw'}"><span class="wk"><i>03</i>${rd.none ? '감점 요소' : '아쉬운 점'}</span><span>${esc(rd.flaw)}</span></li>
       </ul>
       ${inmLine(given)}
       <details class="dt"><summary><span class="dt-tx"><b class="dt-open">상세 감명 보기</b><b class="dt-close">상세 감명 접기</b><small>오행 보완 · 81수리 시기별 풀이 · 점수 구성</small></span><span class="dt-chev" aria-hidden="true"></span></summary>
@@ -569,7 +569,7 @@
         <div class="c-ko"><b>${esc(r.ko)}</b> <span>${r.given.map(g => `${esc(g.hun)} ${g.eum}`).join(' · ')}</span></div>
       </div>
       <p class="c-head">${esc(r.head || r.meaning || '')}</p>
-      ${r.why ? `<ul class="c-why">${r.why.map((t, k) => `<li${k === 2 ? ' class="flaw"' : ''}><span class="wk">${['사주', '소리', '아쉬운 점'][k]}</span><span>${esc(t)}</span></li>`).join('')}</ul>`
+      ${r.why ? `<ul class="c-why">${r.why.map((t, k) => `<li${k === 2 ? ' class="flaw"' : ''}><span class="wk"><i>0${k + 1}</i>${['사주 보완', '소리 흐름', '아쉬운 점'][k]}</span><span>${esc(t)}</span></li>`).join('')}</ul>`
         : `<ul class="mlist">${r.given.map(g => `<li><b>${g.ch}</b><span class="mh">${esc(g.hun)} ${g.eum}</span><span class="mk">${esc(g.mean)}</span></li>`).join('')}</ul>`}
       <div class="cact">
         <button class="act ghost" type="button" data-share="${esc(r.share)}">공유</button>

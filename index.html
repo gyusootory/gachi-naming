@@ -3,57 +3,53 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <!-- 글꼴: 화면을 막지 않고 뒤에서 받기(먼저 기본 글꼴로 보이고, 받으면 바뀜)
-     본문·버튼 = Pretendard(필요한 글자만 나눠 받음) · 한자 = Noto Serif KR · 감성 제목·한 줄 풀이 = 고운바탕 -->
+     본문·버튼 = Pretendard(필요한 글자만 나눠 받음) · 감성 제목·카피 = Hahmlet · 한자 = Noto Serif KR · 숫자·점수·날짜·획수 = DM Mono -->
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="preload" as="style" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"></noscript>
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;600&family=Gowun+Batang:wght@400;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;600&family=Gowun+Batang:wght@400;700&display=swap"></noscript>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;600&family=Hahmlet:wght@500;600;700&family=DM+Mono:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;600&family=Hahmlet:wght@500;600;700&family=DM+Mono:wght@400;500&display=swap"></noscript>
 <style>
-/* 디자인: 토스풍 에디토리얼 리포트 — 회색 바탕 + 흰 카드 + 얇은 선, 글자 3단 위계, 포인트는 브랜드 금색 */
+/* 디자인: 프리미엄 작명 리포트(에디토리얼) — 흰 바탕 + 딥 차콜 글자 + 1px 얇은 선 + 포인트는 딥 네이비 한 가지
+   글꼴: 본문 Pretendard · 감성 제목 Hahmlet · 한자 Noto Serif KR · 숫자·점수·날짜·획수 DM Mono */
 :root {
-  --bg: #f2f4f6;          /* 바탕 */
-  --surface: #ffffff;     /* 카드 */
-  --sunk: #eaedf1;        /* 막대 바탕·눌린 칸 */
-  --tile: #f9fafb;        /* 입력칸·한자 타일 (연한 면) */
-  --ink: #191f28;         /* 글자 1단: 제목·본문 */
-  --ink2: #4e5968;        /* 글자 2단: 설명 */
-  --muted: #6b7684;       /* 글자 3단: 작은 보조 글씨 (흰 바탕 대비 4.5 이상 확보) */
-  --faint: #8b95a1;       /* 글자 3단(큰 글씨·장식·안내 문구용) */
-  --line: rgb(0 0 0 / .06);
-  --line2: rgb(0 0 0 / .1);
-  --accent: #191f28;      /* 주 버튼 */
-  --accent-ink: #ffffff;
-  --point: #b0823a;       /* 포인트(선택·포커스) */
-  --gold: #946c2c;        /* 글씨용 포인트 (대비 확보) */
-  --gold-hi: #c9a86a;
-  --gold-soft: #f8f4ec;
-  --band: #191f28; --band-ink: #ffffff; --band-muted: #8b95a1;
-  --seal: #d4483b;        /* 필수 표시 */
-  --req-bg: #fff5f4; --req-ring: rgb(212 72 59 / .16);
+  --bg: #ffffff;
+  --surface: #ffffff;
+  --sunk: #f1f3f5;        /* 막대 바탕 */
+  --tile: #f8f9fa;        /* 입력칸 면 */
+  --ink: #1c1f24;         /* 딥 차콜 */
+  --ink2: #4b5563;
+  --muted: #6b7280;
+  --faint: #9ca3af;
+  --line: #e5e7eb;
+  --line2: #d1d5db;
+  --point: #1e3a8a;       /* 포인트: 딥 네이비 */
+  --accent: #1e3a8a; --accent-ink: #ffffff;
+  --gold: #1e3a8a; --gold-hi: #3b5bdb; --gold-soft: #eef2fb;   /* 예전 금색 자리 → 포인트 색으로 통일 */
+  --band: #1c1f24; --band-ink: #ffffff; --band-muted: #9ca3af;
+  --seal: #c2412d; --req-bg: #fdf4f2; --req-ring: rgb(194 65 45 / .14);
   --shadow: none;
-  --wood: #2f8a5b; --fire: #d0503f; --earth: #a87a1c; --metal: #6b7684; --water: #3268c4;
-  --good: #2f8a5b; --half: #a87a1c; --bad: #d0503f;
+  --wood: #3f7d5c; --fire: #b5523f; --earth: #93702a; --metal: #5f6b7a; --water: #2f5a9e;
+  --good: #3f7d5c; --half: #93702a; --bad: #b5523f;
   --f-display: "Noto Serif KR", "Nanum Myeongjo", "AppleMyungjo", "Batang", serif;
-  --f-story: "Gowun Batang", "Noto Serif KR", "AppleMyungjo", serif;
+  --f-story: "Hahmlet", "Noto Serif KR", "AppleMyungjo", serif;
   --f-body: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
-  --f-mono: var(--f-body);
-  --r: 16px;              /* 카드·입력·버튼 모서리 */
+  --f-mono: "DM Mono", ui-monospace, "SF Mono", Menlo, monospace;
 }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
-  --bg: #101013; --surface: #1c1c22; --sunk: #2a2a33; --tile: #26262e; --ink: #f9fafb; --ink2: #b0b8c1; --muted: #9aa3ad; --faint: #8b95a1;
-  --line: rgb(255 255 255 / .08); --line2: rgb(255 255 255 / .14);
-  --accent: #f2f4f6; --accent-ink: #101013; --point: #d6b978; --gold: #d6b978; --gold-hi: #e6cf98; --gold-soft: #2a261e;
-  --band: #1c1c22; --band-ink: #f9fafb; --band-muted: #8b95a1; --seal: #ff7b6e; --on-seal: #1d1210; --req-bg: #2c1f1e; --req-ring: rgb(255 123 110 / .22);
-  --wood: #6fcf9a; --fire: #ff8f80; --earth: #e3bd62; --metal: #b0b8c1; --water: #7fb0ff;
-  --good: #6fcf9a; --half: #e3bd62; --bad: #ff8f80; color-scheme: dark } }
+  --bg: #0f1115; --surface: #0f1115; --sunk: #1d2128; --tile: #171a20; --ink: #eef0f3; --ink2: #b8bfca; --muted: #98a1ad; --faint: #7c8594;
+  --line: #262b33; --line2: #353b45;
+  --point: #9db4ff; --accent: #9db4ff; --accent-ink: #0f1115; --gold: #9db4ff; --gold-hi: #b9caff; --gold-soft: #161d30;
+  --band: #0f1115; --band-ink: #eef0f3; --band-muted: #7c8594; --seal: #f08a77; --on-seal: #1d1210; --req-bg: #241815; --req-ring: rgb(240 138 119 / .2);
+  --wood: #7cc79e; --fire: #f09a88; --earth: #d9b86e; --metal: #aab3bf; --water: #8fb3f0;
+  --good: #7cc79e; --half: #d9b86e; --bad: #f09a88; color-scheme: dark } }
 :root[data-theme="dark"] {
-  --bg: #101013; --surface: #1c1c22; --sunk: #2a2a33; --tile: #26262e; --ink: #f9fafb; --ink2: #b0b8c1; --muted: #9aa3ad; --faint: #8b95a1;
-  --line: rgb(255 255 255 / .08); --line2: rgb(255 255 255 / .14);
-  --accent: #f2f4f6; --accent-ink: #101013; --point: #d6b978; --gold: #d6b978; --gold-hi: #e6cf98; --gold-soft: #2a261e;
-  --band: #1c1c22; --band-ink: #f9fafb; --band-muted: #8b95a1; --seal: #ff7b6e; --on-seal: #1d1210; --req-bg: #2c1f1e; --req-ring: rgb(255 123 110 / .22);
-  --wood: #6fcf9a; --fire: #ff8f80; --earth: #e3bd62; --metal: #b0b8c1; --water: #7fb0ff;
-  --good: #6fcf9a; --half: #e3bd62; --bad: #ff8f80; color-scheme: dark }
+  --bg: #0f1115; --surface: #0f1115; --sunk: #1d2128; --tile: #171a20; --ink: #eef0f3; --ink2: #b8bfca; --muted: #98a1ad; --faint: #7c8594;
+  --line: #262b33; --line2: #353b45;
+  --point: #9db4ff; --accent: #9db4ff; --accent-ink: #0f1115; --gold: #9db4ff; --gold-hi: #b9caff; --gold-soft: #161d30;
+  --band: #0f1115; --band-ink: #eef0f3; --band-muted: #7c8594; --seal: #f08a77; --on-seal: #1d1210; --req-bg: #241815; --req-ring: rgb(240 138 119 / .2);
+  --wood: #7cc79e; --fire: #f09a88; --earth: #d9b86e; --metal: #aab3bf; --water: #8fb3f0;
+  --good: #7cc79e; --half: #d9b86e; --bad: #f09a88; color-scheme: dark }
 
 * { box-sizing: border-box }
 body { background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 15px; line-height: 1.55;
@@ -986,7 +982,96 @@ table.vs td.win { background: var(--gold-soft) }
 .nb-tick.roll:hover .nb-run, .nb-tick.paused .nb-run { animation-play-state: paused }
 @keyframes nb-roll { from { transform: translateX(0) } to { transform: translateX(-50%) } }
 .notice { flex-wrap: wrap; align-items: center }
+
+/* ═════════ 프리미엄 작명 리포트 (최종 레이어) ═════════
+   흰 바탕 · 1px 선 · 포인트 딥 네이비 1색 · 01/02/03 번호 + 작은 캡션 + 큰 명조 한자 */
+body { background: var(--bg) }
+.num, .c-score b, .c-rank, .bn, .pager button, .parts .num, .tally b, .sdate, .gy-h .pill, .fc-e b, .weights b, .dateinp, .hm, .cnt { font-family: var(--f-mono); font-variant-numeric: tabular-nums; letter-spacing: 0 }
+.cap { display: inline-block; font: 500 11px/1 var(--f-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--faint) }
+.sechead .cap { margin-bottom: 8px }
+.sec-no { margin: 0; display: flex; align-items: baseline; gap: 10px; font: 700 15px var(--f-body); color: var(--ink); letter-spacing: -.02em; padding-bottom: 10px; border-bottom: 1px solid var(--line) }
+.sec-no i { font: 500 12px var(--f-mono); font-style: normal; color: var(--point); letter-spacing: .06em }
+/* 머리 · 탭 */
+.brand h1 { font-family: var(--f-story); font-weight: 700; letter-spacing: -.02em }
+.logo { border-radius: 12px; box-shadow: 0 0 0 1px var(--line) }
+.appshare { background: var(--surface); border: 1px solid var(--line); color: var(--ink2); border-radius: 999px }
+.mast { border-bottom: 1px solid var(--line); padding-bottom: 16px }
+@media (min-width: 761px) {
+  .tabs { background: none; padding: 0; gap: 4px; border-radius: 0 }
+  .tabs button { border-radius: 0; padding: 10px 12px; color: var(--muted); border-bottom: 2px solid transparent; background: none }
+  .tabs button[aria-selected="true"] { background: none; box-shadow: none; color: var(--ink); border-bottom-color: var(--point) }
+}
+/* 상자: 흰 면 + 1px 선 (그림자·색 면 없음) */
+.panel, .card, .votebar, .vote-send, .vote-res, .endcard, .findbar, .cand, .cmp, .guide section, .savehint, .notice { background: var(--surface); border: 1px solid var(--line); box-shadow: none; border-radius: 16px }
+.panel { padding: 28px 24px }
+.cond, .hangbox, .candbox { background: var(--surface); border: 1px solid var(--line); border-radius: 14px }
+.info-pop, .fc-col, .gy, .rp-exist, .weights div, .fsum { background: var(--tile); border: 1px solid var(--line) }
+input[type=text], input[type=date], input[type=time], select, #fbText, #shareText { background-color: var(--surface); border: 1px solid var(--line2); border-radius: 12px }
+.cond input[type=text], .cond select { background-color: var(--surface) }
+input[type=text]:focus, input[type=date]:focus, input[type=time]:focus, select:focus, #fbText:focus { border-color: var(--point); box-shadow: 0 0 0 3px color-mix(in srgb, var(--point) 14%, transparent) }
+.btn { background: var(--point); color: var(--accent-ink); border-radius: 12px }
+.act { background: var(--point); color: var(--accent-ink); border-radius: 10px }
+.act.ghost, .act.save, .act.like { background: var(--surface); color: var(--ink); border: 1px solid var(--line2) }
+.act.save.on, .act.like[aria-pressed="true"] { background: color-mix(in srgb, var(--point) 9%, transparent); color: var(--point); border-color: color-mix(in srgb, var(--point) 40%, transparent) }
+.card.liked, .card.picked { border-color: var(--point); box-shadow: 0 0 0 1px var(--point) }
+.chip { background: var(--surface); border: 1px solid var(--line2) }
+.chip[aria-pressed="true"], .pick[aria-pressed="true"], .pager button[aria-current="page"] { background: var(--point); color: var(--accent-ink); border-color: var(--point) }
+.pick[aria-pressed="true"] .pk { border-color: var(--accent-ink); background: var(--accent-ink) }
+.pick[aria-pressed="true"] .pk::after { background: var(--point) }
+.pick { background: var(--surface); border: 1px solid var(--line2) }
+.opt { background: none; border: 1px solid var(--line2); color: var(--muted) }
+/* 제목 */
+.intro-t, .sechead h3, .vote-hero h3, .guide h3, .ec-tx > b, #reportBox h3, #fbBox h3, #shareBox h3, .cmp h4 { font-family: var(--f-story); font-weight: 600; letter-spacing: -.02em }
+.intro-ic { border: 1px solid var(--line); background: var(--surface) }
+.sechead h3 { font-size: 26px }
+/* 이름 카드: 번호 + 캡션 + 큰 명조 한자 */
+.card { padding: 26px 24px; gap: 18px }
+.c-top { align-items: baseline; gap: 10px }
+.c-rank { background: none; padding: 0; font-size: 22px; font-weight: 500; color: var(--point); line-height: 1 }
+.c-grade { font: 600 12.5px var(--f-body); color: var(--ink2); border: 1px solid var(--line2); border-radius: 999px; padding: 2px 9px }
+.c-score b { font-size: 30px; font-weight: 500; letter-spacing: -.02em; color: var(--ink) }
+.c-score small { font-family: var(--f-mono); font-size: 12px; color: var(--faint) }
+.c-hz { font-weight: 500; font-size: 52px; letter-spacing: .08em; gap: 6px }
+.c-hz .sur { color: var(--faint) }
+.c-head { font-family: var(--f-story); font-weight: 600; font-size: 18px; line-height: 1.55; letter-spacing: -.02em; border-top-color: var(--line) }
+.c-why { gap: 14px }
+.c-why li { grid-template-columns: minmax(0, 1fr); gap: 4px }
+.c-why .wk { display: flex; align-items: baseline; gap: 8px; font: 700 12.5px var(--f-body); color: var(--ink); letter-spacing: -.01em }
+.c-why .wk i { font: 500 11.5px var(--f-mono); font-style: normal; color: var(--point); letter-spacing: .04em }
+.c-why li.flaw .wk, .c-why li.ok .wk { color: var(--ink) }
+.c-why li > span:last-child { color: var(--ink2); font-size: 14px; line-height: 1.65 }
+/* 상세 감명: 소제목에 01 02 03 */
+.card details.dt { counter-reset: dsec; border-top-color: var(--line) }
+.dt h4 { counter-increment: dsec; font-size: 14px; padding-top: 16px; border-top: 1px solid var(--line); margin: 20px 0 12px }
+.dt h4::before { content: counter(dsec, decimal-leading-zero); font: 500 11.5px var(--f-mono); color: var(--point); letter-spacing: .04em; margin-right: 2px }
+.dt > summary + h4 { border-top: 0; padding-top: 4px }
+.dt-chev { background: none; border: 1px solid var(--line2) }
+.gy-h .pill { font-size: 11.5px }
+.pt i { background: var(--point); opacity: 1 }
+.mlist b, .fc-hz, .c-hz { font-family: var(--f-display) }
+.basis { font-family: var(--f-body) }
+/* 강조색은 포인트 하나로 */
+.intro-t b, .cond-sum, .fedit, .rp-link, .foot a, .vh-k, .sub-h, .vs2 h5, .hzs, .cmp .lead b, .mypolls a { color: var(--point) }
+.vh-k { background: color-mix(in srgb, var(--point) 9%, transparent) }
+.tally li.top .tr i, .cbars li.top .fl, .cbars li.cand .fl { background: var(--point) }
+.sh-ic { background: color-mix(in srgb, var(--point) 9%, transparent); color: var(--point) }
+.pillar { background: var(--surface); border: 1px solid var(--line) }
+.pillar.me { background: color-mix(in srgb, var(--point) 6%, transparent); box-shadow: none; border-color: var(--point) }
+.edge { background: var(--tile); border: 1px solid var(--line) }
+.edge::before { color: var(--point) }
+table.vs td.win { background: color-mix(in srgb, var(--point) 7%, transparent) }
+@media (max-width: 760px) {
+  .mast { border-bottom: 0 }
+  .tabs button[aria-selected="true"], .tabs button[aria-selected="true"] .ti { color: var(--point) }
+  .panel { padding: 24px 18px }
+  .card { padding: 24px 18px }
+  .c-hz { font-size: 46px }
+  .sechead h3 { font-size: 22px }
+  #moreBtn { background: var(--point); color: var(--accent-ink) }
+}
+@media (max-width: 370px) { .c-hz { font-size: 40px } }
 </style>
+
 
 <div class="wrap">
   <header class="mast">
@@ -1021,6 +1106,7 @@ table.vs td.win { background: var(--gold-soft) }
     </div>
     <form class="panel" id="recForm" autocomplete="off" novalidate>
       <h2>이름 추천 · 아기 정보</h2>
+      <p class="sec-no"><i>01</i>기본 정보</p>
       <p class="reqnote"><em class="req-badge">필수</em> 표시 항목만 입력하면 추천받을 수 있어요</p>
       <button type="button" class="fsum" id="fsum" aria-expanded="false" aria-controls="fbody" hidden>
         <span class="fsum-t" id="fsumText"></span><span class="fedit" id="feditLbl">정보 수정</span></button>
@@ -1050,7 +1136,7 @@ table.vs td.win { background: var(--gold-soft) }
         <p class="ex">예) 오전 <b>7:20</b> 출생 → 실제 해 시각 <b>6:50</b> → <b>묘시(卯時)</b><br><span>보정하지 않으면 진시(辰時)로 계산돼 시주가 달라져요.</span></p>
         <p class="tip">✓ 대부분의 작명소·만세력이 쓰는 방식이라 <b>켜 두시는 걸 권해요.</b> 태어난 시각을 모르면 영향이 없어요.</p>
       </div>
-      <p class="optsec"><span>선택 사항</span></p>
+      <p class="sec-no"><i>02</i>선택 사항</p>
       <label class="check"><input type="checkbox" id="useHang" aria-controls="hangBox" aria-expanded="false"> 항렬자(돌림자) 반영</label>
       <div class="hangbox" id="hangBox" hidden>
         <div class="row">
@@ -1097,7 +1183,7 @@ table.vs td.win { background: var(--gold-soft) }
     </form>
     <section class="sec pre">
       <div class="sechead">
-        <div><h3>사주 맞춤 추천 이름</h3><p id="recMeta"></p></div>
+        <div><span class="cap">Name Report</span><h3>사주 맞춤 추천 이름</h3><p id="recMeta"></p></div>
         <button class="btn ghost" type="button" id="moreBtn" hidden>다음 5개 보기 <span aria-hidden="true">›</span></button>
       </div>
       <p class="savehint" id="saveHint" hidden><span class="sh-ic" aria-hidden="true">♡</span><span>마음에 드는 이름은 <b>저장</b>해 두세요 · 저장 탭에서 모아 비교할 수 있어요</span><button type="button" id="saveHintClose" aria-label="안내 닫기">✕</button></p>
@@ -1153,7 +1239,7 @@ table.vs td.win { background: var(--gold-soft) }
       <div id="m-sajuOut" class="sajuout" hidden></div>
     </form>
     <section class="sec pre">
-      <div class="sechead"><div><h3>이름 풀이 · 비교</h3><p id="mineMeta"></p></div></div>
+      <div class="sechead"><div><span class="cap">Compare</span><h3>이름 풀이 · 비교</h3><p id="mineMeta"></p></div></div>
       <div id="mineOut">
       </div>
     </section>
@@ -1169,7 +1255,7 @@ table.vs td.win { background: var(--gold-soft) }
       </div>
     </div>
     <section class="sec">
-      <div class="sechead"><div><h3>저장한 이름</h3><p id="savedMeta"></p></div></div>
+      <div class="sechead"><div><span class="cap">Saved</span><h3>저장한 이름</h3><p id="savedMeta"></p></div></div>
       <div class="votebar" id="voteBar" hidden></div>
       <div class="cards" id="savedOut"></div>
     </section>
@@ -1229,7 +1315,7 @@ table.vs td.win { background: var(--gold-soft) }
       <div id="f-sajuOut" class="sajuout" hidden></div>
     </form>
     <section class="sec pre">
-      <div class="sechead"><div><h3>추천 한자 조합</h3><p id="findMeta"></p></div></div>
+      <div class="sechead"><div><span class="cap">Hanja</span><h3>추천 한자 조합</h3><p id="findMeta"></p></div></div>
       <div class="cards" id="findOut">
       </div>
       <button class="btn ghost more" type="button" id="findMore" hidden>조합 6개 더 보기</button>
@@ -1306,7 +1392,7 @@ table.vs td.win { background: var(--gold-soft) }
         <li><b>Unicode Unihan Database</b> — 한자 부수·획수 자료 · Unicode License v3</li>
         <li><b>Korean-Name-Hanja-Charset</b> (rutopio) — 대법원 인명용 한자 목록(대법원 전자가족관계등록시스템 수집, 2024년 6월 확대분 포함) · MIT License</li>
         <li><b>앱 아이콘</b> — Higgsfield(GPT Image)로 생성</li>
-        <li><b>Pretendard · Noto Serif KR · Gowun Batang(고운바탕)</b> 글꼴 — SIL Open Font License 1.1</li>
+        <li><b>Pretendard · Hahmlet · Noto Serif KR · DM Mono</b> 글꼴 — SIL Open Font License 1.1</li>
       </ul>
     </section></div>
   </details>
