@@ -973,6 +973,17 @@ table.vs td.win { background: var(--gold-soft) }
   .intro-t { font-size: 18px }
 }
 @media (max-width: 370px) { .c-hz { font-size: 36px } .cact .act { font-size: 13px } }
+/* 공지: 한 줄 전광판 */
+.notice > .nb-tick { flex: 1; min-width: 0; overflow: hidden; white-space: nowrap; margin: 0; cursor: default;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 12px, #000 calc(100% - 16px), transparent); mask-image: linear-gradient(90deg, transparent, #000 12px, #000 calc(100% - 16px), transparent) }
+.nb-run { display: inline-flex; white-space: nowrap }
+.nb-msg { flex: none; padding-left: 4px }
+.nb-tick:not(.roll) .nb-run { display: block; overflow: hidden; text-overflow: ellipsis }
+.nb-tick.roll .nb-msg { padding-right: 48px }
+.nb-tick.roll .nb-run { animation: nb-roll var(--nb-dur, 14s) linear infinite }
+.nb-tick.roll:hover .nb-run, .nb-tick.paused .nb-run { animation-play-state: paused }
+@keyframes nb-roll { from { transform: translateX(0) } to { transform: translateX(-50%) } }
+.notice { flex-wrap: wrap; align-items: center }
 </style>
 
 <div class="wrap">

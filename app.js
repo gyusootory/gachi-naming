@@ -1212,12 +1212,25 @@
     const total = week.reduce((n, x) => n + g[x].length, 0);
     const chip = c => { const h = N.byChar(c[0]); return `<li><b>${esc(c[0])}</b><span>${esc(c[2])} ${esc(c[1])}${h ? ` · ${h.strokes}획 · ${h.el}` : ''}</span></li>`; };
     const el = document.createElement('div'); el.className = 'notice'; el.setAttribute('role', 'status');
-    el.innerHTML = `<span class="nb-tag">공지</span><p>${md(date)} 추가된 한자 : ${list}</p>
+    const msg = `${md(date)} 추가된 한자 : ${list}`;
+    // 한 줄 전광판: 글이 칸보다 길면 옆으로 흐름 (같은 글을 이어 붙여 끊김 없이 반복 · 누르거나 마우스를 올리면 멈춤)
+    el.innerHTML = `<span class="nb-tag">공지</span><p class="nb-tick"><span class="nb-run"><span class="nb-msg">${msg}</span></span></p>
       <button type="button" class="nb-more" aria-expanded="false" aria-controls="nbWeek" aria-label="최근 1주일 추가된 한자 펼쳐 보기" title="최근 1주일 추가된 한자"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6"/></svg></button>
       <button type="button" class="nb-x" aria-label="공지 닫기">✕</button>
       <div class="nb-week" id="nbWeek" hidden><p class="nb-sum">최근 1주일 동안 추가된 한자 ${total}자 · 한자 찾기 · 이름 비교에서 바로 고를 수 있어요</p>${
         week.map(x => `<div class="nb-day"><h4>${md(x)}</h4><ul>${g[x].map(chip).join('')}</ul></div>`).join('')}</div>`;
     document.querySelector('.mast').after(el);
+    const tick = el.querySelector('.nb-tick'), run = el.querySelector('.nb-run');
+    const roll = () => {
+      run.querySelectorAll('.nb-msg[aria-hidden]').forEach(x => x.remove()); tick.classList.remove('roll');
+      const w = run.querySelector('.nb-msg').offsetWidth;
+      if (w <= tick.clientWidth || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      run.insertAdjacentHTML('beforeend', `<span class="nb-msg" aria-hidden="true">${msg}</span>`);
+      run.style.setProperty('--nb-dur', Math.max(8, (w + 48) / 42) + 's');   // 초당 약 42px
+      tick.classList.add('roll');
+    };
+    roll(); addEventListener('resize', roll); if (document.fonts) document.fonts.ready.then(roll);
+    tick.addEventListener('click', () => tick.classList.toggle('paused'));
     const more = el.querySelector('.nb-more');
     more.addEventListener('click', () => { const open = more.getAttribute('aria-expanded') !== 'true'; more.setAttribute('aria-expanded', open); el.querySelector('.nb-week').hidden = !open; if (open) T('notice_more'); });
     el.querySelector('.nb-x').addEventListener('click', () => { try { localStorage.setItem(KEY, sig); } catch (e) {} el.remove(); });
