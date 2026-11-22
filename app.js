@@ -35,7 +35,7 @@
   const NG = new Set(('시민 서민 이민 예민 주민 유민 우민 도민 선민 해석 지석 범람 유람 주담 건담 민담 진담 한담 재담 강담 성담 수담 경겸 건겸 강겸 예결 선결 준결 재결 영결 해결 수결 '
     + '서재 현재 수재 주재 건재 강재 우환 예후 정후 선후 태후 유후 우호 경호 강진 해진 승진 지진 선진 이성 건성 서성 우성 도우 유훈 유원 유우 주석 주성 주준 수준 수율 '
     + '한우 선원 진원 민원 경우 하아 지서 수은 수하 채우 소아 소진 소경 소주 유아 유린 시린 가서 가담 연하 세율 해경 효율 민담 지경 다진 하원 다원 연원 세우 리우 '
-    + '해서 수경 유희 연주 해주 가나 나서 수세 재해 정사 수유 유수 주유 시도 우유 세수 하수 수도 지도 도수 지하 하지 유서 재수 가지 주지 이유 소유 지주 원수 해우 도해 소서 수주 가주 로우 하우 다우 수서 나우 가우 수우 주우 효우 소우 라우 온우 로우 강우 수원 도성').split(' '));
+    + '해서 수경 유희 연주 해주 가나 나서 수세 재해 정사 수유 유수 주유 시도 우유 세수 하수 수도 지도 도수 지하 하지 유서 재수 가지 주지 이유 소유 지주 원수 해우 도해 소서 수주 가주 로우 하우 다우 수서 나우 가우 수우 주우 효우 소우 라우 온우 로우 강우 수원 도성 영정 영안 영구 영악 영양 소주 사주 주사 장사 기사 사기 성기 지주 고소 무기 대변 소변 수포 정지 정사 연기 병사').split(' '));
   const GEN = { M: [], F: [] };
   ['M', 'F'].forEach(g => {
     const pop = new Set(NAMES[g]), seen = new Set();
@@ -659,7 +659,9 @@
     out.classList.add('locked');
     let voted = null; try { voted = localStorage.getItem('gachi-voted-' + VOTE.id); } catch (e) {}
     if (voted) { voted.split(',').forEach(k => { const b = out.querySelector(`[data-like="${k}"]`); if (b) { b.setAttribute('aria-pressed', 'true'); b.textContent = '♥'; b.closest('.vrow').classList.add('liked'); } }); out.classList.remove('locked'); $('#voteSend').hidden = true; $('#voteWho').hidden = true; $('#voteHint').textContent = '이미 투표했어요'; }
-    T('vote_open', { n: voteCards.length, mine: getPolls().some(p => p.id === VOTE.id) });
+    const mine = getPolls().some(p => p.id === VOTE.id);
+    if (mine && !document.querySelector('.vh-mine')) $('.vote-hero').insertAdjacentHTML('beforeend', '<p class="vh-mine">내가 만든 투표예요 · 가족 투표 결과는 아래에서 볼 수 있어요 <button type="button" class="sh-go" id="voteReshare">링크 다시 보내기 ›</button></p>');
+    T('vote_open', { n: voteCards.length, mine });
     loadTally();
   }
   // 호칭을 고르거나 적으면 ♡ 버튼이 열림
@@ -677,6 +679,7 @@
     whoReady();
   }
   function whoReady() {
+    if ($('#voteSend').hidden) return;   // 이미 투표를 마친 화면이면 안내를 바꾸지 않음
     const etc = $('#whoEtc').value.trim(), dup = etc && votedWho.has(normWho(etc));
     const ok = !dup && (!!document.querySelector('#whoChips .chip[aria-pressed="true"]') || !!etc);
     $('#voteOut').classList.toggle('locked', !ok);
@@ -709,6 +712,12 @@
     const wc = e.target.closest('#whoChips .chip');
     if (wc) { document.querySelectorAll('#whoChips .chip').forEach(b => b.setAttribute('aria-pressed', b === wc)); $('#whoEtc').value = ''; whoReady(); return; }
     if (e.target.closest('#tallyReload')) { loadTally(); return; }
+    if (e.target.closest('#voteReshare')) {
+      const url = location.href, text = `우리 아기 이름 후보 ${voteCards.length}개예요. 풀이를 보고 마음에 드는 이름에 투표해 주세요!`;
+      if (navigator.share) { try { await navigator.share({ title: '가치작명소 가족 투표', text, url }); return; } catch (x) { if (x && x.name === 'AbortError') return; } }
+      try { await navigator.clipboard.writeText(text + '\n' + url); toast('투표 링크를 복사했어요'); } catch (x) { showShareBox(text + '\n' + url); }
+      return;
+    }
     if (e.target.closest('#voteTell')) {   // 사용자가 직접 눌렀을 때만 공유 창
       const text = $('#voteRes').dataset.text || '';
       if (navigator.share) { try { await navigator.share({ text }); return; } catch (x) { if (x && x.name === 'AbortError') return; } }
@@ -789,7 +798,7 @@
     // 조건에 맞는 인기 이름이 적으면 새로운 이름까지 자동으로 넓힘
     if (c.style === 'pop' && condOn && names.length < 20) { names = names.concat(newer.filter(n => condOk(c, n))); widened = true; }
     const hs = hangSpec();
-    let fixed = null;
+    let fixed = null, realSet = null;
     if (hs) {
       const other = new Set();
       const src = c.style !== 'pop' || widened ? NAMES[gender].concat(GEN[gender] || []) : NAMES[gender];
@@ -797,6 +806,9 @@
       // 입력한 소리(예: 律 → '율')를 그대로 이름에 사용
       const say = $('#hangEum').value.trim() || hs.h.eum;
       names = [...other].filter(o => o !== say).map(o => hs.pos === 0 ? say + o : o + say).filter(n => !NG.has(n) && condOk(c, n));
+      // 그 성별에서 실제로 쓰는 이름(인기·새 이름 목록)에 있는 조합을 우선 · 10개보다 적을 때만 그 밖의 조합까지
+      const known = new Set([...NAMES[gender], ...(GEN[gender] || [])]), real = names.filter(n => known.has(n));
+      if (real.length >= 10) names = real; else realSet = new Set(real);   // 적으면 실제 이름을 앞에, 나머지 조합은 뒤에
       fixed = hs.pos === 0 ? [hs.h, null] : [null, hs.h];
     }
     const parts = [c.first && `첫 글자 ‘${c.first}’`, c.last && `끝 글자 ‘${c.last}’`, c.bat === 'none' && '받침 없음', c.bat === 'last' && '끝 받침 없음',
@@ -806,8 +818,8 @@
     const popSet = new Set(NAMES[gender]);
     pool = names.map(n => {
       const r = N.rankHanja(sur, n.split(''), sj, fixed, true);
-      return r.length ? { hangul: n, ...r[0], alts: r.slice(1, 4), pop: popSet.has(n) } : null;
-    }).filter(Boolean).sort((a, b) => (widened && !hs ? (b.pop - a.pop) : 0) || b.ev.total - a.ev.total);
+      return r.length ? { hangul: n, ...r[0], alts: r.slice(1, 4), pop: popSet.has(n), real: !realSet || realSet.has(n) } : null;
+    }).filter(Boolean).sort((a, b) => (b.real - a.real) || (widened && !hs ? (b.pop - a.pop) : 0) || b.ev.total - a.ev.total);
     // 다양하게: 같은 첫 글자로 시작하는 이름은 앞쪽에 2개까지만, 나머지는 뒤로 (항렬자로 첫 글자가 고정된 경우 제외)
     if (!(hs && hs.pos === 0) && !c.first) {
       const cnt = {}, front = [], back = [];
@@ -1355,4 +1367,5 @@
   setTab(tab);
   renderSaved();
   if (VOTE) showVote();   // 가족 투표 링크로 들어온 경우: 투표 화면부터
+  else if (new URLSearchParams(location.search).has('vote')) setTimeout(() => toast('투표 링크가 잘렸거나 올바르지 않아요 · 링크를 보낸 가족에게 다시 받아 주세요'), 400);
 })();
