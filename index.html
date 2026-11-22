@@ -1143,6 +1143,13 @@ table.vs td.win { background: color-mix(in srgb, var(--point) 7%, transparent) }
 #whoChips .chip.done small { text-decoration: none; display: inline-block; margin-left: 4px; font-size: 11px; color: var(--point) }
 
 .vh-mine { margin: 4px 0 0; font-size: 13.5px; color: var(--ink2); background: var(--tile); border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px }
+
+/* 내가 만든 투표: 오른쪽에 펼치기 버튼(화살표) */
+.mypolls > summary { list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 44px; cursor: pointer; font-weight: 600 }
+.mypolls > summary::-webkit-details-marker { display: none }
+.mypolls > summary::after { content: ""; flex: none; width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--line2);
+  background: no-repeat center / 14px url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); transition: transform .2s }
+.mypolls[open] > summary::after { transform: rotate(180deg) }
 </style>
 
 
