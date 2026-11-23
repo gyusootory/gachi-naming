@@ -356,7 +356,8 @@ td.r, th.r { text-align: right }
   const findByHun = (eum, w) => {
     let n = String(w || '').replace(/\s+/g, ''); if (n.length > 1 && n.endsWith(eum)) n = n.slice(0, -1);
     if (!n || typeof HANJA === 'undefined') return null;
-    const h = HANJA.find(x => x[1] === eum && (x[2] === n || (n.length >= 2 && (x[2].includes(n) || n.includes(x[2])))));
+    // 같은 뜻 판정: 똑같거나 · 한쪽이 다른 쪽을 포함하거나 · 앞 두 글자가 같으면(예: '재계하다' ↔ '재계할') 같은 글자로 봄
+    const h = HANJA.find(x => x[1] === eum && (x[2] === n || (n.length >= 2 && (x[2].includes(n) || n.includes(x[2]) || (x[2].length >= 2 && n.slice(0, 2) === x[2].slice(0, 2))))));
     return h ? h[0] : null;
   };
   // 한자를 모르는 제보 등은 관리자가 직접 '처리 완료'로 표시 (이 브라우저에 보관)
