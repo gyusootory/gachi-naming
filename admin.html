@@ -767,7 +767,10 @@ td.r, th.r { text-align: right }
     if (!d) clearAutoHun();
     if (!d) { $('#aChHint').textContent = '사전에 없는 글자예요 · 소리·획수·오행을 직접 넣어 주세요'; if ($('#aEum').readOnly) lockAuto(false); return; }
     $('#aStrokes').value = d[1];
-    $('#aElem').value = (typeof HZ_ELEM_OVR !== 'undefined' && HZ_ELEM_OVR[ch]) || (typeof HZ_ELEM_BY_RAD !== 'undefined' && HZ_ELEM_BY_RAD[d[0]]) || '';
+    // 자원오행: 직접 지정 > 부수 오행 > (부수로 정하기 어려운 글자) 원획 끝자리 오행(1·2 木 3·4 火 5·6 土 7·8 金 9·0 水) → 항상 자동으로 채움
+    const elBy = (typeof HZ_ELEM_OVR !== 'undefined' && HZ_ELEM_OVR[ch]) || (typeof HZ_ELEM_BY_RAD !== 'undefined' && HZ_ELEM_BY_RAD[d[0]]) || '';
+    const elStroke = ['水', '木', '木', '火', '火', '土', '土', '金', '金', '水'][(+d[1] || 0) % 10];
+    $('#aElem').value = elBy || elStroke; $('#aElem').dataset.by = elBy ? '' : 'stroke';
     const sounds = [...d[2]], want = $('#addForm').dataset.eum || '';
     $('#aEum').value = sounds.includes(want) ? want : (sounds[0] || '');
     // 뜻(훈): 사전에 있으면 미리 채움(참고용) · 관리자가 직접 고친 값은 덮어쓰지 않음
@@ -778,9 +781,8 @@ td.r, th.r { text-align: right }
     hunIn.dataset.forCh = ch;
     $('#aHunTag').textContent = hunIn.dataset.auto === '1' ? '사전 추천 · 확인' : '직접 입력';
     $('#aHunTag').className = hunIn.dataset.auto === '1' ? 'autotag' : 'need';
-    $('#aChHint').innerHTML = `부수 ${d[0]}번 · 원획 ${d[1]}획` + ($('#aElem').value ? '' : ' · 오행은 직접 골라 주세요')
+    $('#aChHint').innerHTML = `부수 ${d[0]}번 · 원획 ${d[1]}획` + ($('#aElem').dataset.by === 'stroke' ? ' · 오행은 부수로 정하기 어려워 획수 기준' : '')
       + (d[3] ? ' · <b class="inm-ok">✓ 대법원 인명용</b>' : ' · <b class="inm-no">⚠ 인명용 목록에 없음 (출생신고에 못 쓸 수 있어요)</b>');
-    if (!$('#aElem').value && $('#aEum').readOnly) lockAuto(false);
     // 소리가 여러 개인 글자(예: 羅 나·라)는 눌러서 고름
     if (sounds.length > 1) $('#aEumHint').innerHTML = '소리 고르기:' + sounds.map(x => `<button type="button" class="schip" data-snd="${x}" aria-pressed="${x === $('#aEum').value}">${x}</button>`).join('');
     checkDup();
