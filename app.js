@@ -468,6 +468,9 @@
       <span class="fc-arr" aria-hidden="true"></span>
       <div class="fc-col"><span class="fc-t">이름 한자가 더하는 기운</span><ul class="fc-gs">${right}</ul></div></div>`;
   }
+  // 이름 뜻: 글자마다 '한자 + 뜻' (예: 譽 빛나는 명예 · 潾 맑은 물 같은 마음)
+  const meanOf = g => (g.ext || !g.mean || /의 뜻$/.test(g.mean)) ? `${g.hun}` : g.mean;
+  const meanLine = gs => gs.map(g => `<span class="mn"><b>${g.ch}</b>${esc(meanOf(g))}</span>`).join('');
   function nameCard(item, rank, sur, from, sj) {
     const { given, ev } = item;
     const fullKo = sur.ko + given.map(g => g.ko).join('');
@@ -496,6 +499,7 @@
       <div class="c-name">
         <div class="c-hz" aria-hidden="true">${[...sur.hanja].map(c => `<span class="sur">${c}</span>`).join('')}${given.map(g => `<span>${g.ch}</span>`).join('')}</div>
         <div class="c-ko"><b>${esc(fullKo)}</b> <span>${given.map(g => `${esc(g.hun)} ${g.eum}`).join(' · ')}</span></div>
+        <p class="c-mean"><span class="cap">뜻</span>${meanLine(given)}</p>
       </div>
       <p class="c-head">${esc(rd.head)}</p>
       <ul class="c-why">
@@ -564,7 +568,8 @@
       <div class="vr-top">
         <button type="button" class="pick sm" data-pick="${esc(r.key)}" aria-pressed="${on}" aria-label="${esc(r.ko)} 투표 후보로 고르기"><span class="pk" aria-hidden="true"></span><span class="pk-t">후보</span></button>
         <div class="vr-name"><span class="vr-hz" aria-hidden="true">${[...r.sur.hanja].map(c => `<span class="sur">${c}</span>`).join('')}${r.given.map(g => g.ch).join('')}</span>
-          <span class="vr-ko"><b>${esc(r.ko)}</b> · ${r.given.map(g => `${esc(g.hun)} ${g.eum}`).join(' · ')}</span></div>
+          <span class="vr-ko"><b>${esc(r.ko)}</b> · ${r.given.map(g => `${esc(g.hun)} ${g.eum}`).join(' · ')}</span>
+          <span class="vr-mean">${r.given.map(g => esc(meanOf(g))).join(' · ')}</span></div>
         <span class="vr-sc"><b>${r.score}</b>점</span>
       </div>
       <details class="vr-more"><summary>풀이 자세히 보기 <span class="sdate">${fmt(r.savedAt)} · ${({ find: '한자 찾기', mine: '이름 비교' })[r.from] || '이름 추천'}</span></summary>
@@ -668,7 +673,8 @@
       return `<article class="vrow">
         <div class="vr-top"><span class="vr-no">${String(n + 1).padStart(2, '0')}</span>
           <div class="vr-name"><span class="vr-hz">${[...x.sur.hanja].map(c => `<span class="sur">${c}</span>`).join('')}${x.given.map(g => g.ch).join('')}</span>
-            <span class="vr-ko"><b>${esc(ko)}</b> · ${x.given.map(g => `${esc(g.hun)} ${g.eum}`).join(' · ')}</span></div>
+            <span class="vr-ko"><b>${esc(ko)}</b> · ${x.given.map(g => `${esc(g.hun)} ${g.eum}`).join(' · ')}</span>
+            <span class="vr-mean">${x.given.map(g => esc(meanOf(g))).join(' · ')}</span></div>
           <span class="vr-sc"><b>${Math.round(x.ev.total)}</b>점</span>
           <button class="vr-like" type="button" data-like="${x.i}" aria-pressed="false" aria-label="${esc(ko)} 좋아요">♡</button></div>
         <details class="vr-more"><summary>풀이 자세히 보기</summary>${nameCard({ given: x.given, ev: x.ev }, 0, x.sur, 'vote', x.sj).replace(/<div class="cact">[\s\S]*?<\/div>\s*<\/article>$/, '</article>')}</details>
