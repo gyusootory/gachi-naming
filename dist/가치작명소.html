@@ -15,7 +15,8 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta property="og:locale" content="ko_KR">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"가치작명소","url":"https://gachi-naming.web.app/","applicationCategory":"LifestyleApplication","operatingSystem":"Web","inLanguage":"ko","isAccessibleForFree":true,"description":"성명학 기반 무료 작명 앱. 아이 생일을 넣으면 이름을 추천하고, 원하는 이름에 맞는 한자를 찾아 드립니다.","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"featureList":["아이 생일로 이름 추천","원하는 이름에 맞는 한자 찾기","내 이름 풀이","저장한 이름 보관"]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"가치작명소","url":"https://gachi-naming.web.app/","applicationCategory":"LifestyleApplication","operatingSystem":"Web","inLanguage":"ko","isAccessibleForFree":true,"description":"성명학 기반 무료 작명 앱. 아이 생일을 넣으면 이름을 추천하고, 원하는 이름에 맞는 한자를 찾아 드립니다.","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"featureList":["사주 팔자 오행 분석","대법원 인명용 한자 기반 작명","81수리·자원오행·발음오행·음양오행 종합 채점","회원가입 없는 무료 이름 추천 및 이름풀이","가족 투표 공유 링크"]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","inLanguage":"ko","mainEntity":[{"@type":"Question","name":"가치작명소는 정말 무료인가요?","acceptedAnswer":{"@type":"Answer","text":"네, 모든 기능이 무료입니다. 이름 추천, 한자 찾기, 지금 이름 풀이와 개명할 이름 비교, 저장과 가족 투표까지 결제 화면 없이 쓸 수 있습니다."}},{"@type":"Question","name":"회원가입이나 앱 설치가 필요한가요?","acceptedAnswer":{"@type":"Answer","text":"필요 없습니다. 주소를 열면 바로 계산할 수 있고, 원하면 휴대폰 홈 화면에 추가해 앱처럼 쓸 수 있습니다."}},{"@type":"Question","name":"어떤 기준으로 이름을 추천하나요?","acceptedAnswer":{"@type":"Answer","text":"입춘과 12절기를 기준으로 사주를 세워 필요한 오행을 찾고, 81수리 4격(40점), 자원오행(25점), 발음오행(15점), 음양(10점), 삼원오행(10점)으로 100점 만점 점수를 매겨 높은 순서로 추천합니다. 한자 획수는 강희자전 원획법으로 셉니다."}},{"@type":"Question","name":"입력한 생년월일은 저장되나요?","acceptedAnswer":{"@type":"Answer","text":"저장되지 않습니다. 성씨, 성별, 생년월일, 태어난 시각은 사용하는 기기 안에서만 계산되며 서버로 보내지 않습니다."}},{"@type":"Question","name":"출생신고에 쓸 수 있는 한자인지 알려 주나요?","acceptedAnswer":{"@type":"Answer","text":"네. 이름 카드마다 대법원 인명용 한자 여부를 표시하고, 자동 추천에서는 인명용으로 확인된 글자만 씁니다. 목록은 바뀔 수 있으니 출생신고 전 대법원 전자가족관계등록시스템에서 한 번 더 확인하시길 권합니다."}}]}</script>
 <title>가치작명소 — 무료 사주·오행 아기 이름 작명 · 한자 이름풀이</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1174,6 +1175,47 @@ table.vs td.win { background: color-mix(in srgb, var(--point) 7%, transparent) }
 .mypolls li:first-child { border-top: 0 }
 .mp-sum { grid-column: 1 / -1; font-size: 12.5px; color: var(--ink2) }
 .mp-sum:empty { display: none }
+
+/* 이름 뜻 한 줄 */
+.c-mean { margin: 2px 0 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; font-size: 14.5px; color: var(--ink) }
+.c-mean .cap { margin-right: -4px }
+.c-mean .mn { display: inline-flex; align-items: baseline; gap: 6px }
+.c-mean .mn b { font: 600 17px var(--f-display); color: var(--point) }
+.vr-mean { font-size: 12.5px; color: var(--muted); overflow-wrap: anywhere }
+
+/* 소개(한 문장 정의 + 핵심 기능) · 푸터 자료 링크 · 광고·제휴 자리 */
+.about { margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--line); display: grid; gap: 12px }
+.about-t { font: 600 18px var(--f-story); margin: 0; color: var(--ink) }
+.about-def { margin: 0; font-size: 15px; line-height: 1.7; color: var(--ink2); max-width: 70ch }
+.about-f { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 200px), 1fr)); gap: 8px }
+.about-f li { border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; display: grid; gap: 2px }
+.about-f b { font-size: 13.5px; color: var(--ink) } .about-f span { font-size: 12.5px; color: var(--muted); line-height: 1.5 }
+.about .guidebox { margin-top: 4px }
+.home-faq .hq { font: 700 14.5px var(--f-body); margin: 14px 0 4px; color: var(--ink) } .home-faq .hq:first-child { margin-top: 0 }
+.home-faq .ha { margin: 0; font-size: 14px; line-height: 1.65; color: var(--ink2) }
+.foot-guides { display: flex; flex-wrap: wrap; gap: 4px 10px; font-size: 12.5px; line-height: 1.7; margin-top: 6px }
+.foot-guides b { color: var(--ink2); font-weight: 600; margin-right: 2px }
+.foot-guides a { color: var(--muted) }
+.mz-slot { margin-top: 18px }
+.mz-aff { border: 1px solid var(--line); border-radius: 16px; padding: 16px 18px; display: grid; gap: 6px; background: var(--surface) }
+.mz-badge { justify-self: start; font: 600 11.5px var(--f-body); color: var(--muted); border: 1px solid var(--line2); border-radius: 999px; padding: 2px 8px }
+.mz-t { font-size: 15.5px; color: var(--ink) } .mz-d { margin: 0; font-size: 13.5px; color: var(--ink2); line-height: 1.6 }
+.mz-go { justify-self: start; margin-top: 4px; font: 700 14px var(--f-body); color: var(--point) }
+.mz-disc { font-size: 11.5px; color: var(--muted); line-height: 1.5 }
+.mz-ad { display: grid; gap: 4px } .mz-adlabel { font-size: 11px; color: var(--muted) }
+
+/* 소개: 접어 두고 펼치면 정의·기능·질문 */
+details.about { border-top: 1px solid var(--line); padding-top: 4px; display: block }
+details.about > summary { list-style: none; display: flex; align-items: center; gap: 10px; min-height: 52px; cursor: pointer; flex-wrap: wrap }
+details.about > summary::-webkit-details-marker { display: none }
+details.about > summary::after { content: ""; margin-left: auto; flex: none; width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--line2);
+  background: no-repeat center / 14px url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); transition: transform .2s }
+details.about[open] > summary::after { transform: rotate(180deg) }
+details.about > summary .about-t { font-size: 16px }
+.about-sub { font-size: 12.5px; color: var(--muted) }
+details.about[open] { display: grid; gap: 12px; padding-bottom: 6px }
+.about-f { grid-template-columns: repeat(auto-fill, minmax(min(100%, 150px), 1fr)) }
+@media (max-width: 760px) { .about-f { grid-template-columns: repeat(2, minmax(0, 1fr)) } .about-f li { padding: 8px 10px } }
 </style>
 
 
@@ -1290,6 +1332,7 @@ table.vs td.win { background: color-mix(in srgb, var(--point) 7%, transparent) }
       <div class="cards" id="recOut">
       </div>
       <nav class="pager" id="recPager" aria-label="추천 이름 페이지" hidden></nav>
+      <div class="mz-slot" data-slot="result" hidden></div>
     </section>
   </div>
 
@@ -1342,6 +1385,7 @@ table.vs td.win { background: color-mix(in srgb, var(--point) 7%, transparent) }
       <div class="sechead"><div><span class="cap">Compare</span><h3>이름 풀이 · 비교</h3><p id="mineMeta"></p></div></div>
       <div id="mineOut">
       </div>
+      <div class="mz-slot" data-slot="result" hidden></div>
     </section>
   </div>
 
@@ -1420,6 +1464,7 @@ table.vs td.win { background: color-mix(in srgb, var(--point) 7%, transparent) }
       </div>
       <button class="btn ghost more" type="button" id="findMore" hidden>조합 6개 더 보기</button>
       <div class="candwrap" id="candOut"></div>
+      <div class="mz-slot" data-slot="result" hidden></div>
     </section>
   </div>
 
@@ -1451,6 +1496,36 @@ table.vs td.win { background: color-mix(in srgb, var(--point) 7%, transparent) }
       <div class="vote-res" id="voteRes" hidden></div>
     </section>
   </div>
+
+  <!-- 가치작명소 소개: 한 문장 정의 + 핵심 기능 + 자주 묻는 질문 (bundle.py가 이 질문·답으로 FAQPage 구조화 데이터를 만듦) -->
+  <details class="about" id="about">
+    <summary><span class="about-t">가치작명소는</span><span class="about-sub">무료 작명 서비스 소개 · 자주 묻는 질문</span></summary>
+    <p class="about-def">가치작명소는 회원가입이나 결제 없이 사주 오행, 자원오행, 발음오행, 81수리, 대법원 인명용 한자를 무료로 분석해 아기 이름 추천과 이름풀이를 제공하는 웹 기반 무료 작명 서비스입니다.</p>
+    <ul class="about-f">
+      <li><b>사주 분석</b><span>절기 기준 사주 팔자와 오행 분포, 필요한 오행(용신)</span></li>
+      <li><b>인명용 한자</b><span>대법원 인명용 한자로 확인된 글자로 추천</span></li>
+      <li><b>종합 채점</b><span>81수리·자원오행·발음오행·음양·삼원오행 100점</span></li>
+      <li><b>가입·결제 없음</b><span>생년월일은 기기 안에서만 계산</span></li>
+      <li><b>가족 투표</b><span>후보 이름을 링크로 보내 가족 의견 모으기</span></li>
+    </ul>
+    <details class="guidebox home-faq">
+      <summary>가치작명소 자주 묻는 질문</summary>
+      <div class="guide">
+        <section>
+          <h3 class="hq">가치작명소는 정말 무료인가요?</h3>
+          <p class="ha">네, 모든 기능이 무료입니다. 이름 추천, 한자 찾기, 지금 이름 풀이와 개명할 이름 비교, 저장과 가족 투표까지 결제 화면 없이 쓸 수 있습니다.</p>
+          <h3 class="hq">회원가입이나 앱 설치가 필요한가요?</h3>
+          <p class="ha">필요 없습니다. 주소를 열면 바로 계산할 수 있고, 원하면 휴대폰 홈 화면에 추가해 앱처럼 쓸 수 있습니다.</p>
+          <h3 class="hq">어떤 기준으로 이름을 추천하나요?</h3>
+          <p class="ha">입춘과 12절기를 기준으로 사주를 세워 필요한 오행을 찾고, 81수리 4격(40점), 자원오행(25점), 발음오행(15점), 음양(10점), 삼원오행(10점)으로 100점 만점 점수를 매겨 높은 순서로 추천합니다. 한자 획수는 강희자전 원획법으로 셉니다.</p>
+          <h3 class="hq">입력한 생년월일은 저장되나요?</h3>
+          <p class="ha">저장되지 않습니다. 성씨, 성별, 생년월일, 태어난 시각은 사용하는 기기 안에서만 계산되며 서버로 보내지 않습니다.</p>
+          <h3 class="hq">출생신고에 쓸 수 있는 한자인지 알려 주나요?</h3>
+          <p class="ha">네. 이름 카드마다 대법원 인명용 한자 여부를 표시하고, 자동 추천에서는 인명용으로 확인된 글자만 씁니다. 목록은 바뀔 수 있으니 출생신고 전 대법원 전자가족관계등록시스템에서 한 번 더 확인하시길 권합니다.</p>
+        </section>
+      </div>
+    </details>
+  </details>
 
   <details class="guidebox">
     <summary>작명 기준과 점수 계산법 보기</summary>
@@ -1505,6 +1580,7 @@ table.vs td.win { background: color-mix(in srgb, var(--point) 7%, transparent) }
   <footer class="foot">
     <p><b>가치작명소</b> · 결과는 성명학 이론에 따른 참고용이며, 출생신고 전 대법원 인명용 한자 여부를 꼭 확인하세요.</p>
     <p><a href="privacy.html">개인정보처리방침</a> · 입력한 생년월일과 성씨는 이 기기 안에서만 계산되고 저장·전송되지 않습니다.</p>
+    <nav class="foot-guides" aria-label="이름 짓기 자료"><b>이름 짓기 자료</b> <a href="guide.html">아기 이름 작명 가이드</a> · <a href="saju-ohaeng.html">사주 오행과 보완 이름</a> · <a href="jawon-vs-baleum.html">자원오행과 발음오행</a> · <a href="eumyang-strokes.html">음양과 4격 계산법</a> · <a href="suri81.html">81수리 길흉표</a> · <a href="hanja.html">인명용 한자</a> · <a href="birth-registration-hanja.html">출생신고 한자 등록 규칙</a> · <a href="bul-yong-hanja.html">불용한자란 무엇인가</a> · <a href="self-naming-checklist.html">셀프 작명 체크리스트 7가지</a> · <a href="dolimja-naming.html">돌림자(항렬자) 이름 짓기</a> · <a href="twins-naming.html">쌍둥이·남매 이름 짓기</a> · <a href="name-change-guide.html">개명 전 이름풀이 점검</a> · <a href="free-naming-comparison.html">무료 작명 서비스 비교 기준</a> · <a href="faq.html">자주 묻는 질문</a></nav>
     <a class="adm" href="admin.html" aria-label="관리자" title="관리자" rel="nofollow"><img src="data:image/png;base64,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" alt="" width="24" height="24"></a>
   </footer>
 </div>
@@ -2473,6 +2549,9 @@ const HANJA_UPDATES = [{"date":"2026-11-14","chars":[["玹","현","옥돌"],["�
       <span class="fc-arr" aria-hidden="true"></span>
       <div class="fc-col"><span class="fc-t">이름 한자가 더하는 기운</span><ul class="fc-gs">${right}</ul></div></div>`;
   }
+  // 이름 뜻: 글자마다 '한자 + 뜻' (예: 譽 빛나는 명예 · 潾 맑은 물 같은 마음)
+  const meanOf = g => (g.ext || !g.mean || /의 뜻$/.test(g.mean)) ? `${g.hun}` : g.mean;
+  const meanLine = gs => gs.map(g => `<span class="mn"><b>${g.ch}</b>${esc(meanOf(g))}</span>`).join('');
   function nameCard(item, rank, sur, from, sj) {
     const { given, ev } = item;
     const fullKo = sur.ko + given.map(g => g.ko).join('');
@@ -2501,6 +2580,7 @@ const HANJA_UPDATES = [{"date":"2026-11-14","chars":[["玹","현","옥돌"],["�
       <div class="c-name">
         <div class="c-hz" aria-hidden="true">${[...sur.hanja].map(c => `<span class="sur">${c}</span>`).join('')}${given.map(g => `<span>${g.ch}</span>`).join('')}</div>
         <div class="c-ko"><b>${esc(fullKo)}</b> <span>${given.map(g => `${esc(g.hun)} ${g.eum}`).join(' · ')}</span></div>
+        <p class="c-mean"><span class="cap">뜻</span>${meanLine(given)}</p>
       </div>
       <p class="c-head">${esc(rd.head)}</p>
       <ul class="c-why">
@@ -2569,7 +2649,8 @@ const HANJA_UPDATES = [{"date":"2026-11-14","chars":[["玹","현","옥돌"],["�
       <div class="vr-top">
         <button type="button" class="pick sm" data-pick="${esc(r.key)}" aria-pressed="${on}" aria-label="${esc(r.ko)} 투표 후보로 고르기"><span class="pk" aria-hidden="true"></span><span class="pk-t">후보</span></button>
         <div class="vr-name"><span class="vr-hz" aria-hidden="true">${[...r.sur.hanja].map(c => `<span class="sur">${c}</span>`).join('')}${r.given.map(g => g.ch).join('')}</span>
-          <span class="vr-ko"><b>${esc(r.ko)}</b> · ${r.given.map(g => `${esc(g.hun)} ${g.eum}`).join(' · ')}</span></div>
+          <span class="vr-ko"><b>${esc(r.ko)}</b> · ${r.given.map(g => `${esc(g.hun)} ${g.eum}`).join(' · ')}</span>
+          <span class="vr-mean">${r.given.map(g => esc(meanOf(g))).join(' · ')}</span></div>
         <span class="vr-sc"><b>${r.score}</b>점</span>
       </div>
       <details class="vr-more"><summary>풀이 자세히 보기 <span class="sdate">${fmt(r.savedAt)} · ${({ find: '한자 찾기', mine: '이름 비교' })[r.from] || '이름 추천'}</span></summary>
@@ -2673,7 +2754,8 @@ const HANJA_UPDATES = [{"date":"2026-11-14","chars":[["玹","현","옥돌"],["�
       return `<article class="vrow">
         <div class="vr-top"><span class="vr-no">${String(n + 1).padStart(2, '0')}</span>
           <div class="vr-name"><span class="vr-hz">${[...x.sur.hanja].map(c => `<span class="sur">${c}</span>`).join('')}${x.given.map(g => g.ch).join('')}</span>
-            <span class="vr-ko"><b>${esc(ko)}</b> · ${x.given.map(g => `${esc(g.hun)} ${g.eum}`).join(' · ')}</span></div>
+            <span class="vr-ko"><b>${esc(ko)}</b> · ${x.given.map(g => `${esc(g.hun)} ${g.eum}`).join(' · ')}</span>
+            <span class="vr-mean">${x.given.map(g => esc(meanOf(g))).join(' · ')}</span></div>
           <span class="vr-sc"><b>${Math.round(x.ev.total)}</b>점</span>
           <button class="vr-like" type="button" data-like="${x.i}" aria-pressed="false" aria-label="${esc(ko)} 좋아요">♡</button></div>
         <details class="vr-more"><summary>풀이 자세히 보기</summary>${nameCard({ given: x.given, ev: x.ev }, 0, x.sur, 'vote', x.sj).replace(/<div class="cact">[\s\S]*?<\/div>\s*<\/article>$/, '</article>')}</details>
@@ -2929,7 +3011,7 @@ const HANJA_UPDATES = [{"date":"2026-11-14","chars":[["玹","현","옥돌"],["�
     el.innerHTML = html; el.hidden = false;
     el.onclick = e => { const b = e.target.closest('button[data-p]'); if (b && !b.disabled) go(+b.dataset.p); };
   }
-  const reveal = id => $(id).closest('.sec').classList.remove('pre');   // 결과 영역 보이기
+  const reveal = id => { $(id).closest('.sec').classList.remove('pre'); if (window.gachiMZ) window.gachiMZ.render(); };   // 결과 영역 보이기 (+ 결과 아래 광고·제휴 자리: 설정이 켜져 있을 때만)
   function showRecs(rebuild) {
     reveal('#recOut');
     const sj = readBirth();
