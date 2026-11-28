@@ -9,7 +9,7 @@ SITE = 'https://gachi-naming.web.app/'  # 검색·공유 기준 주소(네이버
 src = open(os.path.join(R, 'index.html'), encoding='utf-8').read()
 
 def inline(m):
-    if m.group(1) == 'config.js':  # 설정 파일은 따로 두어 쉽게 바꿀 수 있게 함
+    if m.group(1) in ('config.js', 'monetization-config.js', 'monetize.js'):  # 설정 파일·수익화 스크립트는 따로 두어 쉽게 바꾸고 자료 페이지와 함께 씀
         return m.group(0)
     js = open(os.path.join(R, m.group(1)), encoding='utf-8').read().replace('</script', '<\\/script')
     return '<script>\n' + js + '\n</script>'
@@ -33,8 +33,15 @@ LD = {
     'isAccessibleForFree': True,
     'description': DESC,
     'offers': {'@type': 'Offer', 'price': '0', 'priceCurrency': 'KRW'},
-    'featureList': ['아이 생일로 이름 추천', '원하는 이름에 맞는 한자 찾기', '내 이름 풀이', '저장한 이름 보관'],
+    'featureList': ['사주 팔자 오행 분석', '대법원 인명용 한자 기반 작명', '81수리·자원오행·발음오행·음양오행 종합 채점',
+                    '회원가입 없는 무료 이름 추천 및 이름풀이', '가족 투표 공유 링크'],
 }
+# 홈 화면 '자주 묻는 질문'(index.html의 .home-faq)을 그대로 읽어 FAQPage 구조화 데이터로 — 화면 글과 100% 같게
+def _txt(x): return re.sub(r'\s+', ' ', __import__('html').unescape(re.sub(r'<[^>]+>', '', x))).strip()
+FAQ = {'@context': 'https://schema.org', '@type': 'FAQPage', 'inLanguage': 'ko', 'mainEntity': [
+    {'@type': 'Question', 'name': _txt(q), 'acceptedAnswer': {'@type': 'Answer', 'text': _txt(a)}}
+    for q, a in re.findall(r'<h3 class="hq">(.*?)</h3>\s*<p class="ha">(.*?)</p>', src, flags=re.S)]}
+if len(FAQ['mainEntity']) < 5: raise SystemExit('홈 자주 묻는 질문(.home-faq)이 5개보다 적어요')
 head = ('<!doctype html>\n<html lang="ko">\n<head>\n<meta charset="utf-8">\n'
         '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n'
         f'<meta name="description" content="{DESC}">\n'
@@ -48,10 +55,11 @@ head = ('<!doctype html>\n<html lang="ko">\n<head>\n<meta charset="utf-8">\n'
         '<meta property="og:image:width" content="1200">\n<meta property="og:image:height" content="630">\n'
         '<meta name="twitter:card" content="summary_large_image">\n'
         '<meta property="og:locale" content="ko_KR">\n'
-        f'<script type="application/ld+json">{json.dumps(LD, ensure_ascii=False, separators=(",", ":"))}</script>\n')
+        f'<script type="application/ld+json">{json.dumps(LD, ensure_ascii=False, separators=(",", ":"))}</script>\n'
+        f'<script type="application/ld+json">{json.dumps(FAQ, ensure_ascii=False, separators=(",", ":"))}</script>\n')
 
 # ① 단일 파일 (설정 파일 없이 동작: 통계 꺼짐)
-single = body.replace('<script src="config.js"></script>\n', '')
+single = body.replace('<script src="config.js"></script>\n', '').replace('<script src="monetization-config.js"></script>\n', '').replace('<script src="monetize.js"></script>\n', '')
 logo64 = base64.b64encode(open(os.path.join(R, 'icon-96.png'), 'rb').read()).decode()
 single = single.replace('src="icon-96.png"', 'src="data:image/png;base64,' + logo64 + '"')  # 파일 하나로도 로고가 보이게
 for old in ['오행작명소.html', '오행작명소-웹앱.zip']:
@@ -75,6 +83,10 @@ pwa += body + ("\n<script>if ('serviceWorker' in navigator && location.protocol 
 open(os.path.join(D, 'index.html'), 'w', encoding='utf-8').write(pwa)
 for f in ['admin.html', 'privacy.html', 'icon-96.png', 'hanja-data.js', 'hanja-dict.js', 'hanja-ext.js', 'favicon.ico']:   # 관리자 화면이 한자 데이터로 '추가됨'을 확인 · favicon.ico는 /favicon.ico 404 방지용
     shutil.copy(os.path.join(R, f), os.path.join(D, f))
+for f in ['monetization-config.js', 'monetize.js']:   # 광고·제휴 자리 설정과 그리는 코드 (앱·자료 페이지 공용)
+    shutil.copy(os.path.join(R, f), os.path.join(D, f))
+import importlib.util as _ilu   # 자료(가이드) 페이지: pages/ → docs/ (상·하단 버튼, 가이드 목록, FAQ 구조화 데이터, 사이트맵)
+_sp = _ilu.spec_from_file_location('pages_build', os.path.join(R, 'tools', 'pages_build.py')); _pb = _ilu.module_from_spec(_sp); _sp.loader.exec_module(_pb); _pb.build()
 if not os.path.exists(os.path.join(D, 'config.js')):  # 이미 키를 넣어 둔 docs/config.js는 덮어쓰지 않음
     shutil.copy(os.path.join(R, 'config.js'), os.path.join(D, 'config.js'))
 json.dump({

@@ -7,7 +7,7 @@ on:
   # 앱 원본 코드가 바뀌어 올라오면 테스트 주소가 자동으로 새로 만들어짐 (실제 주소는 docs가 바뀔 때만)
   push:
     branches: [claude/blissful-meitner-p9vir1]
-    paths: ['*.js', '*.html', 'tools/**', 'supabase/**', '.github/workflows/firebase-preview.yml']
+    paths: ['*.js', '*.html', 'tools/**', 'pages/**', 'supabase/**', '.github/workflows/firebase-preview.yml']
   workflow_dispatch:
 
 concurrency:

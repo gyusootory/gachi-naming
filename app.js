@@ -930,7 +930,7 @@
     el.innerHTML = html; el.hidden = false;
     el.onclick = e => { const b = e.target.closest('button[data-p]'); if (b && !b.disabled) go(+b.dataset.p); };
   }
-  const reveal = id => $(id).closest('.sec').classList.remove('pre');   // 결과 영역 보이기
+  const reveal = id => { $(id).closest('.sec').classList.remove('pre'); if (window.gachiMZ) window.gachiMZ.render(); };   // 결과 영역 보이기 (+ 결과 아래 광고·제휴 자리: 설정이 켜져 있을 때만)
   function showRecs(rebuild) {
     reveal('#recOut');
     const sj = readBirth();

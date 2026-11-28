@@ -1163,6 +1163,27 @@ table.vs td.win { background: color-mix(in srgb, var(--point) 7%, transparent) }
 .c-mean .mn { display: inline-flex; align-items: baseline; gap: 6px }
 .c-mean .mn b { font: 600 17px var(--f-display); color: var(--point) }
 .vr-mean { font-size: 12.5px; color: var(--muted); overflow-wrap: anywhere }
+
+/* 소개(한 문장 정의 + 핵심 기능) · 푸터 자료 링크 · 광고·제휴 자리 */
+.about { margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--line); display: grid; gap: 12px }
+.about-t { font: 600 18px var(--f-story); margin: 0; color: var(--ink) }
+.about-def { margin: 0; font-size: 15px; line-height: 1.7; color: var(--ink2); max-width: 70ch }
+.about-f { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 200px), 1fr)); gap: 8px }
+.about-f li { border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; display: grid; gap: 2px }
+.about-f b { font-size: 13.5px; color: var(--ink) } .about-f span { font-size: 12.5px; color: var(--muted); line-height: 1.5 }
+.about .guidebox { margin-top: 4px }
+.home-faq .hq { font: 700 14.5px var(--f-body); margin: 14px 0 4px; color: var(--ink) } .home-faq .hq:first-child { margin-top: 0 }
+.home-faq .ha { margin: 0; font-size: 14px; line-height: 1.65; color: var(--ink2) }
+.foot-guides { display: flex; flex-wrap: wrap; gap: 4px 10px; font-size: 12.5px; line-height: 1.7; margin-top: 6px }
+.foot-guides b { color: var(--ink2); font-weight: 600; margin-right: 2px }
+.foot-guides a { color: var(--muted) }
+.mz-slot { margin-top: 18px }
+.mz-aff { border: 1px solid var(--line); border-radius: 16px; padding: 16px 18px; display: grid; gap: 6px; background: var(--surface) }
+.mz-badge { justify-self: start; font: 600 11.5px var(--f-body); color: var(--muted); border: 1px solid var(--line2); border-radius: 999px; padding: 2px 8px }
+.mz-t { font-size: 15.5px; color: var(--ink) } .mz-d { margin: 0; font-size: 13.5px; color: var(--ink2); line-height: 1.6 }
+.mz-go { justify-self: start; margin-top: 4px; font: 700 14px var(--f-body); color: var(--point) }
+.mz-disc { font-size: 11.5px; color: var(--muted); line-height: 1.5 }
+.mz-ad { display: grid; gap: 4px } .mz-adlabel { font-size: 11px; color: var(--muted) }
 </style>
 
 
@@ -1279,6 +1300,7 @@ table.vs td.win { background: color-mix(in srgb, var(--point) 7%, transparent) }
       <div class="cards" id="recOut">
       </div>
       <nav class="pager" id="recPager" aria-label="추천 이름 페이지" hidden></nav>
+      <div class="mz-slot" data-slot="result" hidden></div>
     </section>
   </div>
 
@@ -1331,6 +1353,7 @@ table.vs td.win { background: color-mix(in srgb, var(--point) 7%, transparent) }
       <div class="sechead"><div><span class="cap">Compare</span><h3>이름 풀이 · 비교</h3><p id="mineMeta"></p></div></div>
       <div id="mineOut">
       </div>
+      <div class="mz-slot" data-slot="result" hidden></div>
     </section>
   </div>
 
@@ -1409,6 +1432,7 @@ table.vs td.win { background: color-mix(in srgb, var(--point) 7%, transparent) }
       </div>
       <button class="btn ghost more" type="button" id="findMore" hidden>조합 6개 더 보기</button>
       <div class="candwrap" id="candOut"></div>
+      <div class="mz-slot" data-slot="result" hidden></div>
     </section>
   </div>
 
@@ -1440,6 +1464,36 @@ table.vs td.win { background: color-mix(in srgb, var(--point) 7%, transparent) }
       <div class="vote-res" id="voteRes" hidden></div>
     </section>
   </div>
+
+  <!-- 가치작명소 소개: 한 문장 정의 + 핵심 기능 + 자주 묻는 질문 (bundle.py가 이 질문·답으로 FAQPage 구조화 데이터를 만듦) -->
+  <section class="about" id="about" aria-labelledby="aboutT">
+    <h2 id="aboutT" class="about-t">가치작명소는</h2>
+    <p class="about-def">가치작명소는 회원가입이나 결제 없이 사주 오행, 자원오행, 발음오행, 81수리, 대법원 인명용 한자를 무료로 분석해 아기 이름 추천과 이름풀이를 제공하는 웹 기반 무료 작명 서비스입니다.</p>
+    <ul class="about-f">
+      <li><b>사주 분석</b><span>절기 기준 사주 팔자와 오행 분포, 필요한 오행(용신)</span></li>
+      <li><b>인명용 한자</b><span>대법원 인명용 한자로 확인된 글자로 추천</span></li>
+      <li><b>종합 채점</b><span>81수리·자원오행·발음오행·음양·삼원오행 100점</span></li>
+      <li><b>가입·결제 없음</b><span>생년월일은 기기 안에서만 계산</span></li>
+      <li><b>가족 투표</b><span>후보 이름을 링크로 보내 가족 의견 모으기</span></li>
+    </ul>
+    <details class="guidebox home-faq">
+      <summary>가치작명소 자주 묻는 질문</summary>
+      <div class="guide">
+        <section>
+          <h3 class="hq">가치작명소는 정말 무료인가요?</h3>
+          <p class="ha">네, 모든 기능이 무료입니다. 이름 추천, 한자 찾기, 지금 이름 풀이와 개명할 이름 비교, 저장과 가족 투표까지 결제 화면 없이 쓸 수 있습니다.</p>
+          <h3 class="hq">회원가입이나 앱 설치가 필요한가요?</h3>
+          <p class="ha">필요 없습니다. 주소를 열면 바로 계산할 수 있고, 원하면 휴대폰 홈 화면에 추가해 앱처럼 쓸 수 있습니다.</p>
+          <h3 class="hq">어떤 기준으로 이름을 추천하나요?</h3>
+          <p class="ha">입춘과 12절기를 기준으로 사주를 세워 필요한 오행을 찾고, 81수리 4격(40점), 자원오행(25점), 발음오행(15점), 음양(10점), 삼원오행(10점)으로 100점 만점 점수를 매겨 높은 순서로 추천합니다. 한자 획수는 강희자전 원획법으로 셉니다.</p>
+          <h3 class="hq">입력한 생년월일은 저장되나요?</h3>
+          <p class="ha">저장되지 않습니다. 성씨, 성별, 생년월일, 태어난 시각은 사용하는 기기 안에서만 계산되며 서버로 보내지 않습니다.</p>
+          <h3 class="hq">출생신고에 쓸 수 있는 한자인지 알려 주나요?</h3>
+          <p class="ha">네. 이름 카드마다 대법원 인명용 한자 여부를 표시하고, 자동 추천에서는 인명용으로 확인된 글자만 씁니다. 목록은 바뀔 수 있으니 출생신고 전 대법원 전자가족관계등록시스템에서 한 번 더 확인하시길 권합니다.</p>
+        </section>
+      </div>
+    </details>
+  </section>
 
   <details class="guidebox">
     <summary>작명 기준과 점수 계산법 보기</summary>
@@ -1494,6 +1548,7 @@ table.vs td.win { background: color-mix(in srgb, var(--point) 7%, transparent) }
   <footer class="foot">
     <p><b>가치작명소</b> · 결과는 성명학 이론에 따른 참고용이며, 출생신고 전 대법원 인명용 한자 여부를 꼭 확인하세요.</p>
     <p><a href="privacy.html">개인정보처리방침</a> · 입력한 생년월일과 성씨는 이 기기 안에서만 계산되고 저장·전송되지 않습니다.</p>
+    <nav class="foot-guides" aria-label="이름 짓기 자료"><b>이름 짓기 자료</b> <a href="guide.html">아기 이름 작명 가이드</a> · <a href="saju-ohaeng.html">사주 오행과 보완 이름</a> · <a href="jawon-vs-baleum.html">자원오행과 발음오행</a> · <a href="eumyang-strokes.html">음양과 4격 계산법</a> · <a href="suri81.html">81수리 길흉표</a> · <a href="hanja.html">인명용 한자</a> · <a href="birth-registration-hanja.html">출생신고 한자 등록 규칙</a> · <a href="bul-yong-hanja.html">불용한자란 무엇인가</a> · <a href="self-naming-checklist.html">셀프 작명 체크리스트 7가지</a> · <a href="dolimja-naming.html">돌림자(항렬자) 이름 짓기</a> · <a href="twins-naming.html">쌍둥이·남매 이름 짓기</a> · <a href="name-change-guide.html">개명 전 이름풀이 점검</a> · <a href="free-naming-comparison.html">무료 작명 서비스 비교 기준</a> · <a href="faq.html">자주 묻는 질문</a></nav>
     <a class="adm" href="admin.html" aria-label="관리자" title="관리자" rel="nofollow"><img src="icon-96.png" alt="" width="24" height="24"></a>
   </footer>
 </div>
@@ -1538,3 +1593,5 @@ table.vs td.win { background: color-mix(in srgb, var(--point) 7%, transparent) }
 <script src="config.js"></script>
 <script src="analytics.js"></script>
 <script src="app.js"></script>
+<script src="monetization-config.js"></script>
+<script src="monetize.js"></script>
