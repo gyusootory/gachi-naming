@@ -45,7 +45,8 @@ if len(FAQ['mainEntity']) < 5: raise SystemExit('홈 자주 묻는 질문(.home-
 head = ('<!doctype html>\n<html lang="ko">\n<head>\n<meta charset="utf-8">\n'
         '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n'
         f'<meta name="description" content="{DESC}">\n'
-        '<meta name="naver-site-verification" content="c8cba1559b47315a016eaf5cb67dd53322ebc7e0">\n'  # 네이버 서치어드바이저 소유확인(11/16 등록값). 재번들링에 지워지지 않게 생성기에 넣어 둠
+        '<meta name="naver-site-verification" content="c8cba1559b47315a016eaf5cb67dd53322ebc7e0">\n'
+        '<meta name="google-site-verification" content="sCrqA4iOM3QuluzUr9Ed4Ch1R8YN72A99PIEwCK-R1E" />\n'  # 구글 서치콘솔 소유확인(11/28 등록값). 재번들링에 지워지지 않게 생성기에 넣어 둠  # 네이버 서치어드바이저 소유확인(11/16 등록값). 재번들링에 지워지지 않게 생성기에 넣어 둠
         '<meta property="og:type" content="website">\n'
         '<meta property="og:site_name" content="가치작명소">\n'
         f'<meta property="og:title" content="{TITLE}">\n'
